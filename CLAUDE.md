@@ -1,357 +1,304 @@
 # CLAUDE.md — BIJLI
-**TGC Game Jam @ Infinium '26 (IIIT Hyderabad)** · sponsored by GDAI · co-powered by Games for Change India
-Team **Buggernaut** (3 people) · Themes: **Comic · Twist · Light** (all three are mandatory and theme fit is scored)
-Hard deadline: **Mon 6 Oct 2026, 4:00 PM IST**. Internal freeze: **Mon 6 Oct, 12:00 PM**.
-Target: browser-playable (HTML5/WebGL), 12–18 minutes long, finishable by any judge.
+**TGC Game Jam @ Infinium '26 (IIIT Hyderabad)** · GDAI · Games for Change India
+Team **Buggernaut**: Hansika Grover (systems), Shaurya Chandel (levels & story), Navya Upadhyay (look & sound)
+Repo: https://github.com/NavyaUpd/buggernaut
+Themes: **Comic · Twist · Light** (all three mandatory; theme association is scored)
+Hard deadline: **Tue 6 Oct 2026, 4:00 PM IST**. Internal freeze: **Tue 6 Oct, 12:00 PM**.
+Target: browser game (HTML5/WebGL), **12–18 minutes**, learnable by any judge in under a minute.
 
 > **How to use this file**
-> 1. Put this file at the root of a new **public** GitHub repo. Commit from minute one and commit often, because
->    bulk uploads near the deadline look bad for originality.
-> 2. Open Claude Code in the repo and say: *"Read CLAUDE.md completely. Execute Phase 0, then Phase 1. Commit after
->    every task. Update the STATUS section when a phase ends."*
-> 3. Start every new session with: *"Re-read CLAUDE.md, read STATUS, continue."*
-> 4. Each team member runs their own Claude Code session on their own area (see §15) and merges to `main` often.
+> 1. This file lives at the repo root. Commit early and often, because a steady history matters for originality checks.
+> 2. In Claude Code: *"Read CLAUDE.md completely. Execute Phase 0, then Phase 1. Commit after every task. Update STATUS when a phase ends."*
+> 3. Every new session: *"Re-read CLAUDE.md, read STATUS, continue."*
+> 4. Each person runs their own Claude Code session on their own area (§15) and merges to `main` often.
 
 ---
 
 ## 1. The game in one breath
-A monsoon night. The power is out across the city. A lineworker in a helmet and raincoat climbs poles in the storm,
-splicing snapped cables and dodging live wires to bring the light back, district by district. At home, a kid named
+A monsoon night. The city's power is out. A lineworker in a helmet and raincoat climbs poles in the storm, splicing
+snapped cables and dodging live wires to bring the light back, district by district. At home, a child named
 **Chinni** sits by candlelight drawing a comic about the lineworker as a superhero called **BIJLI**.
 
-You can **twist between the two worlds at any moment**. In the **real world** you're slow, careful and the only one
-who can actually fix things. In the **comic world** you're a superhero who rides power lines as a lightning bolt and
-punches storm monsters, and every monster is a real hazard re-imagined by a child. You need both worlds to get through.
+**The one rule: wherever you bring the light back, the world turns into Chinni's comic, and the comic helps you through.**
+Darkness is the real world: dangerous, rainy, lit only by your headlamp. Light is the comic world: bright crayon
+colours, platforms Chinni drew, hazards turned friendly. Chinni's drawings are a power-up that makes you BIJLI for
+8 seconds.
 
-On the last street, the house lights up, the kid runs to the window, Bijli takes off the helmet, and **it's Amma**.
-
+On the last street, the house lights up, Chinni runs to the window, the lineworker takes off the helmet, and **it's Amma**.
 *Bijli* means both **electricity** and **lightning** in Hindi.
 
-### Submission pitch (use as-is, spoiler-free)
-> **BIJLI** is a monsoon-night action-platformer about the people who bring the light back. Climb poles, splice
-> live cables and dodge lightning as a lineworker, then twist into your kid's comic book and become BIJLI, a
-> superhero who rides power lines as lightning. Two worlds, one storm, one long night home.
+### Submission pitch (spoiler-free)
+> **BIJLI** is a monsoon-night platformer about the people who bring the light back. Climb poles, splice live cables
+> and dodge lightning as a lineworker. Wherever you restore the light, the city turns into a child's comic book,
+> with crayon clouds to stand on, wires to grind and storm hazards turned into cartoons. One storm, one long night home.
 
 ---
 
-## 2. Theme map (judges score theme association, so each theme is a verb)
-| Theme | Core verb (moment to moment) | World | Story |
+## 2. Theme map (each theme is something the player does)
+| Theme | Core mechanic | World | Story |
 |---|---|---|---|
-| **Light** | You restore power: every splice and breaker lights up houses, streetlights and routes. In the real world you see only what your headlamp, live lamps and lightning flashes reveal. In the comic world you **ride electricity** and **catch lightning**. | A blacked-out city lighting up behind you, lamp by lamp | "LIGHT AA GAYI!" cheers from windows; the last light is home |
-| **Twist** | **Twist wires**: splicing is a physical twisting gesture. **Twist worlds**: Shift flips reality ↔ comic in an ink-splash wipe. | Every hazard has a twisted comic twin | **Plot twist**: the hero is Amma |
-| **Comic** | Half the gameplay happens *inside a kid's comic*, with its own physics, abilities, enemies and sound. Defeating comic monsters changes the real world. | Ink, halftone, crayon fills, onomatopoeia, panel borders | The story is told through Chinni's comic pages; the finale is the last page |
+| **Light** | Restoring power is the goal, and **light transforms the level**: lit areas gain comic platforms, rails and friendly hazards. In the dark you see only your headlamp, lit lamps and lightning flashes. | A blacked-out city lighting up behind you, lamp by lamp | "LIGHT AA GAYI!" cheers from windows; the last light is home |
+| **Twist** | **Every repair is a twist**: splicing is a physical twisting gesture. Light **twists each hazard into its comic twin**. | Every real danger has a comic double | **Plot twist**: the hero is Amma |
+| **Comic** | Lit areas **are** Chinni's comic, with their own platforms, rails and rules. **Chinni's drawings** are the power-up that turns you into BIJLI. | Ink, halftone, crayon fills, onomatopoeia | The story is told through Chinni's comic pages; the finale is the last page |
 
-The **message** comes through play, never through text: everyday heroes, and the people who do "not your job"
-jobs in the storm. It's inspired by the real linewomen of Telangana (see §11).
+The message comes through play: everyday heroes doing jobs people call "not your job". It is inspired by the real
+linewomen of Telangana (§11.4).
 
 ---
 
 ## 3. Non-negotiables
-1. **Feels great in 10 seconds.** Tight platforming (coyote time, jump buffer, variable jump) and instant world switching.
-2. **The switch is the star.** It must be readable, fast (≤ 300 ms), gorgeous and always useful.
-3. **No text walls.** Teach through level design. On-screen text is limited to captions (≤ 10 words), key prompts,
-   onomatopoeia and short phone messages between levels.
-4. **Judges must finish it.** Health checkpoints at every lit streetlamp, a "Skip level" button in pause, an assist
-   toggle, and a total run time of 12–18 minutes.
-5. **60 fps** in Chrome on a mid laptop at 1280×720. Includes a quality toggle and auto-downgrade.
-6. **Photosensitivity safety:** a "Reduce flashing" toggle in settings plus a one-line notice on the title screen.
-   With it on, lightning becomes a slow brighten instead of a hard flash.
-7. **Gender-neutral until the reveal.** No he or she pronouns for the hero, a bulky gear silhouette, and the hero is
-   only ever called "Bijli" or "Crew 7". The reveal must feel earned, not like a trick.
-8. **Originality and rules:** all art is generated in code (SVG/procedural), all audio is procedural WebAudio, and
-   all code is written during the jam. Check the Discord rules for third-party libraries, assets and the AI-tool
-   policy, then log everything in `CREDITS.md` plus an "AI usage" section in the README.
-9. **`main` always builds.** Small commits with clear messages.
-10. **Safety:** never imply kids should touch wires. The end card includes a one-line safety note (see §11).
+1. **Four inputs only:** move, jump, climb, interact (plus pause and restart). No mode switch, no meter, no attack button.
+2. **Learnable in 60 seconds:** the first lamp in L1 teaches the core rule without a single word.
+3. **No text walls:** captions ≤ 10 words, key prompts, onomatopoeia, short phone messages between levels.
+4. **Every judge finishes:** lit streetlamps are checkpoints, "Skip level" is in pause from the start, and total
+   run time is 12–18 min.
+5. **60 fps** in Chrome on a mid laptop at 1280×720, with a quality toggle and auto-downgrade.
+6. **Photosensitivity:** a "Reduce flashing" toggle plus a one-line notice on the title. With it on, lightning
+   becomes a soft brighten.
+7. **Gender-neutral until the reveal:** no he or she pronouns, a bulky gear silhouette, and the hero is only ever
+   called "Bijli" or "Crew 7".
+8. **Originality and rules:** all art generated in code (SVG/procedural), all audio procedural WebAudio, all code
+   written during the jam. Check the Discord rules for libraries, assets and AI tools, and log everything in
+   `CREDITS.md` plus an "AI usage" section in the README.
+9. **`main` always builds.** Small commits.
+10. **Safety:** never imply players should touch wires. The end card includes a safety line (§11.3).
 
 ---
 
 ## 4. Tech stack
-- **Vite + TypeScript (strict) + Phaser 3** (pin the latest 3.x). Arcade Physics for platforming. WebGL renderer only.
-- `vite.config.ts` uses `base: './'` so `dist/` runs from a zip (itch.io / Indieconnect HTML5 upload).
-- **Custom PostFX pipelines** (GLSL) for the two-world look (§10).
-- **Pure-TS core modules** with no Phaser or DOM imports: `power/` (circuit graph), `splice/`, `meter/`, `level/`
-  parser and validator. These are unit-tested with **Vitest**.
-- **Playwright** smoke test: boot, load L1, use the debug API to complete it, screenshot the title, L1 and the comic world.
-- Audio: WebAudio, all procedural (§12).
-- Lint and format: eslint + prettier. Scripts: `dev`, `build`, `preview`, `test`, `typecheck`, `lint`,
-  `validate-levels`, `e2e`.
+- **Vite + TypeScript (strict) + Phaser 3** (pin the latest 3.x), Arcade Physics, WebGL renderer.
+- `vite.config.ts`: `base: './'` so `dist/` runs from a zip (itch.io / Indieconnect HTML5).
+- **One custom PostFX pipeline** (`WorldPipeline`) renders the real look and the comic look, mixed per pixel by a
+  **light mask** (§10.3).
+- **Pure-TS core** (no Phaser/DOM): `power/`, `splice/`, `level/` parser and validator, tested with **Vitest**.
+- **Playwright** smoke test: boot, load L1, complete it via the debug API, take screenshots.
+- Procedural WebAudio (§12). Lint/format: eslint + prettier.
+- Scripts: `dev`, `build`, `preview`, `test`, `typecheck`, `lint`, `validate-levels`, `e2e`.
 
 ### Folder layout
 ```
 src/
-  main.ts                       # Phaser config, scene list, pipelines registration
-  config.ts                     # ALL tunables (movement, meters, timings, colors) — single source of truth
+  main.ts                       # Phaser config, scenes, pipeline registration
+  config.ts                     # ALL tunables — single source of truth
   core/                         # pure TS, no Phaser
-    power/graph.ts              # nodes, edges, breakers, loads, BFS powered-set, events
-    power/types.ts
-    splice/splice.ts            # twist progress, shock rules, gloves
-    meter/hausla.ts             # comic meter (drain/refill)
-    level/schema.ts             # level data types
-    level/parse.ts              # ASCII map + entity data → LevelData
-    level/validate.ts           # reachability + circuit solvability checks
+    power/graph.ts power/types.ts   # nodes, edges, breakers, loads, powered-set BFS, events
+    splice/splice.ts                # hold progress, shock rule, gloves
+    level/schema.ts level/parse.ts level/validate.ts
     rng.ts
-  scenes/
-    BootScene.ts  TitleScene.ts  LevelScene.ts  InterstitialScene.ts
-    FinaleScene.ts  CreditsScene.ts  PauseScene.ts  UIScene.ts
+  scenes/ BootScene TitleScene LevelScene InterstitialScene FinaleScene CreditsScene PauseScene UIScene
   world/
-    WorldState.ts               # REAL | COMIC, switch logic, wipe animation driver
-    Darkness.ts                 # real-world darkness render texture + light erasers
-    Lightning.ts                # telegraph → flash → afterimage → thunder
-    Rain.ts                     # 3 parallax layers + splashes + wind
-    Wires.ts                    # catenary rendering, sway, live pulses, broken-end whip physics
-    Parallax.ts
-  player/
-    Player.ts                   # state machine: idle/run/jump/fall/climb/zip/splice/hurt/bolt/punch
-    Controller.ts               # input buffering, coyote, variable jump
-    Rig.ts                      # procedural 2D rig (shared by both skins)
-    skins/real.ts  skins/comic.ts
+    LightField.ts               # builds the light mask RT (lamps, windows, live wires, headlamp, flashes)
+    ComicLayer.ts               # comic-only objects; solid only where lit (clouds, ladders, rails, friendly twins)
+    Lightning.ts Rain.ts Wires.ts Parallax.ts
+  player/ Player.ts Controller.ts Rig.ts skins/real.ts skins/bijli.ts
   entities/
-    Pole.ts  Breaker.ts  BreakPoint.ts  Streetlamp.ts  Load.ts (houses/shops/hospital)
-    Pickup.ts  CrayonCloud.ts  Water.ts  Van.ts (level exit)
-    hazards/LiveWire.ts  hazards/Tree.ts  hazards/Flood.ts  hazards/Transformer.ts  hazards/StrikeZone.ts
-    comic/TaarNaag.ts  comic/PedRakshas.ts  comic/Magar.ts  comic/AgniDragon.ts  comic/ToofanRaja.ts
-  fx/
-    pipelines/WorldPipeline.ts   # the real↔comic post shader with wipe
-    pipelines/glsl/*.frag
-    Onomatopoeia.ts  Sparks.ts  Shake.ts  HitStop.ts  PanelFrame.ts  SpeedLines.ts
-  ui/ HUD.ts  Prompts.ts  PhoneMessage.ts  ComicPage.ts  Menus.ts
-  audio/ Engine.ts  Music.ts  Sfx.ts  Ambience.ts
-  art/  svg/*.ts                 # SVG strings → textures at boot
-  levels/ L1_gali.ts  L2_bazaar.ts  L3_underpass.ts  L4_rooftops.ts  L5_hospital.ts  L6_substation.ts  L7_ghar.ts
-  story/ script.ts               # all captions, phone messages, comic page compositions
-  debug/ DebugAPI.ts             # window.__bijli for tests + level select + god mode (F1)
-tests/  (vitest)   e2e/ (playwright)
+    Pole.ts Breaker.ts BreakPoint.ts Streetlamp.ts Load.ts Pickup.ts Van.ts Water.ts
+    hazards/ LiveWire.ts Tree.ts Flood.ts Fire.ts StrikeZone.ts      # each has a real + comic form
+    boss/ AgniDragon.ts
+  fx/ pipelines/WorldPipeline.ts pipelines/glsl/*.frag Onomatopoeia.ts Sparks.ts Shake.ts HitStop.ts SpeedLines.ts
+  ui/ HUD.ts Prompts.ts PhoneMessage.ts ComicPage.ts Menus.ts
+  audio/ Engine.ts Music.ts Sfx.ts Ambience.ts
+  art/svg/*.ts                  # SVG strings → textures at boot
+  levels/ L1_gali.ts … L7_ghar.ts
+  story/script.ts               # every user-facing string
+  debug/DebugAPI.ts             # window.__bijli: level select, god mode (F1), complete-splice, toggle light mask view
+tests/ e2e/
 ```
 
 ---
 
-## 5. Controls
-| Action | Keyboard | Mouse | Notes |
-|---|---|---|---|
-| Move | A / D (← / →) | | |
-| Jump | Space (W / ↑ too) | | variable height |
-| Climb | W / S on poles and ladders | | auto-grab when pressing up near a pole |
-| Interact | E | | splice / breaker / pick up / talk |
-| **TWIST WORLD** | **Shift** | | switches REAL ↔ COMIC |
-| Splice twist | hold E then alternate A/D, **or** hold E and circle the mouse | circle mouse | 3 full twists = joint |
-| Punch (comic) | J | Left click | 3-hit combo |
-| Bolt dash (comic) | K | Right click | only when touching a **live** wire |
-| Pause | Esc | | Resume / Restart / Skip level / Settings |
-| Restart from checkpoint | R | | |
-
-Show prompts contextually (a small key icon near the object). Never show the whole control list at once.
+## 5. Controls (that's all of them)
+| Action | Keys |
+|---|---|
+| Move | A / D or ← / → |
+| Jump | Space (or W / ↑ when not on a pole) |
+| Climb | W / S on poles and ladders |
+| Interact | E: breakers, pickups. **Splice: hold E** (about 1 s) |
+| Pause / Restart | Esc / R |
+Prompts appear only near objects. There is never a full control list on screen.
 
 ---
 
-## 6. The two worlds (core system)
+## 6. Core system: light makes the comic
 
-### 6.1 Real world: the lineworker
-- **Feel:** grounded, weighty, careful. Raincoat, helmet with headlamp, tool belt, harness.
-- **Can:** run, jump (single), climb poles and ladders, ride ziplines along *dead* cables using the harness pulley,
-  operate breakers, splice broken lines, pick up items.
-- **Sees:** darkness everywhere except the headlamp cone (follows facing direction, ~35° wide, 320 px long), powered
-  streetlamps and windows, sparks, and **lightning flashes** that reveal the whole level for an instant.
-- **Hazards are real and deadly-ish:** sparking live wires, flood water (deadly when a live line touches it),
-  falling branches, transformer arcs and lightning strike zones.
+### 6.1 The light field
+- Each frame `LightField` renders a **light mask** (a half-resolution render texture, 0 = dark, 1 = lit) from:
+  powered streetlamps (soft circles, radius 180–260 px), lit windows (warm rectangles with spill), powered live
+  wires (thin glowing bands, ±40 px), the headlamp cone (35°, 320 px, **real-world vision only, does NOT create
+  comic**), lightning flashes (full screen, 0.4 s), and BIJLI mode (full screen).
+- The same mask drives three things:
+  1. **Vision:** darkness alpha = 1 − mask (with the headlamp added for vision only).
+  2. **Rendering:** `WorldPipeline` mixes the real look and the comic look per pixel by the mask, with an inky,
+     noisy edge where light meets dark (§10.3).
+  3. **Gameplay:** comic objects are solid or active only where the mask is > 0.5 at their position (sampled from a
+     CPU-side coarse grid at 16 px cells, updated when lights change, not every frame).
 
-### 6.2 Comic world: BIJLI (as drawn by Chinni)
-- **Feel:** fast, bouncy, loud, joyful. Bright crayon colours, ink outlines, halftone, onomatopoeia, animated
-  **on twos** (12 fps poses) so it feels hand-drawn.
-- **Can:** run faster, jump higher, **double jump**, **punch** (3-hit combo), **bolt dash** along *live* wires,
-  stand on **crayon clouds** (comic-only platforms), and **catch lightning** (touching a strike refills the meter).
-- **Cannot:** splice, operate breakers, zipline, or pick up real items. **Comic can't fix anything permanently.**
-- **The world is fully lit.** It's a kid's imagination with no darkness, which makes it tempting.
-- **Hazards become monsters** (§8). Defeating or stunning a monster changes the real world, temporarily or permanently.
+### 6.2 What light turns on (comic objects, authored per level)
+| Comic object | Effect inside light | Outside light |
+|---|---|---|
+| **Crayon cloud** | One-way platform; bobs gently | Not drawn, not solid |
+| **Drawn ladder / rope** | Climbable | Absent |
+| **Lightning rail** (any powered wire inside light) | Land on it to **grind** at 520 px/s in your facing direction; jump to leave. Speed lines + crackle. | A live wire = hazard |
+| **Friendly twins** of hazards | See §8: the hazard becomes a helpful comic version | The hazard is dangerous |
 
-### 6.3 Hausla meter ("courage")
-- The comic world drains **Hausla**: 100 max, drain 12/s, so about 8 s at a time.
-- It refills slowly in the real world (+4/s) and in bursts: **crayon drawing pickup +50**, **successful splice +30**,
-  **catching lightning (comic) +100**.
-- At 0 you're thrown back to the real world, with a short "POOF" and a 1.5 s switch lockout.
-- This forces the core rhythm: **switch in to cross or fight, switch out to fix.**
+The rule players learn by L2: **dark = careful, light = playground.**
 
-### 6.4 The switch ("Twist")
-- Shift starts a **radial ink-splash wipe** centred on the player: 280 ms, ease-out, with a jagged ink-noise
-  boundary and a thick black rim.
-- Entities swap their real or comic form **as the wipe edge passes them**: compare their distance to the centre
-  against the wipe radius.
-- Music crossfades between the two arrangements of the same song (§12), so the beat never breaks.
-- Cooldown is 300 ms. The switch is allowed mid-air, and momentum is preserved.
-- If switching to the real world would put the player inside a comic-only cloud, the player falls through, which
-  is intended and great for drops.
+### 6.3 Lightning flashes (the peek)
+Every 10–16 s: a 1.2 s telegraph (rumble, distant flicker), then a strike. The whole screen turns comic for 0.4 s,
+showing every crayon cloud, ladder and rail in the level, including ones not yet unlocked. It's a free hint about where
+lighting will open paths. Comic objects revealed by a flash are **not** solid (visual only), except in BIJLI mode.
 
-### 6.5 Cross-world interplay (the heart of the design; every level uses at least two of these)
-| Comic action | Real-world effect |
-|---|---|
-| Punch **Taar-Naag** (cobra) 3× → stunned | The sparking live wire is **pinned and grounded for 6 s**: a safe window to pass or splice next to it |
-| Defeat **Ped-Rakshas** (tree demon), who bows down | The real fallen tree is now **permanently a ramp** |
-| Ride **Magar** (crocodile) across the flood | No real equivalent: crocs exist only in comic, so you must switch back before the meter ends or fall in |
-| Catch lightning from **Toofan Raja** | Meter refill; strike zones are telegraphed identically in both worlds |
-| Bolt dash along **live** lines | Splicing in the real world **extends the dash network**, so fixing opens comic routes |
-| Crayon clouds as platforms | Clouds don't exist in real; switching mid-air above a gap is a deliberate trick |
+### 6.4 Power-up: Chinni's drawing → BIJLI mode
+- A floating crayon page (visible in both looks). Touching it gives **8 s of BIJLI mode**, like a star power-up:
+  - The whole screen is comic (mask = 1), so every comic object is solid and every wire is a rail, even unpowered ones.
+  - Double jump, run speed +25%, jump +12%.
+  - **Touching a hazard knocks it out** (THWACK! + confetti dots). Snapped wires go limp for good, branches shatter,
+    the fire dragon takes a hit (boss).
+  - Invulnerable to shocks and hits, but **not** to falling into flood water (keeps the floods meaningful).
+- The last 2 s blink with a ticking sound, then the world snaps back to light/dark with an ink "POOF".
+- Placement: before the hardest dark stretches (L4+), and 3 refills in the boss arena. Two per level at most outside the boss.
+
+### 6.5 The storm fights back (L4 onward)
+- A telegraphed strike can hit a lamp. It flickers for 1 s, then goes out for 6 s. Its comic objects fade and stop
+  being solid, so a player standing on its cloud falls. That's fair because of the flicker warning.
+- Lamps restored by the player are never permanently lost: after 6 s they relight with a cheer.
 
 ---
 
 ## 7. Mechanics in detail
 
-### 7.1 Platforming feel (put all numbers in `config.ts`; these are starting values)
-| Param | Real | Comic |
+### 7.1 Platforming feel (starting values; all in `config.ts`)
+| Param | Normal | BIJLI mode |
 |---|---|---|
-| Max run speed | 210 px/s | 270 px/s |
-| Ground accel / decel | 1800 / 2400 px/s² | 2600 / 3000 |
-| Air control multiplier | 0.75 | 0.95 |
-| Jump velocity | 600 | 680 (double jump 560) |
-| Gravity / fall multiplier | 1700 / 1.6 | 1500 / 1.4 |
-| Max fall speed | 900 | 820 |
-| Coyote time / jump buffer | 100 ms / 120 ms | same |
-| Variable jump cut (release early) | ×0.45 velocity | same |
-| Climb speed | 140 | 180 |
-| Zipline speed | 360 (along dead cable, downhill bias) | n/a |
-| Bolt dash speed | n/a | 950 px/s along wire, choose branch with direction keys at junctions |
-| I-frames after hit | 900 ms | same |
-Health is **3 sparks** (hearts) shared by both worlds. Touching a live wire or a hit costs 1. Falling into
-energised water is instant death and respawns at the last checkpoint.
+| Max run speed | 220 px/s | 275 |
+| Ground accel / decel | 1900 / 2400 px/s² | 2600 / 3000 |
+| Air control | 0.8 | 0.95 |
+| Jump velocity | 620 | 690 (+ double jump 560) |
+| Gravity / fall multiplier | 1700 / 1.6 | 1550 / 1.45 |
+| Max fall speed | 900 | 840 |
+| Coyote / jump buffer | 100 ms / 120 ms | same |
+| Variable jump cut | ×0.45 velocity | same |
+| Climb speed | 150 | 190 |
+| Rail grind speed | 520 | 620 |
+| I-frames after hit | 900 ms | always invulnerable |
+Health is **3 sparks**. A shock or hit costs 1. Live flood water is instant respawn at the last lit lamp.
 
 ### 7.2 Power network (`core/power/graph.ts`, pure and tested)
-- **Nodes:** `Source` (substation/feeder), `Pole`, `Breaker` (open/closed), `Load` (house, shop, streetlamp,
-  hospital, lift, shutter), `Junction`.
-- **Edges:** wire segments `{id, a, b, state: 'intact'|'broken', phase?: 'R'|'Y'|'B'}`.
-- **Powered set:** BFS from every Source through intact edges, passing a Breaker node only if `closed`.
-- **Events:** `onPowered(loadId)` lights windows, streetlamps become checkpoints, lifts and shutters activate, and a
-  "LIGHT AA GAYI!" bubble pops from a window. `onDepowered` reverses it.
-- **Splice rule:** a broken edge can be spliced only if **neither endpoint is powered**. Otherwise the player gets
-  shocked (−1 spark, knockback, "KZZZT!") unless they hold **Rubber Gloves** (single use).
-  Players learn to **open the upstream breaker → splice → close the breaker**.
-- **Win condition per level:** all target loads powered (the HUD shows `houses lit / total`). Then the celebration
-  plays and the exit (the crew van) unlocks.
-- **Validator** (`validate-levels`): for each level, prove there exists a sequence of breaker toggles and splices
-  that powers all targets, and that every splice point is reachable in the real world (grid flood-fill using climb
-  and jump reach). Fail the build if not.
+- **Nodes:** `Source`, `Pole`, `Breaker` (open/closed), `Load` (house, shop, streetlamp, hospital wing, pump,
+  shutter, lift), `Junction`.
+- **Edges:** `{id, a, b, state: 'intact'|'broken', phase?: 'R'|'Y'|'B'}`.
+- **Powered set:** BFS from every Source through intact edges, passing a Breaker only if closed.
+- **Events:** `onPowered(loadId)` lights its windows and lamp, updates `LightField` (which turns on comic objects
+  in range), plays a "LIGHT AA GAYI!" bubble and makes the lamp a checkpoint. `onDepowered` reverses it.
+- **Splice rule:** a broken edge can be spliced only if neither endpoint is powered. Otherwise the player is
+  shocked (−1, knockback, KZZZT!) unless they hold **Rubber Gloves** (single use).
+- **Level win:** all target loads powered → celebration → the van exit opens.
+- **Validator** (`validate-levels`): prove a breaker/splice sequence exists that powers all targets, and that every
+  splice point is reachable. Reachability is checked twice, in darkness only and with all comic objects active,
+  and must not require a lightning-flash-only path. Fail the build otherwise.
 
-### 7.3 Splicing (twist gesture)
-- Press E at a `BreakPoint` (real world only). A **close-up inset panel** opens in the lower third (a comic-style
-  panel border even in the real world): two frayed copper ends in gloved hands.
-- **Twist input:** hold E and either circle the mouse (accumulate angle; 360° = 1 twist) or alternate A/D (each
-  alternation = 90°). **3 twists** completes the joint. Each twist gives a metallic creak, a small shake and sparks
-  (if live, see shock rule).
-- **The world keeps running** during the splice: rain, the flood rising, the generator timer. The player can cancel by releasing E.
-- Success: an ink-stamp "TWIST!" panel freeze (80 ms hit-stop), a +30 Hausla burst, and the cable straightens and
-  turns grey (dead) until its breaker closes.
-- **Assist mode** (settings): auto-twist when E is held for 1.2 s.
+### 7.3 Splicing (the twist), kept deliberately simple
+- At a `BreakPoint`, **hold E for about 1 s**. That's the whole input. The hero grabs both frayed ends and twists
+  them together on screen: three quick twist beats (creak, small shake, sparks) timed across the hold, shown in a
+  small close-up inset with a comic-panel border.
+- Releasing E early cancels with no penalty. The world keeps running during the hold (rain, rising flood,
+  generator timer), which gives tension without needing skill input.
+- Splicing a line that is still live shocks you (−1, KZZZT!) unless you hold Rubber Gloves, so players learn to
+  open the upstream breaker first.
+- Success: an ink-stamp "TWIST!" with 80 ms hit-stop. The cable straightens (dead/grey) until its breaker closes.
+  Then **an energy pulse runs along the wire to each load**, lamps flicker on, and the comic blooms outward from each lamp.
+- The Twist theme lives in what the player **sees and hears** here (the twisting animation and the stamp), not in a
+  complicated gesture. Mechanics may change later; keep the splice logic in `core/splice/` behind a simple
+  `startSplice / tick / cancel` API so it's easy to swap.
 
 ### 7.4 Breakers
-- These are lever boxes on poles or walls. E toggles them with a big chunky lever animation, "KA-CHUNK" and a short
-  hum-up or hum-down.
-- The current state is readable by colour **and** shape: lever up/down plus a green or red lamp.
+Lever boxes on poles and walls. E toggles them with a chunky lever animation and KA-CHUNK. State is shown by both
+shape (lever up/down) and colour (green/red lamp).
 
-### 7.5 Light and darkness (real world)
-- A `Darkness` render texture is filled black at about 0.88 alpha, then light shapes are **erased** each frame:
-  headlamp cone, powered streetlamps (soft circles), lit windows (rectangles with warm spill), sparks (tiny
-  flicker), lightning (full clear plus a fade-in over 600 ms).
-- **Streetlamps are checkpoints** once powered: respawn there.
-- **Lightning cadence:** every 10–16 s, a 1.2 s telegraph (rumble, distant flicker), then a strike. Strike zones
-  are marked by a ground glow in both worlds. The flash reveals the whole level for about 0.35 s, which is how
-  players read routes in dark sections.
+### 7.5 Pickups
+| Pickup | Effect |
+|---|---|
+| **Chinni's drawing** | 8 s BIJLI mode (§6.4) |
+| **Chai** (steel tumbler) | +1 spark |
+| **Rubber gloves** | one live splice without a shock |
+| **Battery** | wider, longer headlamp for 20 s (vision only) |
+| **Crayon** (collectible, 3 per level) | unlocks a bonus page of Chinni's comic in the gallery |
 
-### 7.6 Comic combat
-- Punch: 3-hit combo (12 / 12 / 20 knockback), 48 px range, 250 ms between hits, 60 ms hit-stop on contact,
-  onomatopoeia per hit (THWACK, POW, DHISHOOM!).
-- Monsters have simple readable patterns (§8). A defeated monster explodes into crayon scribbles and confetti dots.
+---
 
-### 7.7 Pickups
-| Pickup | World | Effect |
+## 8. Hazards and their friendly comic twins
+| Real hazard (in the dark) | Comic twin (in light) | How it helps |
 |---|---|---|
-| **Chai** (steel tumbler) | real | +1 spark |
-| **Crayon drawing** | both (visible in both) | +50 Hausla, collectible (3 per level). Collecting all 3 unlocks a bonus page of Chinni's comic in the gallery |
-| **Rubber gloves** | real | one free live splice without a shock |
-| **Battery** | real | wider and longer headlamp for 20 s |
+| **Snapped live wire**: whips and sparks, touch = −1 | **Taar-Naag**, a goofy cartoon snake | Bounce on its head for a high jump (BOING!) |
+| **Fallen gulmohar tree** blocking the path, branches drop | **Ped-Bhaiya**, a sleepy tree that bows | Its trunk becomes a ramp |
+| **Flood water** (rises in L3; deadly near live lines) | Crocodiles drifting on the water | Hop across them as moving platforms (they sink after 1.5 s of standing) |
+| **Lightning strike zones** (telegraphed ground glow) | **Toofan Raja**, a grumpy cloud face in the sky | Purely visual in light; strikes still telegraphed |
+| **Burning transformer** (L6) | **Agni-Dragon**, the one twin light can't tame | The boss: only BIJLI mode can hurt it (§9, L6) |
+A twin applies only while its position is lit. If a storm strike knocks out the lamp, it turns back into the real
+hazard. Never demonise animals or people: dogs, cows and stranded people stay neutral and kind in both looks.
 
 ---
 
-## 8. Hazards and their comic twins
-| Real hazard | Comic twin | Comic behaviour | Effect of beating it in comic |
-|---|---|---|---|
-| **Snapped live wire**: whips with spring physics and sparks, touching = −1 | **Taar-Naag**, a cobra made of wire with an electric hood | Rears up for 0.6 s telegraph, lunges, retreats. 3 punches → stunned 6 s | Real wire pinned and grounded for 6 s |
-| **Fallen gulmohar tree** blocking a path, swaying branches drop | **Ped-Rakshas**, a grumpy tree demon throwing seed pods | Throws 3 pods in an arc, then pauses (punch window). 6 hits | Real tree becomes a **permanent ramp** |
-| **Flood water**: rises over time in some levels; deadly if a live line touches it | **Magar**, crocodiles drifting on the water | Rideable moving platforms; they snap if you stand too long (1.5 s) | none (comic-only traversal) |
-| **Burning transformer**: arcs and explosions | **Agni-Dragon** (L6 boss) | 3 phases (§9, L6) | each phase defeated lets you splice one of the 3 phases (R, Y, B) in real |
-| **Lightning strike zones** | **Toofan Raja**, a storm-cloud villain face in the sky | Throws bolts on the same telegraph | catching a bolt = +100 Hausla |
+## 9. Levels (7, each adds ONE idea, 1.5–3 min each)
+Tiles are 32 px. The viewport is 1280×720. Every level ends at the crew van once all targets are lit.
 
-**Never demonise animals or people.** Street dogs, cows and stranded people stay neutral and are shown kindly in
-both worlds; in comic they cheer.
+**L1 · Gali No. 4 (lane).** ~120×30. Teaches run, jump, climb, breaker → splice → breaker. The **first lamp
+lights**, the lane blooms into comic, and a crayon cloud appears that is the only way up to a balcony. A dark
+stretch where only lightning shows the gap teaches flashes. 6 houses.
+Caption: *"Tonight the whole city went dark. Except BIJLI."*
 
----
+**L2 · Bazaar.** ~160×30. A sparking wire blocks a narrow lane, deadly in the dark. Light the lane and it becomes
+Taar-Naag; bounce off it to reach the rooftops. The first **lightning rail** grind across the bazaar wires. Lit
+shops roll up their shutters and open routes.
 
-## 9. Levels (7 total, each adds ONE new wrinkle; 1.5–3 min each)
-Tile size 32 px. Viewport 1280×720 (40 × 22.5 tiles). Levels are authored as ASCII maps plus an entity/network
-block (§9.8). Every level ends with the van exit after all targets are lit.
+**L3 · Underpass.** ~140×35. Water rises 2 tiles/min. You must open the upstream breaker before splicing near
+water, then light the underpass lamps so the water fills with crocodiles to hop across. Lighting the pumps stops
+the rise.
 
-**L1 · Gali No. 4 (basti lane).** Real world only. ~120×30 tiles.
-Teaches run, jump, climb a pole, open a breaker, splice a dead line, close the breaker, and lamps as checkpoints.
-Lightning is introduced in a dark stretch where only flashes show the gap. 6 houses to light.
-Opening caption (Chinni's crayon): *"Tonight the whole city went dark. Except BIJLI."*
+**L4 · Rooftops.** ~70×90 (vertical). Wind gusts (telegraphed by rain angle), and storm strikes knock lamps out
+(§6.5). The **first Chinni's drawing** comes before a long unlit gap: in BIJLI mode, every wire is a rail and you
+fly through. Ped-Bhaiya becomes the ramp to the top. The zipline-free descent is a long rail grind over the lit
+neighbourhood (money shot).
 
-**L2 · Bazaar.** Comic unlock. ~160×30.
-Between levels, Chinni's phone message: *"I drew you a cape. Now you have powers."*
-A live snapped wire blocks a narrow lane; switching shows Taar-Naag; punch, stun, switch back, pass. Then splice the
-feeder, and the newly live line across the bazaar rooftops becomes the first **bolt dash** run. Crayon clouds are
-introduced over an awning gap. Lighting the shops makes their shutters roll up and reveal new routes.
+**L5 · Hospital.** ~150×40. The generator fuel bar is the timer (3:30, generous). Three feeders can be fixed in
+any order, and the HUD shows which wing each powers. When the last wing lights, a nurse waves and a bubble reads
+*"The babies are warm again."* If the timer runs out, the staff find more diesel (+60 s). Never punish harshly here.
 
-**L3 · Underpass.** Rising flood + breaker sequencing. ~140×35.
-Water rises slowly (2 tiles/min) and a live line dangles near it. You must open the upstream breaker **before**
-touching water areas. Magar crocs carry you across the deepest section in comic. Tension comes from the meter
-draining mid-crossing. Finish by lighting the underpass lamps, at which point the water stops rising (drainage pumps
-are loads too).
+**L6 · Substation (boss).** ~100×40 arena. The burning transformer, lit by your own restored lamps, becomes
+**Agni-Dragon**. Three phases, one per electrical phase **R / Y / B**:
+1. The dragon sweeps fire across the floor. Grab a drawing, then as BIJLI jump-touch its glowing chest node (one
+   hit = stagger). While it's staggered (6 s), splice the **red** cable.
+2. The dragon flies. The arena lamps relight crayon clouds and rails; grind up to a drawing at the top, hit its
+   head, then splice **yellow**.
+3. Storm strikes knock lamps out while the floor floods. Chain two drawings, deliver the final hit, splice
+   **blue**, close the main breaker. The skyline lights up in a wave and the theme hits full.
 
-**L4 · Rooftops.** Verticality, wind and lightning. ~70×90 (vertical).
-Water tanks, laundry lines, dish antennas and satellite TV boxes. Wind gusts push you (telegraphed by rain angle).
-Toofan Raja appears and you catch bolts for meter. Ped-Rakshas blocks the top; beat it to make the ramp. A zipline
-descent at the end over the whole lit-up neighbourhood is the money shot.
+**L7 · Ghar (home).** ~90×25. No enemies, no timer, the rain thins to a drizzle. One last service line to a small
+house with a candle in the window. Splice, close the breaker, the house lights. **Chinni** runs to the window.
+Cut to the finale (§11.3).
 
-**L5 · Hospital.** Timer + choice of order. ~150×40.
-The hospital generator's fuel bar is the timer: generous, 3:30. The network branches so three feeders can be fixed in
-any order, and the HUD shows which wing each powers. Phone message before: *"Nani says the hospital is dark too."*
-Emotional beat: when the last wing lights, a nurse waves from a window and a comic bubble reads
-*"The babies are warm again."* No death or fail-shaming: if the timer ends, the generator sputters and you get
-+60 s ("the staff found more diesel"). Never punish harshly here.
-
-**L6 · Substation (boss).** ~100×40 arena.
-**Agni-Dragon**, comic twin of the burning transformer. Three phases, one per electrical phase **R / Y / B**
-(red, yellow and blue cable colours):
-1. **R:** the dragon sweeps fire; punch its glowing chest node (3×) to stun → switch to real → splice the red phase
-   cable while it's quelled (6 s window).
-2. **Y:** the dragon flies; bolt dash along the live arena cables to reach its head height, then punch → splice yellow.
-3. **B:** flood plus lightning; catch a Toofan bolt to max the meter, then a final combo → splice blue → close the
-   main breaker. The whole city skyline lights up in a wave and the music hits the full theme.
-
-**L7 · Ghar (home).** No enemies, no timer. ~90×25.
-The rain thins to a drizzle and the music is just a soft solo. One last broken service line, to a small house with
-a candle in the window. Splice. Close the breaker. The house lights. **Chinni** runs to the window holding the comic.
-Cut to the **Finale** (§11).
-
-**Total:** ~14 min for a first-time player. The level-select unlocks after first completion. "Skip level" is in
-pause from the start (judges).
+**Total:** about 14 min first play. Level select unlocks after first completion. Skip level is always in pause.
 
 ### 9.8 Level data format
 ```ts
 export const L1: LevelSource = {
-  id: 'L1', name: 'Gali No. 4', music: 'theme', weather: { rain: 0.7, wind: 0.2, lightning: [12, 16] },
+  id: 'L1', name: 'Gali No. 4', music: 'theme',
+  weather: { rain: 0.7, wind: 0.2, lightning: [12, 16], stormStrikesLamps: false },
   map: [
     '................................................',
-    '..........|.........|..........H...............',
+    '..........|.........|....c.....H...............',
     '.....P....|...L.....|....B.....H......X........',
     '##########=####=#####=##########################',
-    // ...
   ],
-  // legend: '#' solid, '=' one-way (balcony/awning), 'H' ladder, '|' pole (climbable), 'P' spawn,
-  // 'L' streetlamp, 'B' breaker, 'X' break point, 'C' crayon, 'T' chai, 'G' gloves, 'K' crayon cloud (comic only),
-  // 'W' water start level, 'V' van exit, 'S' strike zone, 'h' house load, 'n' Taar-Naag hazard anchor
+  // legend: '#' solid · '=' one-way (balcony/awning) · 'H' ladder · '|' pole · 'P' spawn · 'L' streetlamp
+  // 'B' breaker · 'X' break point · 'V' van · 'S' strike zone · 'W' water level · 'h' house load
+  // pickups: 'D' Chinni's drawing · 'T' chai · 'G' gloves · 'y' battery · 'C' crayon collectible
+  // comic objects (solid only when lit): 'c' crayon cloud · 'k' drawn ladder · 'n' Taar-Naag anchor · 't' tree twin
   network: {
-    nodes: [{ id: 'SRC', kind: 'source', at: [0, 2] }, { id: 'P1', kind: 'pole', at: [10, 1] } /* ... */],
+    nodes: [{ id: 'SRC', kind: 'source', at: [0, 2] }, { id: 'P1', kind: 'pole', at: [10, 1] }],
     edges: [{ id: 'e1', a: 'SRC', b: 'P1', state: 'intact' }, { id: 'e2', a: 'P1', b: 'P2', state: 'broken' }],
     breakers: [{ id: 'BR1', node: 'P1', closed: true }],
-    loads: [{ id: 'h1', node: 'P3', kind: 'house', at: [22, 3] }],
+    loads: [{ id: 'L1a', node: 'P2', kind: 'streetlamp', at: [15, 2], lightRadius: 220 }],
     targets: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
   },
   story: { caption: 'Tonight the whole city went dark. Except BIJLI.' },
@@ -360,246 +307,217 @@ export const L1: LevelSource = {
 
 ---
 
-## 10. Art direction: two worlds, one screen
-**Rule:** both worlds share the same level geometry. The difference comes from the **post shader**, **lighting**
-and **entity skins**. That keeps the art workload manageable while looking like two different games.
+## 10. Art direction: one city, two looks, blended by light
 
-### 10.1 Real world: "Monsoon Noir"
-- Deep night, heavy rain, wet everything. Light is precious: warm sodium lamps, cold cyan arcs.
-- Palette: night `#141A2E`, rain slate `#5C6B8A`, wet highlight `#2B3550`, sodium lamp `#FFB347`,
-  live arc `#7FE3FF`, danger `#FF4D4D`, window warmth `#FFD58A`.
-- Post: cool colour grade, slight desaturation, film grain, vignette, subtle chromatic aberration at the edges.
-- Details: rain on 3 parallax layers angled by wind, splashes on tile tops, puddle shimmer, dripping awnings,
-  tangled overhead cables (the iconic Indian street look), hanging laundry, posters, a chai stall shutter,
-  scooters under tarps, a temple bell, glowing mosquito-coil embers in windows.
-- Lightning: one frame of pure white silhouette (everything black against white), then a 600 ms fade of the
-  revealed level. (Softened with "Reduce flashing".)
+### 10.1 In the dark: "Monsoon Noir"
+- Deep night, heavy rain, wet surfaces. Light is precious.
+- Palette: night `#141A2E`, rain slate `#5C6B8A`, wet highlight `#2B3550`, sodium lamp `#FFB347`, live arc `#7FE3FF`,
+  danger `#FF4D4D`, window warmth `#FFD58A`.
+- Post: cool grade, slight desaturation, film grain, vignette.
+- Details: 3 parallax rain layers angled by wind, splashes, puddle shimmer, dripping awnings, tangled overhead cables,
+  laundry lines, posters, a chai stall shutter, scooters under tarps, a temple bell.
+- Lightning: one frame of black silhouettes against white, then the 0.4 s comic peek, then a fade back.
 
-### 10.2 Comic world: "Chinni's Comic"
+### 10.2 In the light: "Chinni's Comic"
 - Bright, flat, joyful. Crayon-textured fills, wobbly ink outlines, halftone shading, misregistered print colours.
-- Palette: paper `#FFFFFF`, ink `#000000`, crayon yellow `#FFD400`, crayon red `#FF3B30`, crayon blue `#2F6BFF`,
-  crayon green `#2ECC71`, BIJLI cyan `#4FF0FF`, cape magenta `#FF3E9A`.
-- Post: posterize (4 levels), Sobel ink edges on luminance (2 px, slight wobble noise), halftone dots in darker
-  bands, a 1–2 px CMY misregistration on edges, paper texture, saturation boost.
-- **Panel frame:** in comic mode a thick black border and white gutter frame the screen, slightly tilted (±0.5°).
-- **Animate on twos:** comic sprites update poses at 12 fps while the camera stays at 60.
-- **Onomatopoeia** for every comic action: KZZZT, THWACK, DHISHOOM, WHOOSH, KRAKOOM, BOING, TWIST!
-- **Crayon captions** in a kid's handwriting style at level starts and key moments.
-- The sky becomes a crayon storm with Toofan Raja's grumpy face.
+- Palette: paper `#FFFFFF`, ink `#000000`, crayon yellow `#FFD400`, red `#FF3B30`, blue `#2F6BFF`, green `#2ECC71`,
+  BIJLI cyan `#4FF0FF`, cape magenta `#FF3E9A`.
+- Post: posterize (4 levels), Sobel ink edges on luminance (2 px, slight wobble), halftone in darker bands,
+  1–2 px CMY misregistration, paper texture, saturation boost.
+- Comic objects (clouds, ladders, twins) are drawn in crayon style with visible strokes, **animated on twos**
+  (12 fps), so they read as drawn rather than real.
+- Onomatopoeia: KZZZT, TWIST!, KA-CHUNK, BOING, WHOOSH, KRAKOOM, THWACK, LIGHT AA GAYI!
 
-### 10.3 The wipe (signature moment, make it perfect)
-One `WorldPipeline` post shader receives both style branches plus uniforms:
-`uMix` (0 or 1), `uCenter` (player screen position), `uRadius` (animated), `uTime`, `uNoiseScale`.
-Pixels inside the radius render as the target world. The boundary uses fbm noise for an ink-splash edge with a 6 px
-black rim and a few flying ink droplets (particles). Add a 1-frame white flash and a camera zoom punch (1.03×) at the
-start. Entity skins swap as the edge passes them (§6.4).
+### 10.3 The light boundary (signature visual)
+`WorldPipeline` gets the scene, the light mask and `uTime`. Per pixel: `t = smoothstep(0.45, 0.55, mask + fbm(uv*8 + time)*0.12)`,
+then `mix(realLook, comicLook, t)`. A thin black ink rim sits where `t ≈ 0.5`. The result is that light pools look
+like a comic page **painted into** a rainy photo-like night, and the edge crawls slightly like wet ink.
+When a lamp powers up, its radius animates from 0 to full over 450 ms with an overshoot (the "bloom"), which is the
+most satisfying moment of the game. Make it perfect.
 
 ### 10.4 Characters (procedural rig, no imported art)
-- `Rig.ts`: a 2D skeleton (torso, head, upper and lower arms, upper and lower legs, hands, feet) built from
-  SVG-generated part textures. Animations are procedural curves: idle breathe, run cycle, jump squash and stretch,
-  climb, zipline hang, splice (hunched, hands together), punch combo, hurt, bolt (body becomes a lightning streak),
+- `Rig.ts`: 2D skeleton (torso, head, arms, legs, hands, feet) from SVG part textures. Procedural animations:
+  idle, run, jump squash/stretch, climb, grind crouch, splice (hunched, hands together), hurt, celebrate,
   helmet-off (finale).
-- **Real skin:** hard hat with headlamp, raincoat over a khaki-style work uniform, tool belt, harness, rubber
-  boots. Bulky, gender-neutral silhouette.
-- **Comic skin (BIJLI):** helmet → helmet with a lightning crest, raincoat → flowing cape with a sari-border
-  pattern (an easter egg that only makes sense after the reveal), pliers → glowing gauntlets, a lightning emblem
-  drawn in crayon on the chest.
-- **Chinni:** about 8 years old, big T-shirt, crayon in hand. Appears in the interstitials and the finale.
-- **Amma (reveal):** the same face that was always under the helmet. A tired, warm smile, hair tied up, rain on her face.
+- **Real skin:** hard hat with headlamp, raincoat over a khaki-style uniform, tool belt, harness, rubber boots.
+  Bulky and gender-neutral.
+- **BIJLI skin** (when standing in light or in BIJLI mode): the helmet gains a lightning crest, the raincoat
+  becomes a cape with a **sari-border pattern** (an easter egg that makes sense only after the reveal), pliers
+  become glowing gauntlets, and a crayon lightning emblem appears on the chest. The skin swap follows the light
+  mask at the player's position, so the hero looks like a superhero exactly where Chinni's comic exists.
+- **Chinni:** about 8, big T-shirt, crayon in hand. **Amma (reveal):** tired, warm smile, hair tied up, rain on her face.
 
-### 10.5 Juice checklist (each item ≤ 30 min, Phase 4)
-- Landing dust + squash · footstep splashes · wet footprints that fade
-- Coyote-jump forgiveness visual (none, just feel) · jump buffer
-- Screen shake: light on punch, medium on lightning, heavy on boss phase end
-- Hit-stop 60 ms on punch contact, 80 ms on splice success
-- Camera: lookahead in move direction, vertical deadzone, zoom-out on bolt dash, zoom-in on splice
-- Sparks on every live-wire contact · arcing glow on live cables · energy pulses travelling along newly powered
-  wires toward each load (very satisfying: **power visibly flows** home)
-- Windows popping on in sequence with a "LIGHT AA GAYI!" bubble and a ceiling fan starting to spin inside
-- Streetlamp checkpoint: a flicker-flicker-ON with a moth swarm
-- Speed lines on bolt dash · afterimages · cape physics
-- District restored: comic splash page "DISTRICT RESTORED!" with a halftone burst
-- Pause and level transitions as page turns
+### 10.5 Juice checklist (Phase 4, each ≤ 30 min)
+- Landing dust + squash, wet footsteps, fading footprints
+- Lamp bloom (radius overshoot + moth swarm + "LIGHT AA GAYI!" + ceiling fan spinning in a window)
+- Energy pulse travelling along wires from breaker to loads
+- Rail grind: sparks under the feet, speed lines, camera zoom-out
+- Taar-Naag bounce: BOING + squash on the snake
+- BIJLI mode: screen-edge crayon border, music stinger, afterimages, a 2 s warning blink
+- Splice: inset panel, ink stamp, 80 ms hit-stop
+- Shake: light on bounce, medium on lightning, heavy on boss stagger
+- District restored: a comic splash page "DISTRICT RESTORED!"
+- Level transitions as page turns. Reduced-motion toggle removes shake and page turns.
 
 ---
 
 ## 11. Story, script and the twist
 
 ### 11.1 Voice rules
-- No pronouns for the hero before the finale. Radio calls the hero **"Crew 7"**. Chinni calls the hero **"Bijli"**.
-- Chinni's lines: short, funny, brave, lowercase crayon handwriting. Radio lines: terse, procedural.
-- Humour lives in the comic world: monster names, onomatopoeia and Chinni's dramatic captions. The heart lives in the
-  real world: the quiet, the rain, the lit windows.
+- No pronouns for the hero before the finale. Radio says **"Crew 7"**; Chinni says **"Bijli"**.
+- Chinni: short, funny, brave, lowercase crayon handwriting. Radio: terse and procedural.
+- Humour lives in the light (cartoon twins, onomatopoeia, Chinni's captions). The heart lives in the dark (the
+  quiet, the rain, windows coming on).
 
 ### 11.2 Interstitials (between levels, skippable with Space)
-Each is one **comic page** composed from game art (3–4 panels) plus one **phone message**:
-- after L1: page "BIJLI VS THE DARK" · message: *"bijli the fridge is making the sad noise again"*
-- after L2: page "BIJLI GETS A CAPE" · *"are you scared of thunder? i am only a little"*
-- after L3: page "THE CROCODILE RIVER" · *"i ate dinner. dal. no light so i ate in the dark lol"*
-- after L4: page "TOOFAN RAJA IS ANGRY" · *"Nani says the hospital is dark too"*
-- after L5: page "BIJLI SAVES THE BABIES" · *"i'm drawing the last page. come home and see"*
-- after L6: page "THE DRAGON (BIG ONE)" · *"the whole sky went yellow!! was that you??"*
-Radio between levels: *"Crew 7, Bazaar feeder down. Over."* · *"Crew 7, underpass flooding, isolate before entry."* and so on.
+Each is a 3–4 panel **comic page** composed from game art, plus one **phone message**:
+- after L1: "BIJLI VS THE DARK" · *"bijli the fridge is making the sad noise again"*
+- after L2: "THE SNAKE WAS ACTUALLY NICE" · *"are you scared of thunder? i am only a little"*
+- after L3: "CROCODILE RIVER" · *"i ate dinner in the dark lol. dal."*
+- after L4: "I DREW YOU POWERS" · *"Nani says the hospital is dark too"*
+- after L5: "BIJLI SAVES THE BABIES" · *"i'm drawing the last page. come home and see"*
+- after L6: "THE DRAGON (BIG ONE)" · *"the whole sky went yellow!! was that you??"*
+Radio between levels: *"Crew 7, Bazaar feeder down. Over."* · *"Crew 7, underpass flooding. Isolate before entry."*
 
-### 11.3 Finale sequence (FinaleScene, scripted, about 60 s, no input except "continue")
-1. The house lights. A warm window glow spreads over wet ground. The rain stops. Silence, then a ceiling fan starts inside.
-2. Chinni runs to the window, presses the comic against the glass: the last page is blank except the title
-   **"BIJLI COMES HOME"**.
-3. The lineworker stands under the porch light, unclips the harness and lifts off the helmet. **It's Amma.**
-   Hair tied up, rain on her face, tired smile. (Hold the shot. No music sting, just the fan and dripping water.)
-4. Chinni's crayon hand draws the last panel live on screen: Amma in her raincoat, and the BIJLI cape drawn over her
-   shoulders. Caption in crayon: **"my amma is bijli."**
-5. A soft cut to the comic world version of the street: every house lit, Toofan Raja asleep, BIJLI's cape fluttering.
-   The theme plays once, slowly.
-6. End card (plain, respectful):
-   *"Inspired by the linewomen of Telangana, who climb poles in the storm so the rest of us have light."*
-   Second line: *"Never touch a fallen wire. Call your local electricity helpline."* (Before adding any phone
-   number, verify it for Telangana.)
-7. Credits as comic panels: the team as Chinni-style crayon drawings.
+### 11.3 Finale (FinaleScene, scripted, about 60 s)
+1. The house lights. A warm glow spreads over wet ground. The rain stops. Silence, then a ceiling fan starts inside.
+2. Chinni runs to the window and presses the comic to the glass. The last page is blank except **"BIJLI COMES HOME"**.
+3. The lineworker unclips the harness and lifts off the helmet. **It's Amma.** Hold the shot; no music sting,
+   just the fan and dripping water.
+4. Chinni's crayon hand draws the last panel live: Amma in her raincoat with the BIJLI cape drawn over her
+   shoulders. Caption: **"my amma is bijli."**
+5. The whole street blooms into the comic look, every house lit, Toofan Raja asleep. The theme plays once, slowly.
+6. End card: *"Inspired by the linewomen of Telangana, who climb poles in the storm so the rest of us have light."*
+   Then: *"Never touch a fallen wire. Call your local electricity helpline."* (Verify any helpline number before adding it.)
+7. Credits as comic panels with crayon portraits of the team.
 
-### 11.4 Real-world grounding (for the README and submission page; accurate, don't embellish)
-- Babburi Sirisha from Siddipet district became the **first woman appointed junior lineman** at Telangana's
-  southern power distribution company (TSSPDCL) in May 2022, after clearing the pole-climbing test. She was posted
-  in the Medchal circle.
-- Telangana Transco had earlier recruited about **200 linewomen**, the first time in the state's power sector.
-- Our hero is **fictional**. Do not use real names or likenesses in-game.
+### 11.4 Real-world grounding (README and submission page only; accurate, not embellished)
+- In May 2022, Babburi Sirisha from Siddipet district became the first woman appointed junior lineman at TSSPDCL
+  after clearing the pole-climbing test, and was posted in the Medchal circle.
+- Telangana Transco had earlier recruited about 200 linewomen, a first for the state's power sector.
+- Our hero is fictional. No real names or likenesses in-game.
 
 ---
 
-## 12. Audio (procedural WebAudio, `audio/`)
-- **One song, two arrangements**, same tempo (112 BPM) and key (D minor → D major at the finale), crossfaded on the
-  switch (120 ms) so the twist feels musical:
-  - *Real:* low pad, a pulse bass on quarter notes, sparse plucked melody, rain as part of the mix.
-  - *Comic:* synth brass stabs, dhol pattern (kick on 1 and 3, dhol "dha" accents), bouncy bass, a heroic
-    four-note BIJLI motif.
-  - Boss: both layers at once. Finale: a solo plucked version of the motif, then the full major-key theme in the
-    comic coda.
-- **Ambience:** rain bed (filtered noise, intensity by level), distant traffic in L2, water rush in L3, wind in
-  L4, generator chug in L5, transformer hum in L6.
-- **Electric hum at 50 Hz with harmonics** (Indian mains frequency) near live lines; pitch rises with proximity.
-- **SFX:** footsteps (wet), ladder clanks, splice creak per twist, spark crackle, breaker KA-CHUNK, power-up surge
-  (rising sweep + click), fan spin-up, thunder (brown-noise burst with a long lowpass tail, delayed after the flash
-  by 0.3–1.5 s), punch thwacks, bolt-dash zap, monster grunts (formant-filtered noise), UI clicks.
-- Master, music and SFX volume sliders. Mute = M. Audio starts on the title screen click.
+## 12. Audio (procedural WebAudio)
+- **One song whose arrangement follows the light:** 112 BPM, D minor → D major at the finale.
+  - *Dark layer:* low pad, pulse bass, sparse plucked melody, rain in the mix.
+  - *Light layer:* synth brass stabs, dhol pattern, bouncy bass, the four-note BIJLI motif.
+  - The light layer's volume follows **the light mask value at the player's position** (smoothed over 250 ms):
+    walk into light and the band kicks in, step back into dark and it falls away. BIJLI mode adds a full-band stinger.
+  - Boss: both layers. Finale: solo plucked motif, then the full major-key theme.
+- **Ambience:** rain bed by level intensity, traffic (L2), water rush (L3), wind (L4), generator chug (L5),
+  transformer hum (L6).
+- **50 Hz mains hum** with harmonics near live wires, louder as you get closer.
+- **SFX:** wet footsteps, ladder clanks, splice creaks, spark crackle, breaker KA-CHUNK, power surge, lamp bloom
+  chime, fan spin-up, thunder (delayed 0.3–1.5 s after the flash), rail grind, BOING, BIJLI pickup, THWACK, UI clicks.
+- Master/music/SFX sliders. Mute is M. Audio starts on the title click.
 
 ---
 
 ## 13. UI and UX
-- **HUD** (small, at the edges): 3 sparks (top-left), Hausla meter as a lightning-shaped bar (top-left, under the
-  sparks), district bar "🏠 4/6 lit" (top-right), timer only in L5.
-- **Contextual prompts** only, near objects, as key icons.
-- **Title screen is playable ambience:** a rainy street at night with one lineworker silhouette on a pole. Shift
-  toggles the title art into the comic version. This teaches the twist before the game even starts.
-- **Pause:** Resume · Restart from checkpoint · Skip level · Settings (volume, Reduce flashing, Splice assist,
-  Quality, Reduced motion) · Level select (after first unlock).
-- **Accessibility:** a "Reduce flashing" notice on the title, hazard states readable by shape and animation (not
-  colour alone), remappable keys (stretch), assist toggles.
-- **First 10 seconds:** the player spawns, rain falls, a single dead lamp is ahead, "E" floats over the breaker.
-  No text box.
+- **HUD:** 3 sparks (top-left), district bar "🏠 4/6 lit" (top-right), BIJLI timer ring around the hero (only
+  during BIJLI mode), generator timer in L5 only.
+- **Title screen:** a rainy dark street with one lineworker on a pole. The player can press E on one breaker and
+  the street blooms into the comic, which teaches the core rule before the game starts. Includes the
+  "Reduce flashing" notice.
+- **Pause:** Resume · Restart from checkpoint · Skip level · Settings (volumes, Reduce flashing,
+  Quality, Reduced motion) · Level select (after unlock).
+- **Accessibility:** hazard states readable by shape and motion (not colour alone), skip level.
+- **First 10 seconds of L1:** spawn in rain, a single dead lamp ahead, an "E" floating over the breaker. No text box.
 
 ---
 
 ## 14. Performance budget
-- 60 fps at 1280×720 on integrated graphics. Under 1500 active rain particles. Darkness RT at half resolution in
-  medium quality.
-- One post pipeline pass for the world style plus one for the wipe (merged if possible).
-- Pool all particles and onomatopoeia objects. No allocation in the update loop.
-- **Quality toggle:** High (all), Medium (half-res darkness, fewer rain layers, no misregistration), Low (no ink
-  edges, minimal rain). Auto-drop one level if average fps < 50 for 3 s.
+- 60 fps at 1280×720 on integrated graphics. Light mask at half resolution. Rain under 1500 particles.
+- One post pass (`WorldPipeline`) for everything. Coarse CPU light grid (16 px cells) is updated only on light events
+  (lamp on/off, BIJLI start/end), never per frame.
+- Pool particles and onomatopoeia. No allocation in update loops.
+- Quality: High (all) · Medium (fewer rain layers, no misregistration) · Low (no ink edges, minimal rain).
+  Auto-drop one level if the fps average is < 50 for 3 s.
 
 ---
 
-## 15. Team split (3 people, 3 Claude Code sessions)
-| Role | Owns | First deliverable |
+## 15. Team split
+| Who | Owns | First deliverable |
 |---|---|---|
-| **Systems lead** | `player/`, `core/` (power graph, splice, meter, level parser/validator), comic combat, monsters AI, tests, debug API | Greybox controller that feels great + power graph tests |
-| **Levels & story lead** | `levels/`, `story/`, interstitial pages, the finale script, tuning `config.ts`, playtests, the twist's pacing | L1 greybox fully playable and validated |
-| **Look & sound lead** | `fx/` pipelines + wipe, `world/` (darkness, rain, lightning, wires), rig + skins, onomatopoeia, `audio/`, UI, title, trailer GIFs, submission page | The wipe shader on a test scene + rain/darkness |
-Merge to `main` at least every 3 hours. When conflicts arise, `config.ts` belongs to the Levels lead.
+| **Hansika** (systems) | `player/`, `core/` (power graph, splice, level parser/validator), comic object solidity from the light grid, rail grind, BIJLI mode, hazards + twins, boss logic, tests, debug API | Greybox controller that feels great + power graph tests |
+| **Shaurya** (levels & story) | `levels/`, `story/`, interstitial pages, finale script, tuning `config.ts`, placement of drawings/clouds/rails, playtests | L1 greybox fully playable and validated |
+| **Navya** (look & sound) | `fx/` (WorldPipeline + light boundary), `world/` (LightField, rain, lightning, wires), rig + both skins, onomatopoeia, `audio/`, UI, title, GIFs, submission page | Light-mask comic blend on a test scene + rain/darkness |
+Merge to `main` at least every 3 hours. `config.ts` conflicts are resolved by Shaurya.
 
 ---
 
-## 16. Phases (each ends with typecheck + tests + build green, a commit, and STATUS updated)
+## 16. Phases (each ends with typecheck + tests + build green, a commit and a STATUS update)
+**Phase 0 · Scaffold (≤ 1 h).** Vite + TS + Phaser, eslint/prettier, Vitest, Playwright, all scripts, `config.ts`,
+empty scenes, `window.__bijli`, README with pitch, `CREDITS.md`.
 
-**Phase 0 · Scaffold (≤ 1 h, tonight).**
-Vite + TS + Phaser, eslint/prettier, Vitest, Playwright, all scripts, `config.ts`, empty scenes,
-`window.__bijli` debug API, public repo, README with the pitch, `CREDITS.md`.
+**Phase 1 · Greybox core.** Controller with all feel params, ASCII parser, L1 greybox, poles/climbing, power graph +
+breakers + break points + splicing (hold E + twist animation), loads lighting, lamps as checkpoints, `LightField` mask +
+darkness + headlamp, crayon cloud solidity from the light grid. Unit tests for graph and splice.
+*Navya in parallel:* `WorldPipeline` blending real ↔ comic by a mask on a test scene.
+*Exit check:* in L1, light the first lamp and climb the cloud that appears. Post the GIF in the team thread.
 
-**Phase 1 · Greybox core (tonight → Sat morning).**
-Player controller with all feel params, ASCII level parser, L1 greybox (rectangles), poles + climbing, power graph
-+ breakers + break points + splice (inset panel, twist input), loads lighting up (placeholder rectangles), lamps as
-checkpoints, darkness RT + headlamp. Unit tests for graph, splice and meter.
-**Look lead in parallel:** `WorldPipeline` with both styles and the wipe on a test scene.
-*Exit check:* L1 is playable start to finish in greybox, and the wipe GIF is posted in the team thread.
+**Phase 2 · The rule works everywhere.** Rail grinding, lightning flashes + comic peek, Taar-Naag twin (bounce),
+BIJLI power-up, rain, wire rendering (catenary, live pulses, whipping broken ends), lamp bloom. L2 greybox
+playable. Validator in CI.
+*Exit check:* a 30 s clip of "splice → lamp blooms → bounce the snake → grind the rail".
 
-**Phase 2 · The twist works (Sat 3 Oct).**
-World switch with the wipe, Hausla meter, comic movement (double jump, faster), punch combo, Taar-Naag + the
-grounded-wire window, bolt dash on the live-wire graph, crayon clouds, lightning system, rain, wire rendering
-(catenary, live pulses, broken-end whip). L2 greybox playable. Validator enforced in CI.
-*Exit check:* a 30 s clip of "punch cobra → switch → splice → bolt dash".
+**Phase 3 · Content.** L3 (flood + crocs), L4 (vertical, wind, storm knocks lamps out, tree twin, first drawing),
+L5 (hospital timer), L6 (Agni-Dragon), L7 (home). Interstitials + phone messages. Both skins on the rig. First
+audio pass (dark/light layers, core SFX).
+*Exit check:* the whole game is playable start to end.
 
-**Phase 3 · Content (Sun 4 Oct).**
-L3 flood + Magar, L4 vertical + wind + Ped-Rakshas + Toofan Raja, L5 hospital timer, L6 Agni-Dragon boss, L7 home.
-Interstitial pages + phone messages. Real and comic skins on the rig. First audio pass (song in both arrangements,
-core SFX).
-*Exit check:* the whole game is playable start to end, ugly in places.
+**Phase 4 · Beauty, feel, finale.** Finale sequence, all juice (§10.5), full audio, title screen, UI, quality
+toggle, Reduce flashing, skip level. **3+ outside playtests**: fix every 30 s+ stuck point and any
+moment where someone doesn't get "light makes the comic".
+*Exit check:* a 2-minute capture the whole team is proud of.
 
-**Phase 4 · Beauty + feel + finale (Mon 5 Oct).**
-Finale sequence, all juice (§10.5), full audio, title screen, UI polish, quality toggle, Reduce flashing, assist,
-skip level. **3+ outside playtests** (people who've never seen it). Fix every stuck point over 30 s and every
-moment someone doesn't understand the twist.
-*Exit check:* a 2-minute capture that the whole team is proud of.
+**Phase 5 · Ship (freeze Tue 12:00, deadline 16:00).** Bug sweep, perf on the weakest laptop, `npm run build`, zip
+`dist/`, test in a fresh browser profile, upload, submit on Indieconnect. Submission page: pitch (§1), 4–6
+screenshots (dark and lit), 1 GIF of a lamp bloom, controls, team, `CREDITS.md`, AI-usage note, a 2-minute video
+that stops before L7. Confirm all 3 members are in the Discord team thread.
 
-**Phase 5 · Ship (Tue 6 Oct; freeze 12:00, deadline 16:00).**
-Bug sweep, perf on the weakest laptop available, `npm run build`, zip `dist/`, test the zip in a fresh browser
-profile, upload, submit on Indieconnect. Submission page: pitch (§1), 4–6 screenshots (both worlds), 1 GIF of the
-wipe, controls, team, `CREDITS.md`, AI-usage note, and a 2-minute video that stops before L7 (no spoilers).
-Confirm all 3 members are in the Discord team thread.
-
-### Cut list (cut in this order if behind)
-1. Crayon collectible gallery → 2. Wind gusts (L4) → 3. Magar crocs (replace with a breaker-only flood puzzle) →
-4. L5 branching order (make it linear) → 5. Boss phase 3 → 6. Zipline.
-**Never cut:** the world switch + wipe, splicing, the power-flows-home lighting, Taar-Naag interplay, bolt dash,
-lightning reveals, L7 + the finale.
+### Cut list (in order, if behind)
+1. Crayon collectibles/gallery → 2. Wind gusts → 3. Storm knocking lamps out → 4. Crocodiles (make L3 a
+breaker-sequencing flood puzzle) → 5. L5 branching order → 6. Boss phase 3.
+**Never cut:** splicing, the light-mask comic blend and lamp bloom, crayon clouds, rail grind, BIJLI drawings, L7 + finale.
 
 ---
 
 ## 17. Working rules for Claude Code
-- Before each task, restate it in 2 lines and list the files you will touch.
-- After each change, run `npm run typecheck && npm run test && npm run build`. Never leave `main` red.
-- `core/` must not import Phaser or the DOM. Every tunable goes in `config.ts`, and every user-facing string goes in
-  `story/script.ts`.
+- Before each task, restate it in 2 lines and list the files you'll touch.
+- After each change: `npm run typecheck && npm run test && npm run build`. Never leave `main` red.
+- `core/` never imports Phaser or the DOM. Tunables go in `config.ts`; user-facing strings go in `story/script.ts`.
 - New or changed levels must pass `npm run validate-levels`.
-- After any visual change, take a Playwright screenshot (`npm run e2e -- --grep shots`) and **look at it** before
-  calling the task done.
+- After any visual change, take a Playwright screenshot and **look at it** before calling the task done.
 - Ask before adding a dependency, and check it against the jam rules. Prefer writing it.
-- No placeholder art may ship. If a sprite is missing, draw it as SVG in the house style.
-- Prefer clarity for a first-time player over cleverness, then make it juicier.
-- Keep the hero's gender ambiguous in every asset, string and filename until `FinaleScene` (e.g. name it
-  `hero_real`, not `lineman`).
-- Commit messages: `feat(player): coyote time`, `fix(power): breaker BFS`, `art(wipe): ink rim`.
+- No placeholder art may ship. Missing sprites get drawn as SVG in the house style.
+- Clarity for a first-time player comes first, then juice.
+- Keep the hero's gender ambiguous in every asset, string and filename until `FinaleScene` (`hero_real`, `hero_bijli`).
+- Commit messages: `feat(light): lamp bloom`, `fix(power): breaker BFS`, `art(pipeline): ink rim`.
 
 ---
 
 ## 18. Definition of done (judge's-eye checklist)
-- [ ] Opens in the browser, title in < 5 s, audio starts on first click.
-- [ ] Without instructions, a new player splices their first line within 60 s.
-- [ ] A new player understands the twist (switch) within the first 30 s of L2.
-- [ ] All three themes are visible in a single 20 s clip: lightning bolt dash (Light), ink-wipe switch + splice
-      (Twist), the comic world (Comic).
-- [ ] The full game takes 12–18 min, with skip-level available.
+- [ ] Opens in the browser, title in < 5 s, audio on first click.
+- [ ] A new player splices their first line within 60 s with no instructions.
+- [ ] A new player says some version of "oh, the light makes the comic" by the end of L1.
+- [ ] One 20 s clip shows all three themes: a splice twist, a lamp blooming into comic, a rail grind under lightning.
+- [ ] Full run is 12–18 min, with skip level available.
 - [ ] 60 fps on a mid laptop; no softlocks; restart works everywhere.
-- [ ] The finale lands. Test it on someone and watch their face.
+- [ ] The finale lands. Watch someone's face.
 - [ ] README, CREDITS, AI-usage note, public repo with a steady commit history.
 
 ---
 
 ## STATUS
 - Phase: 0 done → starting 1
-- Last working build: 2026-10-02 (Phase 0 scaffold)
+- Last working build: 2026-10-02 (Phase 0 scaffold, updated to the "light makes the comic" design)
 - What works: Vite + TS strict + Phaser 3.90.0 boots to a placeholder title → empty LevelScene. `config.ts` holds
-  all §7.1 tunables. `window.__bijli` debug API (ready, activeScenes, goto). Scripts: dev, build, preview, test,
-  typecheck, lint (eslint + prettier; `core/` blocked from importing Phaser/DOM), validate-levels (structural
-  checks only), e2e (Playwright smoke + screenshots to `e2e/__screenshots__/`).
-- Known bugs: Phaser bundle is ~1.2 MB (fine for jam; no code-splitting).
-- Next task: Phase 1 — player controller, ASCII parser, power graph + tests, L1 greybox.
+  the §7.1 / §6 tunables. `window.__bijli` debug API (ready, activeScenes, goto). Scripts: dev, build, preview,
+  test, typecheck, lint (eslint + prettier; `core/` blocked from importing Phaser/DOM), validate-levels
+  (structural checks only), e2e (Playwright smoke + screenshots to `e2e/__screenshots__/`).
+- Known bugs: Phaser bundle is ~1.2 MB (fine for the jam; no code-splitting).
+- Next task: Phase 1. Hansika: controller + power graph/splice + tests. Shaurya: ASCII parser consumer + L1 greybox.
+  Navya: WorldPipeline mask blend on a test scene + LightField.

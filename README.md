@@ -1,13 +1,13 @@
 # BIJLI
 
-**BIJLI** is a monsoon-night action-platformer about the people who bring the light back. Climb poles, splice
-live cables and dodge lightning as a lineworker, then twist into your kid's comic book and become BIJLI, a
-superhero who rides power lines as lightning. Two worlds, one storm, one long night home.
+**BIJLI** is a monsoon-night platformer about the people who bring the light back. Climb poles, splice live cables
+and dodge lightning as a lineworker. Wherever you restore the light, the city turns into a child's comic book,
+with crayon clouds to stand on, wires to grind and storm hazards turned into cartoons. One storm, one long night home.
 
 _Bijli_ means both **electricity** and **lightning** in Hindi.
 
-Made by **Team Buggernaut** for the **TGC Game Jam @ Infinium '26** (IIIT Hyderabad).
-Themes: **Comic · Twist · Light**.
+Made by **Team Buggernaut** (Hansika Grover, Shaurya Chandel, Navya Upadhyay) for the **TGC Game Jam @ Infinium '26**
+(IIIT Hyderabad). Themes: **Comic · Twist · Light**.
 
 ## Play locally
 
@@ -18,17 +18,13 @@ npm run dev        # http://localhost:5173
 
 ## Controls
 
-| Action                  | Keys                                             |
-| ----------------------- | ------------------------------------------------ |
-| Move                    | A / D or ← / →                                   |
-| Jump                    | Space (W / ↑)                                    |
-| Climb                   | W / S on poles and ladders                       |
-| Interact / splice       | E (hold, then alternate A/D or circle the mouse) |
-| **Twist world**         | **Shift**                                        |
-| Punch (comic)           | J / left click                                   |
-| Bolt dash (comic)       | K / right click                                  |
-| Pause                   | Esc                                              |
-| Restart from checkpoint | R                                                |
+| Action          | Keys                                                 |
+| --------------- | ---------------------------------------------------- |
+| Move            | A / D or ← / →                                       |
+| Jump            | Space (or W / ↑ when not on a pole)                  |
+| Climb           | W / S on poles and ladders                           |
+| Interact        | E (breakers, pickups) · **hold E** to splice a cable |
+| Pause / Restart | Esc / R                                              |
 
 ## Development
 

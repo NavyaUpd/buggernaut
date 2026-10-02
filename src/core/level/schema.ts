@@ -31,6 +31,8 @@ export interface LoadSource {
   node: string;
   kind: LoadKind;
   at: TilePos;
+  /** Streetlamps/windows: radius of the light pool in px (§6.1). */
+  lightRadius?: number;
 }
 
 export interface NetworkSource {
@@ -45,7 +47,12 @@ export interface LevelSource {
   id: string;
   name: string;
   music: string;
-  weather: { rain: number; wind: number; lightning: readonly [number, number] | null };
+  weather: {
+    rain: number;
+    wind: number;
+    lightning: readonly [number, number] | null;
+    stormStrikesLamps?: boolean;
+  };
   map: string[];
   network: NetworkSource;
   story?: { caption?: string };

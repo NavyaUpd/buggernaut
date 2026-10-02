@@ -27,30 +27,30 @@ export const COLORS = {
 
 /** Platforming feel (§7.1). Units: px, px/s, px/s², ms. */
 export const MOVE = {
-  real: {
-    maxRun: 210,
-    accel: 1800,
+  normal: {
+    maxRun: 220,
+    accel: 1900,
     decel: 2400,
-    airControl: 0.75,
-    jumpVelocity: 600,
+    airControl: 0.8,
+    jumpVelocity: 620,
     gravity: 1700,
     fallMultiplier: 1.6,
     maxFall: 900,
-    climbSpeed: 140,
-    ziplineSpeed: 360,
+    climbSpeed: 150,
+    grindSpeed: 520,
   },
-  comic: {
-    maxRun: 270,
+  bijli: {
+    maxRun: 275,
     accel: 2600,
     decel: 3000,
     airControl: 0.95,
-    jumpVelocity: 680,
+    jumpVelocity: 690,
     doubleJumpVelocity: 560,
-    gravity: 1500,
-    fallMultiplier: 1.4,
-    maxFall: 820,
-    climbSpeed: 180,
-    boltDashSpeed: 950,
+    gravity: 1550,
+    fallMultiplier: 1.45,
+    maxFall: 840,
+    climbSpeed: 190,
+    grindSpeed: 620,
   },
   coyoteMs: 100,
   jumpBufferMs: 120,
@@ -60,53 +60,48 @@ export const MOVE = {
 
 export const HEALTH = { maxSparks: 3 } as const;
 
-/** Hausla (courage) meter (§6.3). */
-export const HAUSLA = {
-  max: 100,
-  drainPerSec: 12,
-  refillPerSec: 4,
-  crayonBonus: 50,
-  spliceBonus: 30,
-  lightningBonus: 100,
-  emptyLockoutMs: 1500,
+/** Light field: the mask that turns the world into Chinni's comic (§6.1, §10.3, §14). */
+export const LIGHT = {
+  maskScale: 0.5,
+  gridCellPx: 16,
+  solidThreshold: 0.5,
+  lampRadius: { min: 180, max: 260, default: 220 },
+  wireBandPx: 40,
+  bloomMs: 450,
+  boundary: { lo: 0.45, hi: 0.55, noiseScale: 8, noiseAmount: 0.12 },
+  headlampAngleDeg: 35,
+  headlampLength: 320,
+  batteryMs: 20000,
 } as const;
 
-/** World switch (§6.4, §10.3). */
-export const TWIST = {
-  wipeMs: 280,
-  cooldownMs: 300,
-  rimPx: 6,
-  zoomPunch: 1.03,
-  musicCrossfadeMs: 120,
+/** Lightning flashes = comic peek (§6.3). */
+export const LIGHTNING = {
+  intervalSec: [10, 16] as const,
+  telegraphMs: 1200,
+  peekMs: 400,
+  thunderDelaySec: [0.3, 1.5] as const,
 } as const;
 
-/** Splicing (§7.3). */
+/** Chinni's drawing power-up (§6.4). */
+export const BIJLI_MODE = {
+  durationMs: 8000,
+  warnMs: 2000,
+} as const;
+
+/** Storm knocking lamps out, L4+ (§6.5). */
+export const STORM = { lampFlickerMs: 1000, lampOutMs: 6000 } as const;
+
+/** Splicing: hold E (§7.3). */
 export const SPLICE = {
-  twistsRequired: 3,
-  degreesPerAlternation: 90,
-  assistHoldMs: 1200,
+  holdMs: 1000,
+  twistBeats: 3,
   hitStopMs: 80,
 } as const;
 
-/** Lighting + lightning (§6.1, §7.5). */
-export const LIGHT = {
-  darknessAlpha: 0.88,
-  headlampAngleDeg: 35,
-  headlampLength: 320,
-  lightningIntervalSec: [10, 16] as const,
-  lightningTelegraphMs: 1200,
-  lightningRevealMs: 350,
-  lightningFadeMs: 600,
-} as const;
+/** Comic twins (§8). */
+export const TWINS = { crocSinkMs: 1500 } as const;
 
-/** Comic combat (§7.6). */
-export const COMBAT = {
-  comboKnockback: [12, 12, 20] as const,
-  punchRange: 48,
-  punchIntervalMs: 250,
-  hitStopMs: 60,
-  taarNaagStunMs: 6000,
-} as const;
+export const LEVEL_RULES = { floodRiseTilesPerMin: 2, hospitalTimerSec: 210, hospitalBonusSec: 60 } as const;
 
 export const PERF = {
   maxRainParticles: 1500,

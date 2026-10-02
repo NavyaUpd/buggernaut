@@ -19,7 +19,7 @@ const game = new Phaser.Game({
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
   physics: {
     default: 'arcade',
-    arcade: { gravity: { x: 0, y: MOVE.real.gravity }, debug: false },
+    arcade: { gravity: { x: 0, y: MOVE.normal.gravity }, debug: false },
   },
   scene: [BootScene, TitleScene, LevelScene, UIScene, PauseScene, InterstitialScene, FinaleScene, CreditsScene],
 });

@@ -1,17 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { HAUSLA, MOVE, TWIST } from '../src/config';
+import { BIJLI_MODE, LIGHT, MOVE } from '../src/config';
 
 describe('config', () => {
-  it('comic is faster and floatier than real', () => {
-    expect(MOVE.comic.maxRun).toBeGreaterThan(MOVE.real.maxRun);
-    expect(MOVE.comic.jumpVelocity).toBeGreaterThan(MOVE.real.jumpVelocity);
+  it('BIJLI mode is faster and jumps higher than normal', () => {
+    expect(MOVE.bijli.maxRun).toBeGreaterThan(MOVE.normal.maxRun);
+    expect(MOVE.bijli.jumpVelocity).toBeGreaterThan(MOVE.normal.jumpVelocity);
   });
 
-  it('a full Hausla meter lasts about 8 s in comic', () => {
-    expect(HAUSLA.max / HAUSLA.drainPerSec).toBeCloseTo(8.33, 1);
+  it('BIJLI mode lasts 8 s with a 2 s warning', () => {
+    expect(BIJLI_MODE.durationMs).toBe(8000);
+    expect(BIJLI_MODE.warnMs).toBeLessThan(BIJLI_MODE.durationMs);
   });
 
-  it('the wipe is under the 300 ms budget', () => {
-    expect(TWIST.wipeMs).toBeLessThanOrEqual(300);
+  it('light boundary straddles the solidity threshold', () => {
+    expect(LIGHT.boundary.lo).toBeLessThan(LIGHT.solidThreshold);
+    expect(LIGHT.boundary.hi).toBeGreaterThan(LIGHT.solidThreshold);
   });
 });

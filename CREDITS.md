@@ -2,9 +2,9 @@
 
 ## Team Buggernaut
 
-- Systems lead: _TBD_
-- Levels & story lead: _TBD_
-- Look & sound lead: _TBD_
+- Hansika Grover: systems
+- Shaurya Chandel: levels & story
+- Navya Upadhyay: look & sound
 
 ## Third-party libraries
 
