@@ -595,8 +595,11 @@ lightning reveals, L7 + the finale.
 ---
 
 ## STATUS
-- Phase: 0
-- Last working build: —
-- What works: —
-- Known bugs: —
-- Next task: Phase 0 scaffold
+- Phase: 0 done → starting 1
+- Last working build: 2026-10-02 (Phase 0 scaffold)
+- What works: Vite + TS strict + Phaser 3.90.0 boots to a placeholder title → empty LevelScene. `config.ts` holds
+  all §7.1 tunables. `window.__bijli` debug API (ready, activeScenes, goto). Scripts: dev, build, preview, test,
+  typecheck, lint (eslint + prettier; `core/` blocked from importing Phaser/DOM), validate-levels (structural
+  checks only), e2e (Playwright smoke + screenshots to `e2e/__screenshots__/`).
+- Known bugs: Phaser bundle is ~1.2 MB (fine for jam; no code-splitting).
+- Next task: Phase 1 — player controller, ASCII parser, power graph + tests, L1 greybox.

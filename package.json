@@ -1,0 +1,36 @@
+{
+  "name": "bijli",
+  "private": true,
+  "version": "0.0.1",
+  "description": "BIJLI — a monsoon-night action-platformer. Team Buggernaut, TGC Game Jam @ Infinium '26.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "validate-levels": "tsx scripts/validate-levels.ts",
+    "e2e": "playwright test"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.4",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  }
+}
