@@ -1,24 +1,17 @@
-// Validates every level in src/levels (CLAUDE.md §7.2). Exits non-zero on failure.
-// Phase 0: structural checks only. Circuit solvability + reachability arrive with core/level/validate.ts.
-import { LEVELS } from '../src/levels/index';
+// Validates every room in src/levels/rooms.ts (§8.3, §12). Exits non-zero on failure.
+import { checkRoom } from '../src/core/reach';
+import { parseRoom } from '../src/core/roomParse';
+import { ROOMS } from '../src/levels/rooms';
 
 let failed = 0;
-for (const level of LEVELS) {
-  const widths = new Set(level.map.map((row) => row.length));
-  const nodeIds = new Set(level.network.nodes.map((n) => n.id));
-  const errors: string[] = [];
-  if (widths.size > 1) errors.push(`ragged map rows: widths ${[...widths].join(', ')}`);
-  for (const e of level.network.edges) {
-    if (!nodeIds.has(e.a) || !nodeIds.has(e.b)) errors.push(`edge ${e.id} references unknown node`);
-  }
-  const loadIds = new Set(level.network.loads.map((l) => l.id));
-  for (const t of level.network.targets) if (!loadIds.has(t)) errors.push(`target ${t} is not a load`);
+for (const def of ROOMS) {
+  const { errors } = checkRoom(parseRoom(def));
   if (errors.length) {
     failed++;
-    console.error(`✗ ${level.id}\n  ${errors.join('\n  ')}`);
+    console.error(`✗ ${def.id} ${def.name}\n  ${errors.join('\n  ')}`);
   } else {
-    console.log(`✓ ${level.id} ${level.name}`);
+    console.log(`✓ ${def.id} ${def.name}`);
   }
 }
-console.log(`${LEVELS.length} level(s) checked, ${failed} failed.`);
+console.log(`${ROOMS.length} room(s) checked, ${failed} failed.`);
 process.exit(failed ? 1 : 0);
