@@ -376,8 +376,11 @@ export class RoomSim {
     if (p.climb) {
       const pr = p.climb;
       const px = pr.x * T + T / 2;
-      p.x += (px - 10 * p.face - p.x) * Math.min(1, dt * 18);
       if (dir) p.face = dir > 0 ? -1 : 1; // face the pole: holding right puts you on its left side
+      // hang beside the pole, on whichever side isn't a wall
+      if (this.hitsSolid(px - 10 * p.face, p.y)) p.face = -p.face as 1 | -1;
+      const side = this.hitsSolid(px - 10 * p.face, p.y) ? 0 : 10 * p.face;
+      p.x += (px - side - p.x) * Math.min(1, dt * 18);
       p.vy = splicing ? 0 : inp.up ? -PLAYER.climbUp : inp.down ? PLAYER.climbDown : 0;
       const topY = pr.top * T + OY;
       const botY = (pr.bottom + 1) * T + OY;
@@ -458,7 +461,8 @@ export class RoomSim {
     }
     // horizontal move
     const nx = p.x + p.vx * dt;
-    if (this.hitsSolid(nx, p.y)) {
+    // never soft-lock: if the hitbox is already embedded (knockback into a corner), let it move out freely
+    if (!this.hitsSolid(p.x, p.y) && this.hitsSolid(nx, p.y)) {
       const s = Math.sign(p.vx);
       let guard = 64;
       while (!this.hitsSolid(p.x + s, p.y) && guard-- > 0) p.x += s;

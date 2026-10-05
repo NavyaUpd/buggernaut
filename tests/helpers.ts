@@ -35,3 +35,6 @@ export function bot(roomId: string) {
   };
   return { sim, step, walkTo, hop, climb, holdE, tapE };
 }
+
+export const X = (tx: number) => tx * 32 + 16;
+export const FEET = (row: number) => row * 32 + 8; // feet y when standing on top of `row`
