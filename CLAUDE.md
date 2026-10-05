@@ -438,63 +438,25 @@ note every stuck moment over 20 s).
 ---
 
 ## STATUS
-- Phase: build (v3). Updated Tue 6 Oct ~01:10 IST.
+- Phase: build (v3). Updated Tue 6 Oct ~01:15 IST.
 - Milestone: **M2 gate met** (title → credits playable end to end; every room solvable). Next: M3 (real-browser playtests, feel tuning, juice gaps).
 - Works:
-  - All 10 rooms in ;  checks §8.3 with jump envelopes simulated from .
-  -  (pure TS): §5 movement, climb, pole-top standing, splice + shock + tip, breakers, power-on SEQ, lit-only clouds, rails (incl. chaining), snake, BIJLI, live water, strikes, lightning peek, respawn, gated exits, skyline bloom.
-  - Headless playthroughs of **every** room in  (38 tests); Playwright  (screenshots every room dark + lit) and  (title → card → pause skip → DISTRICT RESTORED → phone → finale → credits).
-  - Renderer  ports the style target (panels, notebook, colour sweep, ruled border, caption box, bubble, peek, BIJLI page, skyline, panel slide). Procedural audio in .
-  - Crayon pages: procedural fallbacks in ; dropping real PNGs into  replaces them automatically.
-  - Perf probe: > bijli@0.0.1 build
-> tsc --noEmit && vite build
-
-[36mvite v8.3.2 [32mbuilding client environment for production...[36m[39m
-transforming...
-✓ 36 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/index.html                    0.43 kB │ gzip:   0.30 kB
-dist/assets/index-BMoEYigz.js  1,362.48 kB │ gzip: 372.52 kB
-
-[32m✓ built in 1.49s[39m then gpu ANGLE (AMD, AMD Radeon(TM) Graphics (0x0000164C) Direct3D11 vs_5_0 ps_5_0, D3D11)
-2-2 dark  fps 43  sim 0.17ms  render 1.50ms  upload 0.10ms
-2-2 lit   fps 53  sim 0.17ms  render 2.29ms  upload 0.08ms
-1-1 dark  fps 54  sim 0.16ms  render 1.28ms  upload 0.09ms
-1-1 lit   fps 59  sim 0.16ms  render 1.81ms  upload 0.06ms
-3-1 dark  fps 56  sim 0.17ms  render 1.83ms  upload 0.08ms
-3-1 lit   fps 59  sim 0.17ms  render 1.83ms  upload 0.07ms
-3-3 dark  fps 57  sim 0.18ms  render 2.41ms  upload 0.08ms
-3-3 lit   fps 59  sim 0.15ms  render 2.61ms  upload 0.07ms (render ~2–4 ms CPU/frame).
+  - All 10 rooms in `src/levels/rooms.ts`; `npm run validate-levels` checks §8.3 with jump envelopes simulated from `PLAYER`.
+  - `src/game/RoomSim.ts` (pure TS): §5 movement, climb, pole-top standing, splice + shock + tip, breakers, power-on SEQ, lit-only clouds, rails (incl. chaining), snake, BIJLI, live water, strikes, lightning peek, respawn, gated exits, skyline bloom.
+  - Headless playthroughs of **every** room in `tests/rooms*.test.ts` (38 tests). Playwright: `e2e/smoke.spec.ts` screenshots every room dark + lit; `e2e/flow.spec.ts` runs title → card → pause skip → DISTRICT RESTORED → phone → finale → credits.
+  - Renderer `src/render/RoomCanvas.ts` ports the style target (panels, notebook, colour sweep, ruled border, caption box, bubble, peek, BIJLI page, skyline, panel slide). Procedural audio in `src/audio/`.
+  - Crayon pages: procedural fallbacks in `src/render/crayonArt.ts`; dropping real PNGs into `public/art/crayon/<name>.png` replaces them automatically (names: logo, drawing, ch1–ch4, final_window, final_helmet, final_page, team).
+  - Perf probe: `npm run build`, `npx vite preview --port 4173`, then `node scripts/perf.mjs` (CPU ≈ 2–4 ms render per frame).
 - Known bugs / unverified:
   - Not yet played by a human with a keyboard: feel, prompts and the audio mix need a real playtest.
-  - FPS in headless-GPU Chrome on this AMD iGPU was 44–58; needs checking in a real browser (half-res comic fallback not built yet).
+  - FPS in headless-GPU Chrome on an AMD iGPU was 43–59; check in a real browser (the half-res comic fallback is not built).
 - Open decisions (for humans to confirm):
-  - **rooms.ts was not in the repo**, so 1-1 was taken from the style target and 1-2…4-1 were authored from §8.2 and validated. If Shaurya has the real file, swap it in and run > bijli@0.0.1 validate-levels
-> tsx scripts/validate-levels.ts
-
-✓ 1-1 First Light
-✓ 1-2 The Flash
-✓ 1-3 The Live Line
-✓ 2-1 Taar-Naag
-✓ 2-2 Rooftop Rails
-✓ 2-3 Chinni's Drawing
-✓ 3-1 Underpass
-✓ 3-2 Strikes
-✓ 3-3 Substation
-✓ 4-1 Ghar
-10 room(s) checked, 0 failed.
-Unknown command: "test"
-
-
-Did you mean this?
-  npm test # Test a package
-To see a list of supported npm commands, run:
-  npm help.
+  - **rooms.ts was not in the repo**, so 1-1 was taken from the style target and 1-2 … 4-1 were authored from §8.2 and validated. If Shaurya has the real file, swap it in and run `npm run validate-levels && npm test`.
   - Collision is custom AABB-vs-grid in RoomSim (as in the prototype), not a Phaser Tilemap/Arcade layer: one code path, testable headlessly.
-  - Hero is the procedural canvas rig (prototype rig + grind/hurt/celebrate poses), drawn per frame, instead of SVG frames baked at boot.
-  - Panel masking uses canvas clip paths (quad ∩ sweep) instead of  (same result, fewer full-screen composites).
-  - Room 3-3 also has an  (gated like 4-1) so every map keeps ≥ 1 exit; the chapter ends automatically after the skyline bloom.
-  - At a rail's far end the hero auto-continues onto another grindable rail leaving the same pole top in the same direction (2-3).
-  - Captions for 1-2…4-1 and every room's panel caption box were written by Claude in Chinni's voice; Shaurya please review.
+  - Hero is the procedural canvas rig (prototype rig + grind/hurt/celebrate poses) drawn per frame, instead of SVG frames baked at boot.
+  - Panel masking uses canvas clip paths (quad ∩ sweep) instead of `destination-in` (same result, fewer full-screen composites).
+  - Room 3-3 also has an `E` (gated like 4-1) so every map keeps ≥ 1 exit; the chapter ends automatically after the skyline bloom.
+  - At a rail's far end the hero auto-continues onto another grindable rail that leaves the same pole top in the same direction (2-3).
+  - Captions for 1-2 … 4-1 and every room's panel caption box were written by Claude in Chinni's voice; Shaurya please review.
   - Pole cells standing in water count as water (3-1 splice pole).
+  - Crayon fallback extras from the art pass: radio-wave icon instead of a "RADIO" label, phone status bar icons only, small corner doodles on chapter pages.
