@@ -21,5 +21,6 @@ runtime with WebAudio.
 
 ## AI tools
 
-- **Claude Code (Anthropic)**: coding assistant for scaffolding, systems code, tests and shaders. All AI-assisted
-  work is committed during the jam and reviewed by the team.
+- **Claude Code (Anthropic)**: coding assistant for scaffolding, systems code (room sim, validator, tests), the canvas
+  renderer port, procedural audio and the procedural crayon fallback pages. Room maps 1-2 to 4-1 were drafted with it from
+  the team's design doc and checked by the validator. All AI-assisted work is committed during the jam and reviewed by the team.
