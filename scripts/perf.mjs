@@ -6,7 +6,7 @@ const browser = await chromium.launch({
   args: ['--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--enable-gpu-rasterization'],
 });
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
-await page.goto('http://localhost:4173/');
+await page.goto('http://localhost:4173/?debug');
 await page.waitForFunction(() => window.__bijli?.ready === true);
 console.log(
   'gpu',

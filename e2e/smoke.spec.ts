@@ -5,7 +5,7 @@ test('boots to title, plays room 1-1 lit, every room loads @shots', async ({ pag
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
 
-  await page.goto('/');
+  await page.goto('/?debug');
   await page.waitForFunction(() => window.__bijli?.ready === true);
   await expect.poll(() => page.evaluate(() => window.__bijli!.activeScenes())).toContain('Title');
   await page.waitForTimeout(800);

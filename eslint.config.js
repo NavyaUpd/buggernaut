@@ -8,6 +8,11 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   prettier,
   {
+    // Node/browser scripts and Playwright helpers use these globals
+    files: ['scripts/**/*.{mjs,js,ts}', 'e2e/**/*.ts', 'playwright.config.ts', 'vite.config.ts', 'vitest.config.ts'],
+    languageOptions: { globals: { console: 'readonly', process: 'readonly', window: 'readonly', document: 'readonly' } },
+  },
+  {
     files: ['src/core/**/*.ts'],
     rules: {
       'no-restricted-imports': ['error', { patterns: ['phaser', 'phaser/*'] }],

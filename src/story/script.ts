@@ -3,9 +3,9 @@
 export const TITLE = {
   name: 'BIJLI',
   start: 'press any key',
-  flashNotice: 'contains lightning flashes · reduce flashing: F',
-  flashOn: 'reduce flashing: ON',
-  flashOff: 'reduce flashing: OFF',
+  flashNotice: 'contains lightning flashes',
+  flashOn: 'press F to reduce flashing (now ON)',
+  flashOff: 'press F to reduce flashing (now OFF)',
 } as const;
 
 export interface ChapterText {

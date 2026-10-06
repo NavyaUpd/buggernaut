@@ -135,7 +135,7 @@ export const STRIKE = { cycle: 3.6, telegraph: 1.2, strike: 0.25, offsets: [0, 1
 /** Chinni's drawing power-up (§6.6). */
 export const BIJLI = { duration: 8, warn: 2, drawingRespawn: 10 } as const;
 
-export const DARKNESS = { alpha: 0.88, headlampDeg: 35, headlampLen: 320 } as const;
+export const DARKNESS = { alpha: 0.78, headlampDeg: 35, headlampLen: 320 } as const;
 
 export const FX = { maxShake: 6, slideMs: 400 } as const;
 

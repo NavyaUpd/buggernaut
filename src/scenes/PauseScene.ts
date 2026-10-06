@@ -56,7 +56,7 @@ export class PauseScene extends Phaser.Scene {
   }
 
   update(): void {
-    if (input.pressed('escape')) return this.resume();
+    if (input.pressed('escape') || input.pressed('p')) return this.resume();
     if (input.pressed('w') || input.pressed('arrowup')) {
       this.sel = (this.sel + PAUSE.items.length - 1) % PAUSE.items.length;
       audio.sfx.ui();

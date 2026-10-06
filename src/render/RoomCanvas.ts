@@ -290,6 +290,13 @@ export class RoomCanvas {
     if (heroIsComic) p.anim = Math.floor(p.anim * 2) / 2; // on twos
     const [lhx, lhy] = drawHero(hg, p, heroIsComic, heroIsComic ? twos : t, pose);
     p.anim = savedAnim;
+    if (bijli && sim.bijli.warning && Math.floor(t * 8) % 2 === 1) {
+      // the last BIJLI seconds: the hero flashes white in time with the blinking ring, so the end is obvious
+      hg.globalCompositeOperation = 'source-atop';
+      hg.fillStyle = 'rgba(255,255,255,.75)';
+      hg.fillRect(0, 0, HERO_CANVAS.w, HERO_CANVAS.h);
+      hg.globalCompositeOperation = 'source-over';
+    }
     const hx = p.x - HERO_CANVAS.ox + lhx;
     const hy = p.y - HERO_CANVAS.oy + lhy;
     const beamA = (p.face > 0 ? 0 : Math.PI) + (p.climb ? 0 : 0.08) + Math.sin(p.anim * 2) * 0.03;

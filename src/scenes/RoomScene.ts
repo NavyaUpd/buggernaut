@@ -95,7 +95,7 @@ export class RoomScene extends Phaser.Scene {
 
   update(_time: number, delta: number): void {
     const dt = Math.min(delta / 1000, 1 / 30);
-    if (input.pressed('escape')) {
+    if (input.pressed('escape') || input.pressed('p')) {
       audio.sfx.ui();
       this.scene.launch(SCENES.Pause);
       this.scene.pause();

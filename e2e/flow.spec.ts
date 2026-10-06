@@ -6,7 +6,7 @@ test('title → card → room → skip via pause → chapter end → phone → c
   test.setTimeout(240_000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto('/');
+  await page.goto('/?debug');
   await page.waitForFunction(() => window.__bijli?.ready === true);
   await expect.poll(() => scenes(page)).toContain('Title');
   await page.keyboard.press('x');
