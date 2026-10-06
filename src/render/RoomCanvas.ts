@@ -469,7 +469,7 @@ export class RoomCanvas {
       ctx.fillStyle = `rgba(235,242,255,${(sim.flash / 0.12) * 0.75})`;
       ctx.fillRect(0, 0, W, H);
     }
-    drawExitArrow(ctx, sim, t);
+    if (!opts.noUi) drawExitArrow(ctx, sim, t);
     for (const s of sim.stamps) {
       const k = Math.min(1, s.t / 0.12);
       const sc = (k < 1 ? 1.6 - 0.6 * k : 1) * (s.t > s.life - 0.2 ? Math.max(0, 1 - (s.t - (s.life - 0.2)) * 5) : 1);

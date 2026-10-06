@@ -139,7 +139,7 @@ Differences from the proposal, stated plainly:
 
 - **Phaser 3 + TypeScript + Vite.** All art is drawn in code (Canvas 2D compositing of a "real" and a "comic" layer,
   masked by each lamp's comic panel) and all sound is synthesised with WebAudio at runtime, so the build has no asset
-  files. Hand-drawn crayon pages can replace the procedural ones by dropping PNGs into `public/art/crayon/`.
+  files. Hand-drawn crayon pages can replace the procedural ones: drop a PNG into `public/art/crayon/` and add its name to `SHIPPED_PNGS` in `src/scenes/BootScene.ts`.
 - **Design first:** the game was planned in a design document ([CLAUDE.md](CLAUDE.md)) and the team's proposal
   ([proposal.pdf](proposal.pdf)), then built with Claude Code as our coding assistant (see [AI_DISCLOSURE.md](AI_DISCLOSURE.md)).
 - **Checked by machines, tuned by people:** `npm run validate-levels` proves every room is solvable without power-ups,
