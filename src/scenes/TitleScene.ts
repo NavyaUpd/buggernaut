@@ -22,10 +22,12 @@ export class TitleScene extends Phaser.Scene {
   }
 
   create(): void {
-    RoomSim.resetRun(); // a new game: the once-per-game tip, caption and key hints come back
     this.leaving = false;
     this.sim = new RoomSim(ROOM_BY_ID['1-1']!);
     this.sim.p.x = -400; // no player on the title
+    // a new game: the once-per-game tip, captions and hint cards come back. Reset AFTER building the backdrop sim,
+    // which would otherwise use up 1-1's "move" card on the title screen.
+    RoomSim.resetRun();
     this.tex = ensureRoomTexture(this);
     roomCanvas().setRoom(this.sim, 0, false);
     this.add.image(0, 0, 'roomcv').setOrigin(0, 0);
@@ -59,7 +61,7 @@ export class TitleScene extends Phaser.Scene {
     const dt = Math.min(delta / 1000, 1 / 30);
     this.sim.p.x = -400;
     this.sim.update(dt, NO_INPUT);
-    this.sim.captions.length = 0;
+    this.sim.messages.length = 0;
     roomCanvas().render(dt, { reduceFlashing: settings.reduceFlashing, restored: false, rainScale: 1, noHero: true, noUi: true });
     this.tex.refresh();
     if (this.leaving) return;

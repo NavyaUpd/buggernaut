@@ -482,11 +482,12 @@ export class RoomCanvas {
     if (!opts.noUi && sim.prompt && !sim.dying) keyPrompt(ctx, sim.prompt.text, sim.prompt.x, sim.prompt.y, sim.prompt.progress);
     ctx.restore();
     if (!opts.noUi) {
-      const cap = sim.captions.find((c) => c.t >= 0);
-      if (cap) caption(ctx, cap.text, cap.t, cap.dur);
-      const card = sim.hintCards.find((c) => c.t >= 0);
-      if (card && !sim.done) drawHintCard(ctx, card);
-      if (opts.lives !== undefined) drawHud(ctx, sim, opts.lives, opts.maxLives ?? 3, sim.objective(), t);
+      const msg = sim.message();
+      if (msg?.kind === 'caption') caption(ctx, msg.text, msg.t, msg.dur);
+      const cardUp = msg?.kind === 'card' && !sim.done;
+      if (msg?.kind === 'card' && cardUp) drawHintCard(ctx, { title: msg.title, text: msg.text, t: msg.t, life: msg.dur });
+      // the objective line steps aside while a hint card is explaining something
+      if (opts.lives !== undefined) drawHud(ctx, sim, opts.lives, opts.maxLives ?? 3, cardUp ? '' : sim.objective(), t);
     }
     // respawn: cyan flash, then fade
     if (sim.respawnFlash > 0) {

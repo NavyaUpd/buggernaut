@@ -52,9 +52,12 @@ export const GAME_TEXT = {
 
 export const PAUSE = {
   title: 'PAUSED',
-  items: ['Resume', 'Restart room', 'Skip room', 'Mute', 'Reduce flashing'],
+  items: ['Resume', 'Restart room', 'Skip room', 'Mute', 'Reduce flashing', 'How to play'],
   on: 'on',
   off: 'off',
+  helpTitle: 'HOW TO PLAY',
+  helpEmpty: 'nothing yet. hints appear as you meet new things.',
+  helpBack: 'press any key to go back',
 } as const;
 
 export const FINALE = {
@@ -76,19 +79,22 @@ export const CREDITS = {
 
 export const SAFETY_NOTE = FINALE.endCard[1];
 
-/** First-time hint cards: shown once per run, the first time a room contains the thing. Short, with the key. */
+/**
+ * First-time hint cards: one line, 10 words or fewer (tests enforce it). Each shows once per run, the first time the
+ * player comes near the thing it explains; the pause menu's "How to play" lists the ones seen so far.
+ */
 export const HINTS: Record<string, { title: string; text: string }> = {
-  move: { title: 'CREW 7', text: 'A / D to walk · Space to jump · find the broken cable and fix it' },
-  splice: { title: 'BROKEN CABLE', text: 'the feeder is switched off, so this line is dead and safe. climb up (W) and hold E to twist it' },
-  breaker: { title: 'LIVE LINE', text: 'sparks mean this cable is still live. tap E at its breaker: OFF, splice, then ON again' },
-  rail: { title: 'LIVE WIRE RAIL', text: 'a powered, lit wire is a rail. stand on the pole top and walk toward the other pole' },
-  snake: { title: 'TAAR-NAAG', text: 'a fallen live wire kills in the dark. light it up and it becomes a snake you can bounce on' },
-  drawing: { title: "CHINNI'S DRAWING", text: 'optional! grab it to become BIJLI for 8 s: double jump · hold Space to glide with the cape · ride ANY wire · nothing can hurt you' },
-  water: { title: 'FLOODED', text: 'water is deadly while its breaker is ON. switch it OFF before you wade in' },
-  strike: { title: 'LIGHTNING STRIKES', text: 'watch the glow on the ground. it strikes when the ring closes, then waits. move between strikes' },
-  dragon: { title: 'STORM DRAGON', text: 'optional! Chinni draws the storm dragon asleep: no strikes, no lightning for 8 s' },
-  lives: { title: 'HELMETS', text: 'every fall costs a helmet and undoes the repair you were in the middle of. lit lamps stay lit. lose all 3 and this street starts over' },
-  timer: { title: 'BACKUP POWER', text: 'the hospital generator is running out. restore both lines before the backup timer empties' },
+  move: { title: 'CREW 7', text: 'walk with A and D, jump with Space' },
+  splice: { title: 'BROKEN CABLE', text: 'line is off. climb with W, hold E to fix' },
+  breaker: { title: 'LIVE LINE', text: 'sparks mean live. switch its breaker OFF with E first' },
+  rail: { title: 'LIVE WIRE RAIL', text: 'a lit, powered wire is a rail. walk onto it' },
+  snake: { title: 'TAAR-NAAG', text: "kills in the dark. lit up, it's a jump pad" },
+  drawing: { title: "CHINNI'S DRAWING", text: 'optional: 8 s of BIJLI. double jump, glide, ride wires' },
+  water: { title: 'FLOODED', text: 'water kills while its breaker is ON. switch it OFF' },
+  strike: { title: 'LIGHTNING STRIKES', text: 'watch the glow. cross after it strikes, before it glows' },
+  dragon: { title: 'STORM DRAGON', text: 'optional: the storm sleeps for 8 s. no strikes' },
+  lives: { title: 'HELMETS', text: 'a fall costs a helmet and your unfinished repair' },
+  timer: { title: 'BACKUP POWER', text: 'the backup is running out. restore both lines in time' },
 };
 
 /** The live objective line (top right). */

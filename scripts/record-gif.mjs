@@ -15,8 +15,7 @@ await page.waitForTimeout(1500);
 // stand the hero on the pole top, as if the splice was just made, and let the room settle past its caption
 await page.evaluate(() => {
   const s = window.__bijli.sim();
-  s.captions.length = 0;
-  s.hintCards.length = 0;
+  s.messages.length = 0;
   s.p.x = 12 * 32 + 16;
   s.p.y = 9 * 32 + 8;
   s.p.face = 1;

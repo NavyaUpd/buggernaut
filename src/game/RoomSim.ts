@@ -1,6 +1,6 @@
 // One room's game state + rules (§5, §6). No Phaser, no DOM: driven by RoomScene, read by RoomCanvas.
 import { audio } from '../audio';
-import { BIJLI, BREAKER, CALM, LIVES, LIGHTNING, PLAYER, RAIL, SEQ, SPLICE, VIEW } from '../config';
+import { BIJLI, BREAKER, CALM, LIVES, LIGHTNING, MESSAGES, PLAYER, RAIL, SEQ, SPLICE, VIEW } from '../config';
 import { Circuits } from '../core/circuits';
 import { ease, inQuad, wipeX } from '../core/geom';
 import { parseRoom, poleAt, type ParsedRail, type ParsedRoom, type PoleRun } from '../core/roomParse';
@@ -65,11 +65,10 @@ export interface Bubble {
   life: number;
   tip?: boolean;
 }
-export interface Caption {
-  text: string;
-  t: number;
-  dur: number;
-}
+/** One on-screen message. Captions (room caption, story beat, first-bloom line) and hint cards share one queue. */
+export type Message =
+  | { kind: 'caption'; text: string; t: number; dur: number }
+  | { kind: 'card'; id: string; title: string; text: string; t: number; dur: number };
 
 export interface Player {
   x: number; // centre
@@ -173,9 +172,12 @@ export class RoomSim {
   dragons: { at: Tile; taken: boolean; respawn: number }[] = [];
   /** Deaths in this room (RoomScene turns them into lost helmets). */
   deaths = 0;
-  /** Queued first-time hint cards (shown one at a time by the renderer). */
-  hintCards: { title: string; text: string; t: number; life: number }[] = [];
-  /** Hint ids already shown this run. */
+  /**
+   * Captions, story beats and hint cards, in order. Only the head advances, so only one is ever on screen; each
+   * message starts at t = -MESSAGES.gap, which leaves a gap before it appears.
+   */
+  messages: Message[] = [];
+  /** Hint card ids already queued this run (each card shows once per run; the pause menu lists them). */
   static seenHints = new Set<string>();
   lightAtFeet = 0;
   wasComic = false;
@@ -188,7 +190,6 @@ export class RoomSim {
   ripples: { x: number; y: number; r: number; t: number }[] = [];
   stamps: Stamp[] = [];
   bubbles: Bubble[] = [];
-  captions: Caption[] = [];
   speedLines: Particle[] = [];
 
   constructor(def: RoomDef) {
@@ -200,36 +201,81 @@ export class RoomSim {
     this.snakeSquash = this.room.snakes.map(() => 0);
     this.p = this.freshPlayer();
     this.nextBolt = def.firstFlash ?? LIGHTNING.firstAt;
-    this.captions.push({ text: def.caption, t: -0.4, dur: 3 });
+    this.say(def.caption, MESSAGES.caption);
     this.timeLeft = def.timer ?? 0;
     this.dragons = this.room.dragons.map((at) => ({ at, taken: false, respawn: 0 }));
-    if (def.beat) this.captions.push({ text: def.beat, t: -3.4, dur: 3.6 });
-    // first-time hint cards for whatever this room introduces
-    const r = this.room;
-    const wants: string[] = [];
-    if (def.id === '1-1') wants.push('move', 'splice');
-    if (def.circuits.some((c) => c.breaker && !c.water && !c.master)) wants.push('breaker');
-    if (r.rails.some((x) => x.circuit !== null)) wants.push('rail');
-    if (r.snakes.length) wants.push('snake');
-    if (r.drawings.length) wants.push('drawing');
-    if (r.waterCells.length) wants.push('water');
-    if (def.strikes.length) wants.push('strike');
-    if (r.dragons.length) wants.push('dragon');
-    if (def.timer) wants.push('timer');
-    let delay = def.beat ? 7 : 3.2;
-    for (const id of wants) {
-      if (RoomSim.seenHints.has(id) || !HINTS[id]) continue;
-      RoomSim.seenHints.add(id);
-      this.hintCards.push({ ...HINTS[id]!, t: this.hintCards.length ? -0.5 : -delay, life: 6.5 });
-      delay = 0;
-    }
+    if (def.beat) this.say(def.beat, MESSAGES.beat);
+    // cards that belong to the whole room rather than a thing in it (the rest trigger by proximity)
+    if (def.id === '1-1') this.hintOnce('move');
+    if (def.timer) this.hintOnce('timer');
   }
 
-  /** Show a one-off hint card now (e.g. the helmets card on the first death). */
+  /** Queue a caption (Chinni / radio line). `first` puts it at the front, before anything not yet showing. */
+  say(text: string, dur: number, first = false): void {
+    const m: Message = { kind: 'caption', text, t: -MESSAGES.gap, dur };
+    if (first) this.messages.splice(this.headShowing() ? 1 : 0, 0, m);
+    else this.messages.push(m);
+  }
+
+  /** Queue a hint card once per run, right behind the message on screen and any cards already waiting. */
   hintOnce(id: string): void {
-    if (RoomSim.seenHints.has(id) || !HINTS[id]) return;
+    const h = HINTS[id];
+    if (!h || RoomSim.seenHints.has(id)) return;
     RoomSim.seenHints.add(id);
-    this.hintCards.unshift({ ...HINTS[id]!, t: 0, life: 6.5 });
+    const m: Message = { kind: 'card', id, title: h.title, text: h.text, t: -MESSAGES.gap, dur: MESSAGES.card };
+    // behind the head, and behind any cards already waiting (cards stay first-come-first-served), but ahead of
+    // waiting captions so the explanation arrives while it is still relevant
+    let at = this.messages.length ? 1 : 0;
+    while (at < this.messages.length && this.messages[at]!.kind === 'card') at++;
+    this.messages.splice(at, 0, m);
+  }
+
+  private headShowing(): boolean {
+    const h = this.messages[0];
+    return !!h && h.t >= 0;
+  }
+
+  /** The message on screen right now, if any (the queue head once its gap has passed). */
+  message(): Message | null {
+    const h = this.messages[0];
+    return h && h.t >= 0 && h.t < h.dur ? h : null;
+  }
+
+  /** Hint cards trigger the first time the player comes within MESSAGES.hintRadiusTiles of the thing they explain. */
+  private updateHintCards(): void {
+    if (this.dying || this.done) return;
+    const p = this.p;
+    const px = p.x;
+    const py = p.y - PLAYER.hitbox.h / 2;
+    const R = MESSAGES.hintRadiusTiles * T;
+    // distance from the player's centre to a tile-aligned rectangle
+    const near = (x0: number, y0: number, x1: number, y1: number) => {
+      const dx = Math.max(x0 - px, 0, px - x1);
+      const dy = Math.max(y0 - py, 0, py - y1);
+      return Math.hypot(dx, dy) <= R;
+    };
+    const nearTile = (tx: number, ty: number) => near(tx * T, ty * T + OY, (tx + 1) * T, (ty + 1) * T + OY);
+    const seen = RoomSim.seenHints;
+    if (!seen.has('splice') && this.room.splices.some((sp) => !this.circuits.isSpliced(sp) && !this.circuits.wouldShock(sp) && nearTile(sp[0], sp[1])))
+      this.hintOnce('splice');
+    if (!seen.has('breaker')) {
+      for (const b of this.room.breakers) {
+        const c = this.circuits.circuitOfBreaker(b);
+        if (c && !c.master && nearTile(b[0], b[1])) this.hintOnce('breaker');
+      }
+    }
+    if (!seen.has('snake') && this.room.snakes.some((sn) => near(sn.x0 * T, sn.y * T + OY, (sn.x1 + 1) * T, (sn.y + 1) * T + OY)))
+      this.hintOnce('snake');
+    if (!seen.has('drawing') && this.drawings.some((d) => !d.taken && nearTile(d.at[0], d.at[1]))) this.hintOnce('drawing');
+    if (!seen.has('dragon') && this.dragons.some((d) => !d.taken && nearTile(d.at[0], d.at[1]))) this.hintOnce('dragon');
+    if (!seen.has('water') && this.room.waterCells.some(([wx, wy]) => nearTile(wx, wy))) this.hintOnce('water');
+    if (!seen.has('strike') && this.def.strikes.some((st) => near(st.x * T, 0, (st.x + st.w) * T, VIEW.height))) this.hintOnce('strike');
+    if (!seen.has('rail')) {
+      for (const r of this.room.rails) {
+        if (r.circuit === null || !this.railGrindable(r)) continue;
+        if (near(r.ax - 16, r.ay - 32, r.ax + 16, r.ay) || near(r.bx - 16, r.by - 32, r.bx + 16, r.by)) this.hintOnce('rail');
+      }
+    }
   }
 
   /** What to do next, in a few words (top-right objective line). */
@@ -415,6 +461,7 @@ export class RoomSim {
     this.updatePlayer(dt, inp);
     this.updateInteract(dt, inp);
     this.updateHints(dt);
+    this.updateHintCards();
     this.updateHazards();
     this.updateAmbient(dt);
     this.updateExit();
@@ -935,7 +982,7 @@ export class RoomSim {
           if (this.def.dog && inQuad(this.def.dog[0] * T + 16, this.def.dog[1] * T + OY + 16, l.quad)) setTimeout(() => audio.sfx.woof(), 450);
           if (!RoomSim.firstBloomSeen) {
             RoomSim.firstBloomSeen = true;
-            this.captions.push({ text: GAME_TEXT.firstBloom, t: -1.2, dur: 5 });
+            this.say(GAME_TEXT.firstBloom, MESSAGES.firstBloom);
           }
         }
       }
@@ -1269,11 +1316,12 @@ export class RoomSim {
     this.stamps = this.stamps.filter((s) => s.t < s.life);
     for (const b of this.bubbles) b.t += dt;
     this.bubbles = this.bubbles.filter((b) => b.t < b.life);
-    for (const c of this.captions) c.t += dt;
-    // one card at a time: only the head of the queue advances
-    if (this.hintCards[0]) this.hintCards[0].t += dt;
-    this.hintCards = this.hintCards.filter((c) => c.t < c.life);
-    this.captions = this.captions.filter((c) => c.t < c.dur);
+    // one message at a time: only the head advances; when it ends the next one starts after MESSAGES.gap
+    const head = this.messages[0];
+    if (head) {
+      head.t += dt;
+      if (head.t >= head.dur) this.messages.shift();
+    }
     for (let i = 0; i < this.snakeSquash.length; i++) this.snakeSquash[i] = Math.max(0, this.snakeSquash[i]! - dt);
     this.shake = Math.max(0, this.shake - dt * 30);
     this.respawnFlash = Math.max(0, this.respawnFlash - dt * 2.5);

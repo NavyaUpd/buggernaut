@@ -146,4 +146,7 @@ export const DARKNESS = { alpha: 0.78, headlampDeg: 35, headlampLen: 320 } as co
 
 export const FX = { maxShake: 6, slideMs: 400 } as const;
 
+/** On-screen messages (captions, story beats, hint cards) share one queue: one at a time, `gap` s apart. */
+export const MESSAGES = { gap: 0.4, caption: 3, beat: 3.6, firstBloom: 5, card: 5, hintRadiusTiles: 4 } as const;
+
 export const PERF = { maxRain: 1200, downgradeFps: 50 } as const;

@@ -129,7 +129,7 @@ export class RoomScene extends Phaser.Scene {
       this.resetPending = false;
       runLives.lives = LIVES.perChapter;
       this.loadRoom(this.roomId, false);
-      this.sim.captions.unshift({ text: LIVES_TEXT.reset, t: 0, dur: 3 });
+      this.sim.say(LIVES_TEXT.reset, 3, true);
       return;
     }
     if (sim.done) this.updateLeave(dt);
