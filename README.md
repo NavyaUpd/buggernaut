@@ -12,6 +12,17 @@ _Bijli_ means both **electricity** and **lightning** in Hindi.
 Made by **Team Buggernaut** (Hansika Grover, Navya Upadhyay, Shaurya Chandel) for the
 **TGC Game Jam @ Infinium '26** (IIIT Hyderabad · GDAI × Games for Change India). Themes: **Comic · Twist · Light**.
 
+![A lamp comes back on and paints the rainy street into Chinni's comic](submission/bloom.gif)
+
+|                                                                             |                                                                    |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ![The dark street](submission/1-dark-room.png)                              | ![A lamp blooms into a comic panel](submission/2-bloom-midway.png) |
+| ![Bouncing on Taar-Naag, the friendly snake](submission/3-snake-bounce.png) | ![BIJLI mode: grinding a wire](submission/4-bijli-grind.png)       |
+
+![The whole city lights up at the substation](submission/5-skyline-bloom.png)
+
+Gameplay video: [submission/bijli-gameplay.webm](submission/bijli-gameplay.webm) · Pitch: [submission/PITCH.md](submission/PITCH.md)
+
 ---
 
 ## Why we made this game
@@ -38,7 +49,7 @@ We wanted players to _feel_ that, not read a lecture about it. So the message is
   keeps you on the job; the hospital's backup is running low.
 - **The light is what changes the world.** Bringing power back is literally what opens the path forward: lit areas turn
   into Chinni's comic, which is how a child sees the person keeping her city running.
-- **The twist asks you to check your assumptions.** The lineworker wears a helmet, a raincoat and a face in shadow, and
+- **The twist asks you to check your assumptions** _(spoiler for the ending, skip this point if you have not played)_. The lineworker wears a helmet, a raincoat and a face in shadow, and
   is never given a pronoun: just "Crew 7". At the end, the house lights up, the helmet comes off, and Chinni draws the
   last page: _"my amma is bijli."_ If you pictured a man under that helmet, the game never said so.
 
@@ -73,7 +84,7 @@ Between chapters, Chinni's phone messages keep you company: _"are you scared of 
   just one.
 - First-time hint cards, a live objective line and an arrow over the exit mean you always know what to do next.
 
-The game is designed for a first playthrough of about **12–15 minutes**; a practised run is much faster. Skip room, restart room, mute and **reduce flashing** are in the
+A first playthrough takes about **12–15 minutes**. Skip room, restart room, mute and **reduce flashing** are in the
 pause menu (Esc or P), and the title screen has a flashing notice with a toggle (F).
 
 ## Controls
@@ -139,7 +150,7 @@ Differences from the proposal, stated plainly:
 
 - **Phaser 3 + TypeScript + Vite.** All art is drawn in code (Canvas 2D compositing of a "real" and a "comic" layer,
   masked by each lamp's comic panel) and all sound is synthesised with WebAudio at runtime, so the build has no asset
-  files. Hand-drawn crayon pages can replace the procedural ones: drop a PNG into `public/art/crayon/` and add its name to `SHIPPED_PNGS` in `src/scenes/BootScene.ts`.
+  files. Chinni's crayon pages (the logo, chapter cards, the opening comic and the finale) are drawn in code too, in a child's crayon style.
 - **Design first:** the game was planned in a design document ([CLAUDE.md](CLAUDE.md)) and the team's proposal
   ([proposal.pdf](proposal.pdf)), then built with Claude Code as our coding assistant (see [AI_DISCLOSURE.md](AI_DISCLOSURE.md)).
 - **Checked by machines, tuned by people:** `npm run validate-levels` proves every room is solvable without power-ups,

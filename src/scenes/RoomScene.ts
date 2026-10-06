@@ -19,6 +19,9 @@ const TEX = 'roomcv';
 /** Smoothed per-frame cost in ms (read via window.__bijli.perf). */
 export const perf = { sim: 0, render: 0, upload: 0 };
 
+/** Debug-only scripted input (used to record the trailer); null = keyboard. */
+export const autopilot: { fn: ((sim: RoomSim) => SimInput) | null } = { fn: null };
+
 export function readInput(): SimInput {
   return {
     left: input.left,
@@ -113,7 +116,7 @@ export class RoomScene extends Phaser.Scene {
     if (input.pressed('r') && !this.sim.done) this.restartRoom();
     const sim = this.sim;
     const t0 = performance.now();
-    sim.update(dt, readInput());
+    sim.update(dt, autopilot.fn ? autopilot.fn(sim) : readInput());
     if (sim.deaths > this.countedDeaths) {
       this.countedDeaths = sim.deaths;
       runLives.lives = Math.max(0, runLives.lives - 1);

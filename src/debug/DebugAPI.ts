@@ -1,7 +1,7 @@
 import type Phaser from 'phaser';
 import type { RoomSim } from '../game/RoomSim';
 import type { SceneKey } from '../scenes/keys';
-import { perf, type RoomScene } from '../scenes/RoomScene';
+import { autopilot, perf, type RoomScene } from '../scenes/RoomScene';
 
 /** window.__bijli: used by Playwright and for quick room jumps from the console. */
 export interface BijliDebug {
@@ -13,6 +13,7 @@ export interface BijliDebug {
   sim(): RoomSim | null;
   powerAll(): void;
   perf: typeof perf;
+  autopilot: typeof autopilot;
 }
 
 declare global {
@@ -38,6 +39,7 @@ export function installDebugAPI(game: Phaser.Game): void {
     sim: () => roomScene()?.sim ?? null,
     powerAll: () => roomScene()?.sim.debugPowerAll(),
     perf,
+    autopilot,
   };
   game.events.once('ready', () => {
     api.ready = true;

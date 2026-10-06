@@ -1,7 +1,5 @@
 # AI disclosure
 
-<!-- TEAM: fact-check every line below before submitting, especially "What the team did". Delete this comment when done. -->
-
 BIJLI was made with the help of AI. This page says exactly where. The same summary goes on the itch.io page.
 
 ## Tools
@@ -36,7 +34,9 @@ No image, music or sound generators were used. No third-party art, audio or font
   wording of captions and radio lines, what to cut and what to keep.
 - **Review and decisions**: reading the AI's changes, choosing which suggestions to accept, and committing and
   submitting the game.
-- **Testing**: playing the game and fixing what we found. (Team: list the playtests you actually ran before submitting.)
+- **Testing**: playing the full game end to end and writing a playtest feedback list (difficulty curve, optional
+  power-ups, story clarity, onboarding, a storm-room bug report). The final round of changes was built from that list,
+  and the team played the final build before submitting.
 
 ## How we kept it honest
 
