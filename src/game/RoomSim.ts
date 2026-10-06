@@ -1115,11 +1115,17 @@ export class RoomSim {
       this.strikeT = 0;
       audio.setRain(this.def.rain ?? 1, 1);
     }
-    // a death costs the room: the street goes dark again (splices, breakers, lamps and the backup timer reset)
-    this.circuits = new Circuits(this.def.circuits);
-    this.lamps = this.room.lamps.map(() => ({ pulse: -1, powerT: -1, offT: -1, bubbled: false }));
-    this.spliceSnap.clear();
-    this.skylineT = -Infinity;
+    // a death costs the work in progress: lit lamps are checkpoints (their circuits stay powered), but every circuit
+    // that isn't powered yet goes back to how the room started (splices undone, breakers reset)
+    for (const c of this.def.circuits) {
+      if (this.circuits.powered(c.id)) continue;
+      this.circuits.reset(c.id);
+      for (const s of c.splices) this.spliceSnap.delete(`${s[0]},${s[1]}`);
+      this.room.lamps.forEach((l, i) => {
+        if (l.circuit === c.id) this.lamps[i] = { pulse: -1, powerT: -1, offT: -1, bubbled: false };
+      });
+    }
+    if (!this.circuits.allPowered()) this.skylineT = -Infinity;
     this.bubbles = this.bubbles.filter((b) => b.tip);
     this.timeLeft = this.def.timer ?? 0;
     this.strikeT = 0;

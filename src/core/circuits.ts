@@ -69,6 +69,14 @@ export class Circuits {
     return v;
   }
 
+  /** Puts one circuit back to its initial state (splices undone, breaker as authored). */
+  reset(id: string): void {
+    const c = this.get(id);
+    if (!c) return;
+    for (const s of c.splices) this.spliced.delete(key(s));
+    this.closed.set(c.id, c.breaker ? (c.closed ?? true) : true);
+  }
+
   /** Room water is deadly whenever the water circuit's breaker is closed, spliced or not. */
   waterLive(): boolean {
     return this.defs.some((c) => c.water && this.isClosed(c.id));

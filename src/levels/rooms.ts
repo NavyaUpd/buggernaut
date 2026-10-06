@@ -479,7 +479,7 @@ export const ROOMS: RoomDef[] = [
   },
   {
     id: '3-2b',
-    timer: 75,
+    timer: 100,
     name: 'City Hospital',
     chapter: 3,
     caption: 'the hospital is dark too. the doctors are using torches.',

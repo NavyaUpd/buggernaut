@@ -80,8 +80,9 @@ Between chapters, Chinni's phone messages keep you company: _"are you scared of 
   - **Chinni's drawing → BIJLI mode (8 s)**: double jump, glide with the cape (hold Space while falling), ride _any_
     wire, and nothing can hurt you. Every room can be finished without it; it turns a hard route into a fast one.
   - **The storm dragon drawing (8 s)**: Chinni draws the storm asleep. No strikes and no lightning while it sleeps.
-- **Every fall costs something.** A death costs a helmet and the street goes dark again: its splices and breakers
-  reset, so you redo the room. You get 3 helmets per chapter; lose all 3 and the chapter starts over.
+- **Every fall costs something.** A death costs a helmet and undoes the repair you were in the middle of: unfinished
+  splices and breakers go back to how the street started. Lit lamps are checkpoints and stay lit. You get 3 helmets
+  per chapter; lose all 3 and the current street starts over from the dark.
 - **The hospital backup is running out.** In the hospital you race the generator: restore both lines before the
   backup timer empties.
 - **Later streets combine everything.** The Night Market makes you work a live breaker past a fallen wire you can

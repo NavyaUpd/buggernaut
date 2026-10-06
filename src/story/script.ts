@@ -87,7 +87,7 @@ export const HINTS: Record<string, { title: string; text: string }> = {
   water: { title: 'FLOODED', text: 'water is deadly while its breaker is ON. switch it OFF before you wade in' },
   strike: { title: 'LIGHTNING STRIKES', text: 'watch the glow on the ground. it strikes when the ring closes, then waits. move between strikes' },
   dragon: { title: 'STORM DRAGON', text: 'optional! Chinni draws the storm dragon asleep: no strikes, no lightning for 8 s' },
-  lives: { title: 'HELMETS', text: 'every fall costs a helmet and the street goes dark again. lose all 3 and the chapter starts over' },
+  lives: { title: 'HELMETS', text: 'every fall costs a helmet and undoes the repair you were in the middle of. lit lamps stay lit. lose all 3 and this street starts over' },
   timer: { title: 'BACKUP POWER', text: 'the hospital generator is running out. restore both lines before the backup timer empties' },
 };
 
@@ -105,5 +105,5 @@ export const OBJECTIVE = {
 
 export const LIVES_TEXT = {
   lost: 'HELMET LOST',
-  reset: 'out of helmets. back to the start of the chapter.',
+  reset: 'out of helmets. this street starts over.',
 } as const;

@@ -1,7 +1,7 @@
 // Hosts one room at a time: drives RoomSim, renders RoomCanvas into a CanvasTexture, chains rooms with a panel slide.
 import Phaser from 'phaser';
 import { audio } from '../audio';
-import { endsChapter, FLOW, goNext, nextStep } from '../game/RoomFlow';
+import { endsChapter, goNext, nextStep } from '../game/RoomFlow';
 import { RoomSim, runLives, type SimInput } from '../game/RoomSim';
 import { LIVES } from '../config';
 import { LIVES_TEXT } from '../story/script';
@@ -125,12 +125,10 @@ export class RoomScene extends Phaser.Scene {
       if (runLives.lives === 0) this.resetPending = true;
     }
     if (this.resetPending && !sim.dying) {
-      // out of helmets: back to the first street of this chapter, helmets refill
+      // out of helmets: this street starts over from the dark (even its lit lamps), helmets refill
       this.resetPending = false;
       runLives.lives = LIVES.perChapter;
-      const ch = ROOM_BY_ID[this.roomId]!.chapter;
-      const first = FLOW.find((s) => s.kind === 'room' && ROOM_BY_ID[s.roomId]?.chapter === ch);
-      this.loadRoom(first && first.kind === 'room' ? first.roomId : this.roomId, false);
+      this.loadRoom(this.roomId, false);
       this.sim.captions.unshift({ text: LIVES_TEXT.reset, t: 0, dur: 3 });
       return;
     }

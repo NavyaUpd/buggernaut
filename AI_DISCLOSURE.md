@@ -27,7 +27,8 @@ No image, music or sound generators were used. No third-party art, audio or font
   exit arrow, the "line is OFF" splice prompt, and the rewritten README. These were built from the team's playtest notes.
 - **Difficulty round on 6 Oct 2026, evening**: a death now resets the room and running out of helmets restarts the
   chapter, the hospital backup timer, two new rooms that combine mechanics (2-2b Night Market, 3-1b Flooded Crossing),
-  a validator rule that every cloud sits in a lamp's light, and bot playthroughs of the new rooms.
+  a validator rule that every cloud sits in a lamp's light, and bot playthroughs of the new rooms. A follow-up eased it slightly: lit lamps became checkpoints, running
+  out of helmets restarts the room instead of the chapter, and the hospital timer went from 75 to 100 s.
 
 ## What the team did
 

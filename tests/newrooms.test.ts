@@ -99,22 +99,30 @@ describe('harder rooms (playtest: "still too easy and short")', () => {
     expect(b.sim.done).toBe(true);
   });
 
-  it('a death costs the room: the street goes dark again', () => {
-    const b = bot('1-1');
-    b.walkTo(400);
-    b.climb();
-    b.holdE();
-    expect(b.sim.circuits.powered('c1')).toBe(true);
+  it('a death undoes the repair in progress, but lit lamps are checkpoints', () => {
+    const b = bot('1-3');
+    b.walkTo(X(5), true);
+    b.tapE(); // breaker OFF: work in progress
+    expect(b.sim.circuits.isClosed('c1')).toBe(false);
     b.sim.p.y = 900; // fall out of the world
     b.step(60);
     expect(b.sim.deaths).toBe(1);
-    expect(b.sim.circuits.powered('c1')).toBe(false);
+    expect(b.sim.circuits.isClosed('c1')).toBe(true); // breaker back as authored
+    const c = bot('1-1');
+    c.walkTo(400);
+    c.climb();
+    c.holdE();
+    expect(c.sim.circuits.powered('c1')).toBe(true);
+    c.sim.p.y = 900;
+    c.step(60);
+    expect(c.sim.deaths).toBe(1);
+    expect(c.sim.circuits.powered('c1')).toBe(true); // the lit lamp stays lit
   });
 
   it('the hospital backup timer runs out → death, and stops once both lines are powered', () => {
     const b = bot('3-2b');
-    expect(b.sim.timeLeft).toBe(75);
-    b.step(60 * 76);
+    expect(b.sim.timeLeft).toBe(100);
+    b.step(60 * 101);
     expect(b.sim.deaths).toBeGreaterThan(0);
     const c = bot('3-2b');
     c.sim.debugPowerAll();

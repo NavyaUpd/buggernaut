@@ -37,8 +37,8 @@ Esc or P pause (restart, skip room, mute, reduce flashing) · R restart room
 ## Accessibility
 
 Reduce-flashing toggle (title screen F, and the pause menu), skip room and restart room from the start, first-time
-hint cards for every mechanic, and a live objective line. 3 helmets per chapter: every fall resets the street, so each
-room is a short, fair challenge.
+hint cards for every mechanic, and a live objective line. 3 helmets per chapter: a fall undoes the repair in progress, but lit
+lamps are checkpoints.
 
 ## Media
 

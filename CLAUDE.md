@@ -468,3 +468,5 @@ note every stuck moment over 20 s).
 - Difficulty round (Tue 6 Oct evening, from playtest: "still too easy and short"): a death resets the room (splices,
   breakers, lamps), out of helmets restarts the chapter, hospital backup timer (75 s), new rooms 2-2b Night Market and
   3-1b Flooded Crossing (13 rooms total), validator rule: every cloud must be inside a lamp's light.
+- Difficulty eased slightly (same evening): lit lamps are checkpoints (powered circuits survive a death; only work in
+  progress resets), out of helmets restarts the current room (not the chapter), hospital timer 100 s.
