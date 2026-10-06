@@ -260,6 +260,14 @@ export function checkRoom(room: ParsedRoom): RoomCheck {
   });
 
   // exit must NOT be reachable in the dark (any breaker state), unless the exit is gated by logic
+  // every crayon cloud must be inside some lamp's panel, or it can never become solid (an unfair fake platform)
+  for (let y = 0; y < ROWS; y++)
+    for (let x = 0; x < COLS; x++) {
+      if (!room.cloud(x, y)) continue;
+      const px = x * T + T / 2;
+      const py = y * T + OY + T / 2;
+      if (!room.lamps.some((l) => inQuad(px, py, l.quad))) errors.push(`cloud at ${x},${y} is outside every lamp's light`);
+    }
   // (rooms without circuits, like 2-3, are a pure traversal challenge and may be crossed in the dark)
   if (!def.gatedExit && def.circuits.length > 0) {
     for (const waterLive of [initialWater, false]) {

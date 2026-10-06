@@ -465,3 +465,6 @@ note every stuck moment over 20 s).
   - Captions for 1-2 … 4-1 and every room's panel caption box were written by Claude in Chinni's voice; Shaurya please review.
   - Pole cells standing in water count as water (3-1 splice pole).
   - Crayon fallback extras from the art pass: radio-wave icon instead of a "RADIO" label, phone status bar icons only, small corner doodles on chapter pages.
+- Difficulty round (Tue 6 Oct evening, from playtest: "still too easy and short"): a death resets the room (splices,
+  breakers, lamps), out of helmets restarts the chapter, hospital backup timer (75 s), new rooms 2-2b Night Market and
+  3-1b Flooded Crossing (13 rooms total), validator rule: every cloud must be inside a lamp's light.

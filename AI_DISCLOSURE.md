@@ -25,6 +25,9 @@ No image, music or sound generators were used. No third-party art, audio or font
   routes in 2-3 and 3-3 so power-ups are never required, the cape glide, the storm-dragon drawing, slower strike timing,
   3 helmets per chapter, per-lamp neighbour reactions and story beats, first-time hint cards, the objective line, the
   exit arrow, the "line is OFF" splice prompt, and the rewritten README. These were built from the team's playtest notes.
+- **Difficulty round on 6 Oct 2026, evening**: a death now resets the room and running out of helmets restarts the
+  chapter, the hospital backup timer, two new rooms that combine mechanics (2-2b Night Market, 3-1b Flooded Crossing),
+  a validator rule that every cloud sits in a lamp's light, and bot playthroughs of the new rooms.
 
 ## What the team did
 

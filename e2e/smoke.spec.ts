@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('boots to title, plays room 1-1 lit, every room loads @shots', async ({ page }) => {
-  test.setTimeout(180_000);
+  test.setTimeout(420_000);
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
 
@@ -11,7 +11,7 @@ test('boots to title, plays room 1-1 lit, every room loads @shots', async ({ pag
   await page.waitForTimeout(800);
   await page.screenshot({ path: 'e2e/__screenshots__/title.png' });
 
-  for (const id of ['1-1', '1-2', '1-3', '2-1', '2-2', '2-3', '3-1', '3-2', '3-2b', '3-3', '4-1']) {
+  for (const id of ['1-1', '1-2', '1-3', '2-1', '2-2', '2-2b', '2-3', '3-1', '3-1b', '3-2', '3-2b', '3-3', '4-1']) {
     await page.evaluate((rid) => window.__bijli!.room(rid), id);
     await expect.poll(() => page.evaluate(() => window.__bijli!.activeScenes())).toContain('Room');
     await page.waitForTimeout(500);

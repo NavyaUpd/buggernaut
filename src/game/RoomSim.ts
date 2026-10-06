@@ -103,7 +103,7 @@ export interface LampState {
   bubbled: boolean;
 }
 
-export type Death = 'pit' | 'snake' | 'water' | 'strike';
+export type Death = 'pit' | 'snake' | 'water' | 'strike' | 'timer';
 
 /** Helmets carried through a chapter (RoomScene owns the rules; kept here so a new run can reset it). */
 export const runLives = { chapter: 0, lives: LIVES.perChapter as number };
@@ -111,7 +111,7 @@ export const runLives = { chapter: 0, lives: LIVES.perChapter as number };
 export class RoomSim {
   readonly room: ParsedRoom;
   readonly def: RoomDef;
-  readonly circuits: Circuits;
+  circuits: Circuits;
   readonly bijli = new BijliTimer();
   /** Global across rooms: the "switch it off first!" tip shows only once per game. */
   static tipShown = false;
@@ -168,6 +168,8 @@ export class RoomSim {
   hum = 0;
   /** Storm-dragon calm: seconds left (strikes + ambient lightning paused, light rain). */
   calmLeft = 0;
+  /** Hospital backup: seconds left before the generator dies (0 = no timer in this room). */
+  timeLeft = 0;
   dragons: { at: Tile; taken: boolean; respawn: number }[] = [];
   /** Deaths in this room (RoomScene turns them into lost helmets). */
   deaths = 0;
@@ -199,6 +201,7 @@ export class RoomSim {
     this.p = this.freshPlayer();
     this.nextBolt = def.firstFlash ?? LIGHTNING.firstAt;
     this.captions.push({ text: def.caption, t: -0.4, dur: 3 });
+    this.timeLeft = def.timer ?? 0;
     this.dragons = this.room.dragons.map((at) => ({ at, taken: false, respawn: 0 }));
     if (def.beat) this.captions.push({ text: def.beat, t: -3.4, dur: 3.6 });
     // first-time hint cards for whatever this room introduces
@@ -212,6 +215,7 @@ export class RoomSim {
     if (r.waterCells.length) wants.push('water');
     if (def.strikes.length) wants.push('strike');
     if (r.dragons.length) wants.push('dragon');
+    if (def.timer) wants.push('timer');
     let delay = def.beat ? 7 : 3.2;
     for (const id of wants) {
       if (RoomSim.seenHints.has(id) || !HINTS[id]) continue;
@@ -407,6 +411,7 @@ export class RoomSim {
     this.updateLightning(dt);
     this.updateLamps(dt);
     this.updateBijli(dt);
+    this.updateTimer(dt);
     this.updatePlayer(dt, inp);
     this.updateInteract(dt, inp);
     this.updateHints(dt);
@@ -1005,6 +1010,18 @@ export class RoomSim {
     }
   }
 
+  private updateTimer(dt: number): void {
+    if (!this.def.timer || this.timeLeft <= 0) return;
+    if (this.circuits.allPowered()) return; // power restored: the backup is no longer needed
+    const before = this.timeLeft;
+    this.timeLeft = Math.max(0, this.timeLeft - dt);
+    if (this.timeLeft <= 10 && Math.floor(before) !== Math.floor(this.timeLeft)) audio.sfx.tick();
+    if (this.timeLeft === 0) {
+      this.stamps.push({ text: 'BACKUP EMPTY', x: W / 2, y: 200, t: 0, rot: -0.05, fill: '#ff3b30', size: 46, life: 1.4 });
+      this.die('timer');
+    }
+  }
+
   private endBijli(withPoof: boolean): void {
     if (!this.bijli.active && !withPoof) return;
     this.bijli.stop();
@@ -1098,6 +1115,15 @@ export class RoomSim {
       this.strikeT = 0;
       audio.setRain(this.def.rain ?? 1, 1);
     }
+    // a death costs the room: the street goes dark again (splices, breakers, lamps and the backup timer reset)
+    this.circuits = new Circuits(this.def.circuits);
+    this.lamps = this.room.lamps.map(() => ({ pulse: -1, powerT: -1, offT: -1, bubbled: false }));
+    this.spliceSnap.clear();
+    this.skylineT = -Infinity;
+    this.bubbles = this.bubbles.filter((b) => b.tip);
+    this.timeLeft = this.def.timer ?? 0;
+    this.strikeT = 0;
+    audio.setHum(0);
     audio.sfx.respawn();
   }
 

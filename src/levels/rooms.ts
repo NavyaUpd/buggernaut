@@ -85,6 +85,8 @@ export interface RoomDef {
   house?: HouseDef;
   /** One-line story beat / hint card shown on entry, after the caption (short, lowercase, Chinni or radio voice). */
   beat?: string;
+  /** Seconds on the backup timer (hospital): run out and the room resets. */
+  timer?: number;
   /** Exit is inactive until every circuit is powered. */
   gatedExit?: boolean;
   /** 3-3: powering everything triggers the skyline bloom and ends the chapter. */
@@ -284,6 +286,43 @@ export const ROOMS: RoomDef[] = [
     ],
   },
   {
+    id: '2-2b',
+    name: 'Night Market',
+    chapter: 2,
+    caption: 'the night market is waiting for its lights.',
+    panelCaption: 'and the stalls lit up one by one...',
+    beat: 'radio: crew 7, the market line is live and a wire is down in the lane. watch your step. over.',
+    lightning: true,
+    lamps: [{ at: [24, 6], r: 13, circuit: 'c1', cheer: 'the night market is open again!' }],
+    rails: [{ a: [11, 8], b: [28, 8], circuit: 'c1' }],
+    circuits: [{ id: 'c1', splices: [[11, 8]], breaker: [4, 18], closed: true }],
+    strikes: [],
+    map: [
+      '........................................', //  0
+      '........................................', //  1
+      '........................................', //  2
+      '........................................', //  3
+      '........................................', //  4
+      '........................................', //  5
+      '........................L...............', //  6
+      '........................................', //  7
+      '...........X................|...........', //  8
+      '...........|................|...........', //  9
+      '...........|................|...........', // 10
+      '...........|................|...........', // 11
+      '...........|................|..........E', // 12
+      '...........|................|..........E', // 13
+      '...........|................|....#######', // 14
+      '...........|................|....#######', // 15
+      '...........|................|....#######', // 16
+      '...........|................|....#######', // 17
+      '..P.B..nn..|................|..nn#######', // 18
+      '#############..............#############', // 19
+      '#############..............#############', // 20
+      '#############..............#############', // 21
+    ],
+  },
+  {
     id: '2-3',
     name: "Chinni's Drawing",
     chapter: 2,
@@ -361,6 +400,43 @@ export const ROOMS: RoomDef[] = [
     ],
   },
   {
+    id: '3-1b',
+    name: 'Flooded Crossing',
+    chapter: 3,
+    caption: 'the bus stop is under water. people are stuck there.',
+    panelCaption: 'meanwhile, at the bus stop...',
+    beat: 'radio: crew 7, flooding and lightning on the same block. switch it off, then time it. over.',
+    lightning: true,
+    lamps: [{ at: [22, 9], r: 10, circuit: 'c1', cheer: 'the bus stop is lit! people can get home!' }],
+    rails: [],
+    circuits: [{ id: 'c1', splices: [[19, 14]], breaker: [7, 13], closed: true, water: true }],
+    strikes: [{ x: 18, w: 2 }],
+    map: [
+      '........................................', //  0
+      '........................................', //  1
+      '........................................', //  2
+      '........................................', //  3
+      '........................................', //  4
+      '........................................', //  5
+      '........................................', //  6
+      '........................................', //  7
+      '...Z....................................', //  8
+      '......................L.................', //  9
+      '........................................', // 10
+      '........................................', // 11
+      '...##..................................E', // 12
+      '.P.##..B...............................E', // 13
+      '##########H.cc..cc.X.cc..cc...##########', // 14
+      '##########H........|..........##########', // 15
+      '##########H........|..........##########', // 16
+      '##########H........|..........##########', // 17
+      '##########H~~~~~~~~|~~~~~~~~~~##########', // 18
+      '##########H~~~~~~~~|~~~~~~~~~~##########', // 19
+      '########################################', // 20
+      '########################################', // 21
+    ],
+  },
+  {
     id: '3-2',
     name: 'Strikes',
     chapter: 3,
@@ -403,6 +479,7 @@ export const ROOMS: RoomDef[] = [
   },
   {
     id: '3-2b',
+    timer: 75,
     name: 'City Hospital',
     chapter: 3,
     caption: 'the hospital is dark too. the doctors are using torches.',

@@ -80,8 +80,13 @@ Between chapters, Chinni's phone messages keep you company: _"are you scared of 
   - **Chinni's drawing → BIJLI mode (8 s)**: double jump, glide with the cape (hold Space while falling), ride _any_
     wire, and nothing can hurt you. Every room can be finished without it; it turns a hard route into a fast one.
   - **The storm dragon drawing (8 s)**: Chinni draws the storm asleep. No strikes and no lightning while it sleeps.
-- **Helmets**: 3 per chapter. Lose them all and the current street resets, but splices you made stay when you lose
-  just one.
+- **Every fall costs something.** A death costs a helmet and the street goes dark again: its splices and breakers
+  reset, so you redo the room. You get 3 helmets per chapter; lose all 3 and the chapter starts over.
+- **The hospital backup is running out.** In the hospital you race the generator: restore both lines before the
+  backup timer empties.
+- **Later streets combine everything.** The Night Market makes you work a live breaker past a fallen wire you can
+  only jump in the dark; the Flooded Crossing puts a splice inside a lightning column, in water that is only safe
+  while its breaker is off.
 - First-time hint cards, a live objective line and an arrow over the exit mean you always know what to do next.
 
 A first playthrough takes about **12–15 minutes**. Skip room, restart room, mute and **reduce flashing** are in the
@@ -126,25 +131,24 @@ example `npx vite preview` or upload it as an HTML5 game.
 
 ## Rooms and the proposal
 
-The proposal promised one stormy night in seven places. The game has an opening comic, four chapters and 11
+The proposal promised one stormy night in seven places. The game has an opening comic, four chapters and 13
 single-screen rooms:
 
-| Proposal level    | In the game                                                                   |
-| ----------------- | ----------------------------------------------------------------------------- |
-| 1. The lane       | Chapter 1: 1-1 First Light, 1-2 The Flash, 1-3 The Live Line                  |
-| 2. The bazaar     | Chapter 2: 2-1 Taar-Naag (the snake), 2-2 Rooftop Rails, 2-3 Chinni's Drawing |
-| 3. The underpass  | 3-1 Underpass (flooded road, breaker and live water)                          |
-| 4. The rooftops   | 3-2 Strikes (lightning columns); 2-2 Rooftop Rails also plays on the roofs    |
-| 5. The hospital   | 3-2b City Hospital (flooded basement, corridor and ward circuits)             |
-| 6. The substation | 3-3 Substation (master breaker and the skyline bloom)                         |
-| 7. Home           | 4-1 Ghar, then the finale                                                     |
+| Proposal level    | In the game                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------ |
+| 1. The lane       | Chapter 1: 1-1 First Light, 1-2 The Flash, 1-3 The Live Line                                     |
+| 2. The bazaar     | Chapter 2: 2-1 Taar-Naag (the snake), 2-2 Rooftop Rails, 2-2b Night Market, 2-3 Chinni's Drawing |
+| 3. The underpass  | 3-1 Underpass (flooded road, breaker and live water), 3-1b Flooded Crossing (water + lightning)  |
+| 4. The rooftops   | 3-2 Strikes (lightning columns); 2-2 Rooftop Rails also plays on the roofs                       |
+| 5. The hospital   | 3-2b City Hospital (flooded basement, two circuits, a race against the backup generator)         |
+| 6. The substation | 3-3 Substation (master breaker and the skyline bloom)                                            |
+| 7. Home           | 4-1 Ghar, then the finale                                                                        |
 
 Differences from the proposal, stated plainly:
 
 - **The substation is a puzzle room, not a boss fight.** The proposal's "storm's fire dragon" became the **storm
   dragon drawing**, an optional power-up that puts the storm to sleep, rather than an enemy. It fits a game where you
   never fight anyone.
-- The hospital is a short puzzle room with no backup timer; its stakes are carried by the radio and the wards.
 
 ## How we built it
 

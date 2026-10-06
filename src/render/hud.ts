@@ -45,11 +45,32 @@ export function drawHud(g: G, sim: RoomSim, lives: number, maxLives: number, obj
     g.fillText('storm asleep', W - 220, OY + 63);
     g.restore();
   }
+  let barY = sim.calmLeft > 0 ? OY + 84 : OY + 50;
+  if (sim.def.timer && sim.timeLeft > 0 && !sim.circuits.allPowered()) {
+    const k = sim.timeLeft / sim.def.timer;
+    const low = sim.timeLeft <= 10;
+    const blink = low && Math.floor(t * 4) % 2 === 1;
+    const secs = Math.ceil(sim.timeLeft);
+    g.save();
+    g.fillStyle = 'rgba(10,12,30,.6)';
+    g.fillRect(W - 230, barY, 200, 26);
+    g.fillStyle = blink ? '#fff' : low ? CSS.red : CSS.green;
+    g.fillRect(W - 226, barY + 4, 192 * k, 18);
+    g.strokeStyle = CSS.ink;
+    g.lineWidth = 2;
+    g.strokeRect(W - 226, barY + 4, 192, 18);
+    g.font = `700 13px ${FONTS.ui}`;
+    g.fillStyle = low ? '#fff' : CSS.ink;
+    g.textBaseline = 'middle';
+    g.fillText(`hospital backup ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`, W - 220, barY + 13);
+    g.restore();
+    barY += 34;
+  }
   if (!objective) return;
   g.save();
   g.font = `700 15px ${FONTS.ui}`;
   const w = g.measureText(objective).width + 20;
-  const y = sim.calmLeft > 0 ? OY + 92 : OY + 60;
+  const y = barY + 10;
   g.fillStyle = 'rgba(5,8,20,.62)';
   g.beginPath();
   g.roundRect(W - 16 - w, y - 13, w, 26, 8);
