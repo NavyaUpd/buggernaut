@@ -260,7 +260,8 @@ export function checkRoom(room: ParsedRoom): RoomCheck {
   });
 
   // exit must NOT be reachable in the dark (any breaker state), unless the exit is gated by logic
-  if (!def.gatedExit) {
+  // (rooms without circuits, like 2-3, are a pure traversal challenge and may be crossed in the dark)
+  if (!def.gatedExit && def.circuits.length > 0) {
     for (const waterLive of [initialWater, false]) {
       const dark = reachable(room, { powered: new Set(), bijli: false, waterLive, mode: 'optimistic' });
       if (room.exits.some((e) => touches(dark, e))) errors.push(`exit reachable in the dark (waterLive=${waterLive})`);
@@ -269,20 +270,28 @@ export function checkRoom(room: ParsedRoom): RoomCheck {
   // each circuit's splice + breaker reachable, given the earlier circuits are powered (water safe: breaker open)
   const poweredSoFar = new Set<string>();
   for (const c of def.circuits) {
-    const seen = reachable(room, { powered: new Set(poweredSoFar), bijli: hasD, waterLive: false, mode: 'conservative' });
+    // power-ups are optional: every splice and breaker must be reachable WITHOUT a drawing
+    const seen = reachable(room, { powered: new Set(poweredSoFar), bijli: false, waterLive: false, mode: 'conservative' });
     for (const s of c.splices) if (!touches(seen, s)) errors.push(`circuit ${c.id}: splice ${s.join(',')} unreachable`);
     if (c.breaker && !touches(seen, c.breaker)) errors.push(`circuit ${c.id}: breaker unreachable`);
     poweredSoFar.add(c.id);
   }
   // exit reachable once everything is powered (water live if its circuit is on)
   const waterOn = def.circuits.some((c) => c.water);
-  const litSeen = reachable(room, { powered: all, bijli: hasD, waterLive: waterOn, mode: 'conservative' });
+  const litSeen = reachable(room, { powered: all, bijli: false, waterLive: waterOn, mode: 'conservative' });
   if (!room.exits.some((e) => touches(litSeen, e))) errors.push('exit unreachable after power-on');
   // breakers must be reachable again to switch back on after splicing (no water while switching)
-  // BIJLI rooms can't be finished without the drawing
+  // a drawing must still be reachable without BIJLI (it is a choice, not a reward for already having it)
   if (hasD) {
-    const noD = reachable(room, { powered: all, bijli: false, waterLive: waterOn, mode: 'optimistic' });
-    if (room.exits.some((e) => touches(noD, e))) errors.push('exit reachable without the drawing');
+    const plain = reachable(room, { powered: new Set(), bijli: false, waterLive: initialWater, mode: 'conservative' });
+    for (const d of room.drawings) {
+      // a drawing may float up to a full jump (3 tiles) above where you can stand
+      const ok = [...plain].some((n) => {
+        const [kind, xs, ys] = n.split(',');
+        return kind === 's' && Math.abs(Number(xs) - d[0]) <= 1 && d[1] >= Number(ys) - 4 && d[1] <= Number(ys) + 1;
+      });
+      if (!ok) errors.push(`drawing at ${d.join(',')} unreachable`);
+    }
   }
   return { id: def.id, errors };
 }

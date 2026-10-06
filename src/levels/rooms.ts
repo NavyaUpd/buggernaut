@@ -6,6 +6,7 @@
 //   |  pole (climbable)          H  ladder (climbable)       X  splice point (climbable when it sits on a pole)
 //   B  breaker                   M  master breaker (3-3)     L  lamp head (marker; real data in `lamps`)
 //   P  spawn (exactly one)       E  exit                     D  Chinni's drawing (BIJLI power-up)
+//   Z  storm-dragon drawing (optional: Chinni draws the storm asleep, strikes pause for a while)
 //   n  Taar-Naag (live wire in the dark, bouncy snake in light)
 //   ~  water (deadly while its circuit's breaker is closed)
 //
@@ -20,6 +21,8 @@ export interface LampDef {
   circuit: string;
   /** 'house' = the window of Chinni's house in 4-1; 'ward' = a window of the hospital in 3-2b. */
   kind?: 'lamp' | 'house' | 'ward';
+  /** What the neighbours shout when this light comes back (speech bubble). */
+  cheer?: string;
 }
 
 export interface RailDef {
@@ -80,6 +83,8 @@ export interface RoomDef {
   dog?: Tile;
   /** Chinni's house (4-1), background prop in tiles. */
   house?: HouseDef;
+  /** One-line story beat / hint card shown on entry, after the caption (short, lowercase, Chinni or radio voice). */
+  beat?: string;
   /** Exit is inactive until every circuit is powered. */
   gatedExit?: boolean;
   /** 3-3: powering everything triggers the skyline bloom and ends the chapter. */
@@ -95,7 +100,7 @@ export const ROOMS: RoomDef[] = [
     panelCaption: 'meanwhile, in gali no. 4...',
     lightning: true,
     dog: [20, 18],
-    lamps: [{ at: [22, 13], r: 7, circuit: 'c1' }],
+    lamps: [{ at: [22, 13], cheer: 'light aa gayi! the whole lane is cheering!', r: 7, circuit: 'c1' }],
     rails: [],
     circuits: [{ id: 'c1', splices: [[12, 9]] }],
     strikes: [],
@@ -132,7 +137,7 @@ export const ROOMS: RoomDef[] = [
     panelCaption: 'and then, over the big drain...',
     lightning: true,
     firstFlash: 2.5,
-    lamps: [{ at: [20, 11], r: 8, circuit: 'c1' }],
+    lamps: [{ at: [20, 11], cheer: 'the chai stall is open again!', r: 8, circuit: 'c1' }],
     rails: [],
     circuits: [{ id: 'c1', splices: [[6, 10]] }],
     strikes: [],
@@ -167,8 +172,9 @@ export const ROOMS: RoomDef[] = [
     chapter: 1,
     caption: 'the wires in our lane go all the way across the sky.',
     panelCaption: 'zoom! across the gap...',
+    beat: 'radio: this line is still live, crew 7. isolate it before you touch it. over.',
     lightning: true,
-    lamps: [{ at: [20, 6], r: 12, circuit: 'c1' }],
+    lamps: [{ at: [20, 6], cheer: 'gali no. 4 is lit! thank you, crew 7!', r: 12, circuit: 'c1' }],
     rails: [{ a: [9, 8], b: [31, 8], circuit: 'c1' }],
     circuits: [{ id: 'c1', splices: [[9, 8]], breaker: [5, 18], closed: true }],
     strikes: [],
@@ -203,9 +209,10 @@ export const ROOMS: RoomDef[] = [
     chapter: 2,
     caption: 'the scary wire is really a snake. a silly snake.',
     panelCaption: 'meanwhile, in the bazaar...',
+    beat: 'radio: a live wire fell in the bazaar lane. nobody goes near it. over.',
     lightning: true,
     dog: [19, 18],
-    lamps: [{ at: [23, 12], r: 8, circuit: 'c1' }],
+    lamps: [{ at: [23, 12], cheer: 'the medicine shop fridge is cold again!', r: 8, circuit: 'c1' }],
     rails: [],
     circuits: [{ id: 'c1', splices: [[8, 10]] }],
     strikes: [],
@@ -242,8 +249,8 @@ export const ROOMS: RoomDef[] = [
     panelCaption: 'high above the shops...',
     lightning: true,
     lamps: [
-      { at: [13, 6], r: 8, circuit: 'cA' },
-      { at: [30, 8], r: 6, circuit: 'cB' },
+      { at: [13, 6], cheer: 'the tailor can see his needle again!', r: 8, circuit: 'cA' },
+      { at: [30, 8], cheer: 'the bakery ovens are back on!', r: 6, circuit: 'cB' },
     ],
     rails: [{ a: [6, 9], b: [20, 9], circuit: 'cA' }],
     circuits: [
@@ -282,6 +289,7 @@ export const ROOMS: RoomDef[] = [
     chapter: 2,
     caption: 'i drew you a cape. now you have powers.',
     panelCaption: 'BIJLI to the rescue!',
+    beat: 'these wires are dead. jump the pillars, or grab my drawing and ride them!',
     lightning: true,
     lamps: [],
     rails: [
@@ -303,16 +311,16 @@ export const ROOMS: RoomDef[] = [
       '....................|...................', //  9
       '....................|...................', // 10
       '......|.............|.............|.....', // 11
-      '......|.............|.............|.....', // 12
+      '....D.|.............|.............|.....', // 12
       '......|.............|.............|.....', // 13
       '......|.............|.............|.....', // 14
       '......|.............#.............|.....', // 15
-      '......|.............#.............|.....', // 16
-      '....D.|.............#.............|....E', // 17
-      '..P...|.............#.............|.nn.E', // 18
-      '########............#............#######', // 19
-      '########............#............#######', // 20
-      '########............#............#######', // 21
+      '....##|........#....#....#........|.....', // 16
+      '....##|....#...#....#....#...#....|....E', // 17
+      '..P.##|....#...#....#....#...#....|.nn.E', // 18
+      '########...#...#....#....#...#...#######', // 19
+      '########...#...#....#....#...#...#######', // 20
+      '########...#...#....#....#...#...#######', // 21
     ],
   },
   {
@@ -321,8 +329,9 @@ export const ROOMS: RoomDef[] = [
     chapter: 3,
     caption: 'the underpass is a river tonight.',
     panelCaption: 'meanwhile, under the bridge...',
+    beat: 'radio: the underpass is flooded and its line is live. switch it off before the water. over.',
     lightning: true,
-    lamps: [{ at: [22, 8], r: 8, circuit: 'c1' }],
+    lamps: [{ at: [22, 8], cheer: 'the pumps are draining the underpass!', r: 8, circuit: 'c1' }],
     rails: [],
     circuits: [{ id: 'c1', splices: [[18, 14]], breaker: [8, 12], closed: true, water: true }],
     strikes: [],
@@ -357,8 +366,9 @@ export const ROOMS: RoomDef[] = [
     chapter: 3,
     caption: 'the sky is throwing lightning. bijli is not scared.',
     panelCaption: 'KRAKOOM went the sky...',
+    beat: 'radio: the hospital is next door, crew 7. its backup is running low. over.',
     lightning: true,
-    lamps: [{ at: [26, 9], r: 7, circuit: 'c1' }],
+    lamps: [{ at: [26, 9], cheer: 'the ambulance bay is lit!', r: 7, circuit: 'c1' }],
     rails: [],
     circuits: [{ id: 'c1', splices: [[24, 14]] }],
     strikes: [
@@ -379,13 +389,13 @@ export const ROOMS: RoomDef[] = [
       '..........................L.............', //  9
       '.......................................E', // 10
       '.......................................E', // 11
-      '.................................#######', // 12
+      '.....Z...........................#######', // 12
       '.............................cc..#######', // 13
       '........................X........#######', // 14
       '........................|........#######', // 15
-      '........................|..cc....#######', // 16
-      '........................|........#######', // 17
-      '..P..........n..........|........#######', // 18
+      '.....##.................|..cc....#######', // 16
+      '.....##.................|........#######', // 17
+      '..P..##......n..........|........#######', // 18
       '########################################', // 19
       '########################################', // 20
       '########################################', // 21
@@ -397,14 +407,15 @@ export const ROOMS: RoomDef[] = [
     chapter: 3,
     caption: 'the hospital is dark too. the doctors are using torches.',
     panelCaption: 'and the night shift cheers!',
+    beat: 'radio: the hospital backup has minutes left. corridor first, then the wards. over.',
     lightning: true,
     firstFlash: 3,
     gatedExit: true,
     house: { x: 30, y: 2, w: 10, h: 9, style: 'hospital' },
     lamps: [
-      { at: [21, 8], r: 9, circuit: 'c1' },
-      { at: [34, 4], r: 5, circuit: 'c2', kind: 'ward' },
-      { at: [37, 4], r: 5, circuit: 'c2', kind: 'ward' },
+      { at: [21, 8], r: 9, circuit: 'c1', cheer: 'the corridor lights are back!' },
+      { at: [34, 4], r: 5, circuit: 'c2', kind: 'ward', cheer: 'the ward is warm again. the babies are sleeping.' },
+      { at: [37, 4], r: 5, circuit: 'c2', kind: 'ward', cheer: 'the ward is warm again. the babies are sleeping.' },
     ],
     rails: [],
     circuits: [
@@ -434,7 +445,7 @@ export const ROOMS: RoomDef[] = [
       '##########H~~~~~|~~~~~~~~~~~~~##########', // 18
       '##########H~~~~~|~~~~~~~~~~~~~##########', // 19
       '########################################', // 20
-      '########################################' // 21
+      '########################################', // 21
     ],
   },
   {
@@ -443,11 +454,12 @@ export const ROOMS: RoomDef[] = [
     chapter: 3,
     caption: 'this is the big one. the whole city is waiting.',
     panelCaption: 'and the whole city lit up!',
+    beat: 'radio: last one, crew 7. bring the substation back and the city comes back. over.',
     lightning: true,
     skyline: true,
     gatedExit: true,
     lamps: [
-      { at: [23, 8], r: 7, circuit: 'c1' },
+      { at: [23, 8], cheer: 'the whole city is coming back!', r: 7, circuit: 'c1' },
       { at: [34, 8], r: 6, circuit: 'c1' },
     ],
     rails: [{ a: [7, 10], b: [20, 8] }],
@@ -466,16 +478,16 @@ export const ROOMS: RoomDef[] = [
       '....................|......X............', //  9
       '.......|............|......|............', // 10
       '.......|............|......|............', // 11
-      '.......|............|......|............', // 12
-      '.......|............|..D...|...........E', // 13
+      '....D..|............|......|............', // 12
+      '.......|............|..Z...|...........E', // 13
       '.......|............|......|...M.......E', // 14
-      '.......|...........#####################', // 15
-      '.......|...........#####################', // 16
-      '....D..|...........#####################', // 17
-      '..P....|...........#####################', // 18
-      '########...........#####################', // 19
-      '########...........#####################', // 20
-      '########...........#####################', // 21
+      '.......|.......#...#####################', // 15
+      '.......|.......#...#####################', // 16
+      '....##.|...#...#...#####################', // 17
+      '..P.##.|...#...#...#####################', // 18
+      '########...#...#...#####################', // 19
+      '########...#...#...#####################', // 20
+      '########...#...#...#####################', // 21
     ],
   },
   {
@@ -488,7 +500,7 @@ export const ROOMS: RoomDef[] = [
     rain: 0.45,
     gatedExit: true,
     house: { x: 27, y: 11, w: 10, h: 8 },
-    lamps: [{ at: [31, 14], r: 7, circuit: 'c1', kind: 'house' }],
+    lamps: [{ at: [31, 14], cheer: "you're home! you're home!", r: 7, circuit: 'c1', kind: 'house' }],
     rails: [],
     circuits: [{ id: 'c1', splices: [[12, 11]] }],
     strikes: [],

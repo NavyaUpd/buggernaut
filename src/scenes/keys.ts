@@ -1,6 +1,7 @@
 export const SCENES = {
   Boot: 'Boot',
   Title: 'Title',
+  Intro: 'Intro',
   ChapterCard: 'ChapterCard',
   Room: 'Room',
   Phone: 'Phone',

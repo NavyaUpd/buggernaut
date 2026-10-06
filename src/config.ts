@@ -130,10 +130,17 @@ export const LIGHTNING = {
 } as const;
 
 /** Strike columns (§6.7). */
-export const STRIKE = { cycle: 3.6, telegraph: 1.2, strike: 0.25, offsets: [0, 1.2, 2.4] } as const;
+// cycle 4.6 s (was 3.6): playtest said the storm rooms were too punishing; quiet window is now 3.15 s
+export const STRIKE = { cycle: 4.6, telegraph: 1.2, strike: 0.25, offsets: [0, 1.5, 3.0] } as const;
 
 /** Chinni's drawing power-up (§6.6). */
-export const BIJLI = { duration: 8, warn: 2, drawingRespawn: 10 } as const;
+export const BIJLI = { duration: 8, warn: 2, drawingRespawn: 10, glideFall: 150 } as const;
+
+/** Storm-dragon drawing: the storm sleeps (no strikes, no lightning, light rain). */
+export const CALM = { duration: 8, warn: 2, respawn: 12 } as const;
+
+/** Lives (helmets) per chapter. Losing them all resets the current room. */
+export const LIVES = { perChapter: 3 } as const;
 
 export const DARKNESS = { alpha: 0.78, headlampDeg: 35, headlampLen: 320 } as const;
 

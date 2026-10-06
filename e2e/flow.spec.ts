@@ -10,6 +10,10 @@ test('title → card → room → skip via pause → chapter end → phone → c
   await page.waitForFunction(() => window.__bijli?.ready === true);
   await expect.poll(() => scenes(page)).toContain('Title');
   await page.keyboard.press('x');
+  await expect.poll(() => scenes(page)).toContain('Intro');
+  await page.waitForTimeout(1500);
+  await page.screenshot({ path: 'e2e/__screenshots__/intro.png' });
+  await page.keyboard.press('Escape');
   await expect.poll(() => scenes(page)).toContain('ChapterCard');
   await page.waitForTimeout(1200);
   await page.screenshot({ path: 'e2e/__screenshots__/card-1.png' });

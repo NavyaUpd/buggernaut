@@ -8,13 +8,25 @@ export function bot(roomId: string) {
   const step = (n: number, inp: Partial<SimInput> = {}) => {
     for (let i = 0; i < n; i++) sim.update(dt, { ...NO_INPUT, ...inp });
   };
-  const walkTo = (x: number) => {
+  const walkTo = (x: number, settle = false) => {
     let n = 0;
     while (Math.abs(sim.p.x - x) > 6 && n++ < 900) {
       const r = x > sim.p.x;
       const stuck = sim.p.ground && Math.abs(sim.p.vx) < 1 && n > 2;
       step(1, { right: r, left: !r, jumpPressed: stuck, jumpHeld: true });
     }
+    let k = 0;
+    while (!sim.p.ground && !sim.p.climb && !sim.p.grind && !sim.dying && k++ < 90) step(1);
+    // settle: correct the drift from landing momentum with small taps
+    let m = 0;
+    while (settle && sim.p.ground && Math.abs(sim.p.x - x) > 6 && m++ < 60) step(1, { right: x > sim.p.x, left: x < sim.p.x });
+    if (settle) step(8);
+  };
+  /** Climb onto the crate next to the start and jump straight up into the floating drawing. */
+  const grabDrawing = (crateX: number) => {
+    walkTo(crateX);
+    step(1, { jumpPressed: true, jumpHeld: true });
+    step(40, { jumpHeld: true });
   };
   const hop = (tx: number) => {
     step(1, { jumpPressed: true, jumpHeld: true });
@@ -33,7 +45,7 @@ export function bot(roomId: string) {
     step(1, { interact: true, interactPressed: true });
     step(2);
   };
-  return { sim, step, walkTo, hop, climb, holdE, tapE };
+  return { sim, step, walkTo, hop, climb, holdE, tapE, grabDrawing };
 }
 
 export const X = (tx: number) => tx * 32 + 16;

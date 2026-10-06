@@ -72,3 +72,34 @@ export const CREDITS = {
 } as const;
 
 export const SAFETY_NOTE = FINALE.endCard[1];
+
+/** First-time hint cards: shown once per run, the first time a room contains the thing. Short, with the key. */
+export const HINTS: Record<string, { title: string; text: string }> = {
+  move: { title: 'CREW 7', text: 'A / D to walk · Space to jump · find the broken cable and fix it' },
+  splice: { title: 'BROKEN CABLE', text: 'the feeder is switched off, so this line is dead and safe. climb up (W) and hold E to twist it' },
+  breaker: { title: 'LIVE LINE', text: 'sparks mean this cable is still live. tap E at its breaker: OFF, splice, then ON again' },
+  rail: { title: 'LIVE WIRE RAIL', text: 'a powered, lit wire is a rail. stand on the pole top and walk toward the other pole' },
+  snake: { title: 'TAAR-NAAG', text: 'a fallen live wire kills in the dark. light it up and it becomes a snake you can bounce on' },
+  drawing: { title: "CHINNI'S DRAWING", text: 'optional! grab it to become BIJLI for 8 s: double jump · hold Space to glide with the cape · ride ANY wire · nothing can hurt you' },
+  water: { title: 'FLOODED', text: 'water is deadly while its breaker is ON. switch it OFF before you wade in' },
+  strike: { title: 'LIGHTNING STRIKES', text: 'watch the glow on the ground. it strikes when the ring closes, then waits. move between strikes' },
+  dragon: { title: 'STORM DRAGON', text: 'optional! Chinni draws the storm dragon asleep: no strikes, no lightning for 8 s' },
+  lives: { title: 'HELMETS', text: '3 helmets per chapter. lose them all and this street resets. splices you made stay when you lose one' },
+};
+
+/** The live objective line (top right). */
+export const OBJECTIVE = {
+  splice: 'fix the broken cable (hold E)',
+  breakerOff: 'switch its breaker OFF first (E)',
+  waterOff: 'switch the breaker OFF before the water',
+  breakerOn: 'switch the breaker back ON (E)',
+  exit: 'head for the exit →',
+  door: 'go home →',
+  cross: 'get across. the drawing is optional',
+  skyline: 'close the master breaker (E)',
+} as const;
+
+export const LIVES_TEXT = {
+  lost: 'HELMET LOST',
+  reset: 'out of helmets. the street resets.',
+} as const;

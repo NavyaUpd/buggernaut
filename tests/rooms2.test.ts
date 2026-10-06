@@ -72,7 +72,7 @@ describe('headless playthroughs', () => {
     // the snake at the end of the roof is lit now: walk into it and BOING up to the cloud
     b.step(1, { right: true });
     let n = 0;
-    while (!(b.sim.p.ground && b.sim.p.y === FEET(11)) && n++ < 200) b.step(1, { right: true, jumpHeld: true });
+    while (!(b.sim.p.ground && b.sim.p.y === FEET(11)) && n++ < 200) b.step(1, { right: b.sim.p.x < 1010, jumpHeld: true });
     expect(b.sim.dying).toBeNull();
     expect(b.sim.p.y).toBe(FEET(11));
     b.hop(1150);
@@ -92,7 +92,7 @@ describe('headless playthroughs', () => {
 
   it('2-3 Chinni\'s Drawing: BIJLI grinds two dead wires', () => {
     const b = bot('2-3');
-    b.walkTo(X(4));
+    b.grabDrawing(X(4));
     expect(b.sim.bijli.active).toBe(true);
     b.walkTo(X(6));
     b.climb(110);
@@ -111,7 +111,7 @@ describe('headless playthroughs', () => {
   it('2-3: once BIJLI ends the snake is deadly; it can be jumped', () => {
     const run = (jump: boolean) => {
       const b = bot('2-3');
-      b.walkTo(X(4));
+      b.grabDrawing(X(4));
       b.walkTo(X(6));
       b.climb(110);
       b.step(1, { right: true });
@@ -207,9 +207,9 @@ describe('headless playthroughs', () => {
 
   it('3-3 Substation: drawing → grind → drawing → splice in the strike → master breaker → skyline', () => {
     const b = bot('3-3');
-    b.walkTo(X(4));
+    b.grabDrawing(X(4));
     expect(b.sim.bijli.active).toBe(true);
-    b.walkTo(X(7));
+    b.walkTo(X(7), true);
     b.climb(110);
     b.step(1, { right: true });
     expect(b.sim.p.grind).not.toBeNull();

@@ -77,9 +77,9 @@ describe('strike timing', () => {
     expect(strikePhase(STRIKE.cycle + 1.3, 0).state).toBe('strike');
   });
   it('columns are offset 0 / 1.2 / 2.4 s in listed order', () => {
-    expect([0, 1, 2].map(strikeOffset)).toEqual([0, 1.2, 2.4]);
-    expect(strikePhase(1.3 + 1.2, strikeOffset(1)).state).toBe('strike');
-    expect(strikePhase(1.3 + 2.4, strikeOffset(2)).state).toBe('strike');
+    expect([0, 1, 2].map(strikeOffset)).toEqual([...STRIKE.offsets]);
+    expect(strikePhase(1.3 + STRIKE.offsets[1], strikeOffset(1)).state).toBe("strike");
+    expect(strikePhase(1.3 + STRIKE.offsets[2], strikeOffset(2)).state).toBe("strike");
   });
   it('BIJLI lasts 8 s', () => {
     const b = new BijliTimer();

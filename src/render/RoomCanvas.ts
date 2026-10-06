@@ -6,6 +6,7 @@ import type { RoomSim } from '../game/RoomSim';
 import { bakeRoom, type Layers } from './bake';
 import { bubble, caption, comicText, ctx2d, drawCrayon, H, keyPrompt, mk, OY, quadPath, T, tipBubble, W, type G } from './draw';
 import { drawHero, HERO_CANVAS } from './hero';
+import { drawDragonPickups, drawExitArrow, drawHintCard, drawHud, drawSleepingDragon } from './hud';
 import {
   drawBreakers,
   drawClouds,
@@ -39,6 +40,9 @@ export interface RenderOpts {
   noHero?: boolean;
   /** Hide captions/prompts (title screen). */
   noUi?: boolean;
+  /** Helmets left / per chapter (HUD). */
+  lives?: number;
+  maxLives?: number;
 }
 
 export class RoomCanvas {
@@ -411,6 +415,7 @@ export class RoomCanvas {
       }
     });
 
+    drawSleepingDragon(ctx, sim, t);
     // ───────── hero + FX ─────────
     if (!opts.noHero) {
       const dying = sim.dying;
@@ -450,7 +455,7 @@ export class RoomCanvas {
       ctx.stroke();
     }
     ctx.globalAlpha = 1;
-    this.drawRain(ctx, sim, dt, opts.rainScale * (sim.def.rain ?? 1));
+    this.drawRain(ctx, sim, dt, opts.rainScale * (sim.def.rain ?? 1) * (sim.calmLeft > 0 ? 0.3 : 1));
     ctx.save();
     ctx.globalAlpha = 0.9;
     ctx.drawImage(L.fg, -100 - par * 60 + Math.sin(t * 0.9) * 4 * sim.wind, 0);
@@ -464,6 +469,7 @@ export class RoomCanvas {
       ctx.fillStyle = `rgba(235,242,255,${(sim.flash / 0.12) * 0.75})`;
       ctx.fillRect(0, 0, W, H);
     }
+    drawExitArrow(ctx, sim, t);
     for (const s of sim.stamps) {
       const k = Math.min(1, s.t / 0.12);
       const sc = (k < 1 ? 1.6 - 0.6 * k : 1) * (s.t > s.life - 0.2 ? Math.max(0, 1 - (s.t - (s.life - 0.2)) * 5) : 1);
@@ -478,6 +484,9 @@ export class RoomCanvas {
     if (!opts.noUi) {
       const cap = sim.captions.find((c) => c.t >= 0);
       if (cap) caption(ctx, cap.text, cap.t, cap.dur);
+      const card = sim.hintCards.find((c) => c.t >= 0);
+      if (card && !sim.done) drawHintCard(ctx, card);
+      if (opts.lives !== undefined) drawHud(ctx, sim, opts.lives, opts.maxLives ?? 3, sim.objective(), t);
     }
     // respawn: cyan flash, then fade
     if (sim.respawnFlash > 0) {
@@ -536,6 +545,7 @@ export class RoomCanvas {
     drawBreakers(g, sim, comic, t);
     drawSnakes(g, sim, comic, t);
     drawDrawings(g, sim, comic, t, this.drawingImg);
+    drawDragonPickups(g, sim, t);
     drawStrikes(g, sim, comic, t);
   }
 

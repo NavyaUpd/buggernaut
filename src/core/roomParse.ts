@@ -60,6 +60,8 @@ export interface ParsedRoom {
   splices: Tile[];
   breakers: Tile[];
   drawings: Tile[];
+  /** Z: the storm-dragon drawing (calms the storm for a while). */
+  dragons: Tile[];
   snakes: SnakeDef[];
   poles: PoleRun[];
   lamps: ParsedLamp[];
@@ -91,6 +93,7 @@ export function parseRoom(def: RoomDef): ParsedRoom {
   const splices: Tile[] = [];
   const breakers: Tile[] = [];
   const drawings: Tile[] = [];
+  const dragons: Tile[] = [];
   const waterCells: Tile[] = [];
   const snakes: SnakeDef[] = [];
   const lampMarks: Tile[] = [];
@@ -102,6 +105,7 @@ export function parseRoom(def: RoomDef): ParsedRoom {
       else if (c === 'X') splices.push([x, y]);
       else if (c === 'B' || c === 'M') breakers.push([x, y]);
       else if (c === 'D') drawings.push([x, y]);
+      else if (c === 'Z') dragons.push([x, y]);
       else if (c === 'L') lampMarks.push([x, y]);
       if (water(x, y)) waterCells.push([x, y]);
       if (c === 'n' && raw(x - 1, y) !== 'n') {
@@ -201,6 +205,7 @@ export function parseRoom(def: RoomDef): ParsedRoom {
     splices,
     breakers,
     drawings,
+    dragons,
     snakes,
     poles,
     lamps,

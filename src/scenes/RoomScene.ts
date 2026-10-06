@@ -2,7 +2,9 @@
 import Phaser from 'phaser';
 import { audio } from '../audio';
 import { endsChapter, goNext, nextStep } from '../game/RoomFlow';
-import { RoomSim, type SimInput } from '../game/RoomSim';
+import { RoomSim, runLives, type SimInput } from '../game/RoomSim';
+import { LIVES } from '../config';
+import { LIVES_TEXT } from '../story/script';
 import { input, settings } from '../input';
 import { ROOM_BY_ID, ROOMS } from '../levels/rooms';
 import { RoomCanvas } from '../render/RoomCanvas';
@@ -45,6 +47,8 @@ export class RoomScene extends Phaser.Scene {
   private leaving = 0; // seconds into the leave sequence
   private finaleT = -1;
   private rainScale = 1;
+  private countedDeaths = 0;
+  private resetPending = false;
 
   constructor() {
     super(SCENES.Room);
@@ -68,6 +72,11 @@ export class RoomScene extends Phaser.Scene {
     this.roomId = id;
     const def = ROOM_BY_ID[id]!;
     this.sim = new RoomSim(def);
+    this.countedDeaths = 0;
+    if (runLives.chapter !== def.chapter) {
+      runLives.chapter = def.chapter;
+      runLives.lives = LIVES.perChapter;
+    }
     this.leaving = 0;
     this.finaleT = -1;
     this.rainScale = 1;
@@ -105,12 +114,29 @@ export class RoomScene extends Phaser.Scene {
     const sim = this.sim;
     const t0 = performance.now();
     sim.update(dt, readInput());
+    if (sim.deaths > this.countedDeaths) {
+      this.countedDeaths = sim.deaths;
+      runLives.lives = Math.max(0, runLives.lives - 1);
+      sim.stamps.push({ text: LIVES_TEXT.lost, x: 1280 - 140, y: 100, t: 0, rot: -0.06, fill: '#ff3b30', size: 30, life: 1.4 });
+      sim.hintOnce('lives');
+      if (runLives.lives === 0) this.resetPending = true;
+    }
+    if (this.resetPending && !sim.dying) {
+      // out of helmets: this street starts over (splices + breakers reset), helmets refill
+      this.resetPending = false;
+      runLives.lives = LIVES.perChapter;
+      this.loadRoom(this.roomId, false);
+      this.sim.captions.unshift({ text: LIVES_TEXT.reset, t: 0, dur: 3 });
+      return;
+    }
     if (sim.done) this.updateLeave(dt);
     const t1 = performance.now();
     roomCanvas().render(dt, {
       reduceFlashing: settings.reduceFlashing,
       restored: sim.done && endsChapter(this.roomId) && this.roomId !== '4-1',
       rainScale: this.rainScale,
+      lives: runLives.lives,
+      maxLives: LIVES.perChapter,
     });
     const t2 = performance.now();
     this.tex.refresh();

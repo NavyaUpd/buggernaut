@@ -1,12 +1,12 @@
 // One room's game state + rules (§5, §6). No Phaser, no DOM: driven by RoomScene, read by RoomCanvas.
 import { audio } from '../audio';
-import { BIJLI, BREAKER, LIGHTNING, PLAYER, RAIL, SEQ, SPLICE, VIEW } from '../config';
+import { BIJLI, BREAKER, CALM, LIVES, LIGHTNING, PLAYER, RAIL, SEQ, SPLICE, VIEW } from '../config';
 import { Circuits } from '../core/circuits';
 import { ease, inQuad, wipeX } from '../core/geom';
 import { parseRoom, poleAt, type ParsedRail, type ParsedRoom, type PoleRun } from '../core/roomParse';
 import { BijliTimer, strikeOffset, strikePhase } from '../core/timers';
 import type { RoomDef, Tile } from '../levels/rooms';
-import { GAME_TEXT } from '../story/script';
+import { GAME_TEXT, HINTS, OBJECTIVE } from '../story/script';
 
 const T = VIEW.tile;
 const OY = VIEW.offsetY;
@@ -93,6 +93,7 @@ export interface Player {
   hurt: number;
   celebrate: number;
   bounceCd: number;
+  gliding?: boolean;
 }
 
 export interface LampState {
@@ -103,6 +104,9 @@ export interface LampState {
 }
 
 export type Death = 'pit' | 'snake' | 'water' | 'strike';
+
+/** Helmets carried through a chapter (RoomScene owns the rules; kept here so a new run can reset it). */
+export const runLives = { chapter: 0, lives: LIVES.perChapter as number };
 
 export class RoomSim {
   readonly room: ParsedRoom;
@@ -117,6 +121,9 @@ export class RoomSim {
   static hintShown = { climb: 0, jump: 0, grind: 0 };
   /** Forget everything that is "once per game" (called when a new game starts from the title). */
   static resetRun(): void {
+    RoomSim.seenHints.clear();
+    runLives.chapter = 0;
+    runLives.lives = LIVES.perChapter;
     RoomSim.tipShown = false;
     RoomSim.firstBloomSeen = false;
     RoomSim.hintDone = { climb: false, jump: false, grind: false };
@@ -159,6 +166,15 @@ export class RoomSim {
   doneT = 0;
   prompt: { text: string; x: number; y: number; progress: number } | null = null;
   hum = 0;
+  /** Storm-dragon calm: seconds left (strikes + ambient lightning paused, light rain). */
+  calmLeft = 0;
+  dragons: { at: Tile; taken: boolean; respawn: number }[] = [];
+  /** Deaths in this room (RoomScene turns them into lost helmets). */
+  deaths = 0;
+  /** Queued first-time hint cards (shown one at a time by the renderer). */
+  hintCards: { title: string; text: string; t: number; life: number }[] = [];
+  /** Hint ids already shown this run. */
+  static seenHints = new Set<string>();
   lightAtFeet = 0;
   wasComic = false;
 
@@ -183,6 +199,51 @@ export class RoomSim {
     this.p = this.freshPlayer();
     this.nextBolt = def.firstFlash ?? LIGHTNING.firstAt;
     this.captions.push({ text: def.caption, t: -0.4, dur: 3 });
+    this.dragons = this.room.dragons.map((at) => ({ at, taken: false, respawn: 0 }));
+    if (def.beat) this.captions.push({ text: def.beat, t: -3.4, dur: 3.6 });
+    // first-time hint cards for whatever this room introduces
+    const r = this.room;
+    const wants: string[] = [];
+    if (def.id === '1-1') wants.push('move', 'splice');
+    if (def.circuits.some((c) => c.breaker && !c.water && !c.master)) wants.push('breaker');
+    if (r.rails.some((x) => x.circuit !== null)) wants.push('rail');
+    if (r.snakes.length) wants.push('snake');
+    if (r.drawings.length) wants.push('drawing');
+    if (r.waterCells.length) wants.push('water');
+    if (def.strikes.length) wants.push('strike');
+    if (r.dragons.length) wants.push('dragon');
+    let delay = def.beat ? 7 : 3.2;
+    for (const id of wants) {
+      if (RoomSim.seenHints.has(id) || !HINTS[id]) continue;
+      RoomSim.seenHints.add(id);
+      this.hintCards.push({ ...HINTS[id]!, t: this.hintCards.length ? -0.5 : -delay, life: 6.5 });
+      delay = 0;
+    }
+  }
+
+  /** Show a one-off hint card now (e.g. the helmets card on the first death). */
+  hintOnce(id: string): void {
+    if (RoomSim.seenHints.has(id) || !HINTS[id]) return;
+    RoomSim.seenHints.add(id);
+    this.hintCards.unshift({ ...HINTS[id]!, t: 0, life: 6.5 });
+  }
+
+  /** What to do next, in a few words (top-right objective line). */
+  objective(): string {
+    if (this.done) return '';
+    for (const c of this.def.circuits) {
+      if (this.circuits.powered(c.id)) continue;
+      const closed = this.circuits.isClosed(c.id);
+      if (!this.circuits.complete(c.id)) {
+        if (c.breaker && closed) return c.water ? OBJECTIVE.waterOff : OBJECTIVE.breakerOff;
+        return OBJECTIVE.splice;
+      }
+      if (c.breaker && !closed) return c.master ? OBJECTIVE.skyline : OBJECTIVE.breakerOn;
+      return '';
+    }
+    if (!this.def.circuits.length) return OBJECTIVE.cross;
+    if (this.def.skyline) return '';
+    return this.def.gatedExit ? OBJECTIVE.door : OBJECTIVE.exit;
   }
 
   private freshPlayer(): Player {
@@ -273,6 +334,7 @@ export class RoomSim {
     return this.circuits.allPowered() && this.room.lamps.every((_, i) => this.lampLit(i));
   }
   strikeStates() {
+    if (this.calmLeft > 0) return this.def.strikes.map((s) => ({ ...s, state: 'quiet' as const, k: 0.5, local: 2 }));
     return this.def.strikes.map((s, i) => ({ ...s, ...strikePhase(this.strikeT, strikeOffset(i)) }));
   }
 
@@ -439,7 +501,9 @@ export class RoomSim {
     // gravity
     let g = PLAYER.gravity;
     if (Math.abs(p.vy) < PLAYER.halfGravThreshold && jumpHeld) g *= 0.5;
-    p.vy = Math.min(inp.down ? PLAYER.fastMaxFall : PLAYER.maxFall, p.vy + g * dt);
+    const glide = this.bijli.active && jumpHeld && p.vy > 0 && !inp.down;
+    p.vy = Math.min(glide ? BIJLI.glideFall : inp.down ? PLAYER.fastMaxFall : PLAYER.maxFall, p.vy + g * dt);
+    p.gliding = glide;
     if (p.varJ > 0) {
       if (jumpHeld) p.vy = Math.min(p.vy, -p.varSpeed);
       else p.varJ = 0;
@@ -859,7 +923,7 @@ export class RoomSim {
             const same = this.room.lamps.filter((o) => o.circuit === l.circuit);
             const near = same.reduce((a, o) => (Math.abs(o.hx - this.p.x) < Math.abs(a.hx - this.p.x) ? o : a), l);
             const bx = Math.min(W - 160, Math.max(160, near.hx + 40));
-            this.bubbles.push({ text: GAME_TEXT.powered, x: bx, y: Math.max(70, near.hy - 120), t: 0, life: 2.8 });
+            this.bubbles.push({ text: this.def.lamps[near.idx]?.cheer ?? GAME_TEXT.powered, x: bx, y: Math.max(70, near.hy - 120), t: 0, life: 2.8 });
             same.forEach((o) => (this.lamps[o.idx]!.bubbled = true));
             bubbleDone = true;
           }
@@ -885,6 +949,38 @@ export class RoomSim {
     const ev = this.bijli.update(dt);
     if (ev === 'tick') audio.sfx.tick();
     if (ev === 'ended') this.endBijli(true);
+    if (this.calmLeft > 0) {
+      const before = this.calmLeft;
+      this.calmLeft = Math.max(0, this.calmLeft - dt);
+      if (this.calmLeft <= CALM.warn && Math.floor(before * 4) !== Math.floor(this.calmLeft * 4)) audio.sfx.tick();
+      if (this.calmLeft === 0) {
+        // the storm wakes: restart the strike cycle so every column telegraphs fully first
+        this.strikeT = 0;
+        audio.setRain(this.def.rain ?? 1, 1.5);
+        audio.sfx.rumble();
+        this.stamps.push({ text: 'RAWR...', x: W / 2, y: 110, t: 0, rot: -0.05, fill: '#b69cff', size: 46, life: 1.2 });
+      }
+    }
+    for (const d of this.dragons) {
+      if (d.taken) {
+        d.respawn -= dt;
+        if (d.respawn <= 0) d.taken = false;
+        continue;
+      }
+      const cx = d.at[0] * T + 16;
+      const cy = d.at[1] * T + OY + 16;
+      const p = this.p;
+      if (Math.abs(p.x - cx) < PLAYER.hitbox.w / 2 + 16 && p.y > cy - 20 && p.y - PLAYER.hitbox.h < cy + 20) {
+        d.taken = true;
+        d.respawn = CALM.respawn;
+        this.calmLeft = CALM.duration;
+        audio.setRain(0.25, 1);
+        audio.sfx.bijliPickup();
+        this.stamps.push({ text: 'ZZZ...', x: p.x, y: p.y - 90, t: 0, rot: 0.06, fill: '#b69cff', size: 48, life: 1.2 });
+        for (let i = 0; i < 24; i++)
+          this.stars.push({ x: cx, y: cy, vx: (rnd() - 0.5) * 420, vy: (rnd() - 0.8) * 380, t: 0.6, c: i % 2 ? '#b69cff' : '#ffffff' });
+      }
+    }
     for (const d of this.drawings) {
       if (d.taken) {
         d.respawn -= dt;
@@ -973,6 +1069,7 @@ export class RoomSim {
 
   private die(cause: Death): void {
     if (this.dying) return;
+    this.deaths++;
     this.dying = { t: 0, cause };
     this.respawnFlash = 1;
     this.shake = Math.max(this.shake, cause === 'pit' ? 0 : 4);
@@ -992,9 +1089,14 @@ export class RoomSim {
     this.p = this.freshPlayer();
     this.cancelSplice();
     this.endBijli(false);
-    for (const d of this.drawings) {
+    for (const d of [...this.drawings, ...this.dragons]) {
       d.taken = false;
       d.respawn = 0;
+    }
+    if (this.calmLeft > 0) {
+      this.calmLeft = 0;
+      this.strikeT = 0;
+      audio.setRain(this.def.rain ?? 1, 1);
     }
     audio.sfx.respawn();
   }
@@ -1015,6 +1117,7 @@ export class RoomSim {
     // strike column sfx
     const prev = this.def.strikes.map((_, i) => strikePhase(this.strikeT - dt, strikeOffset(i)).state);
     this.def.strikes.forEach((s, i) => {
+      if (this.calmLeft > 0) return;
       const now = strikePhase(this.strikeT, strikeOffset(i)).state;
       if (now === prev[i]) return;
       if (now === 'telegraph') audio.sfx.strikeTelegraph();
@@ -1027,7 +1130,7 @@ export class RoomSim {
         for (let k = 0; k < 14; k++) this.sparks.push({ x: cx, y: 600, vx: (rnd() - 0.5) * 500, vy: -rnd() * 400, t: 0.45 });
       }
     });
-    if (!this.def.lightning) {
+    if (!this.def.lightning || this.calmLeft > 0) {
       this.telegraph = 0;
       return;
     }
@@ -1135,6 +1238,9 @@ export class RoomSim {
     for (const b of this.bubbles) b.t += dt;
     this.bubbles = this.bubbles.filter((b) => b.t < b.life);
     for (const c of this.captions) c.t += dt;
+    // one card at a time: only the head of the queue advances
+    if (this.hintCards[0]) this.hintCards[0].t += dt;
+    this.hintCards = this.hintCards.filter((c) => c.t < c.life);
     this.captions = this.captions.filter((c) => c.t < c.dur);
     for (let i = 0; i < this.snakeSquash.length; i++) this.snakeSquash[i] = Math.max(0, this.snakeSquash[i]! - dt);
     this.shake = Math.max(0, this.shake - dt * 30);

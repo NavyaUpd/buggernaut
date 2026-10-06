@@ -7,6 +7,7 @@ import { BootScene } from './scenes/BootScene';
 import { ChapterCardScene } from './scenes/ChapterCardScene';
 import { CreditsScene } from './scenes/CreditsScene';
 import { FinaleScene } from './scenes/FinaleScene';
+import { IntroScene } from './scenes/IntroScene';
 import { PauseScene } from './scenes/PauseScene';
 import { PhoneScene } from './scenes/PhoneScene';
 import { RoomScene } from './scenes/RoomScene';
@@ -22,7 +23,7 @@ const game = new Phaser.Game({
   input: { keyboard: false, mouse: false, touch: false },
   fps: { limit: 60 }, // 120/144 Hz screens would otherwise render the 1280x720 canvas compositor twice as often
   render: { antialias: true, pixelArt: false },
-  scene: [BootScene, TitleScene, ChapterCardScene, RoomScene, PhoneScene, FinaleScene, CreditsScene, PauseScene],
+  scene: [BootScene, TitleScene, IntroScene, ChapterCardScene, RoomScene, PhoneScene, FinaleScene, CreditsScene, PauseScene],
 });
 
 // Audio starts on the first key press (§11). Fresh presses are cleared after every game step.

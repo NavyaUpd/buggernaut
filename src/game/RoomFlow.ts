@@ -3,6 +3,7 @@ import type Phaser from 'phaser';
 import { SCENES, type SceneKey } from '../scenes/keys';
 
 export type Step =
+  | { kind: 'intro' }
   | { kind: 'card'; chapter: number }
   | { kind: 'room'; roomId: string }
   | { kind: 'phone'; index: number }
@@ -10,6 +11,7 @@ export type Step =
   | { kind: 'credits' };
 
 export const FLOW: Step[] = [
+  { kind: 'intro' },
   { kind: 'card', chapter: 1 },
   { kind: 'room', roomId: '1-1' },
   { kind: 'room', roomId: '1-2' },
@@ -49,6 +51,8 @@ export function endsChapter(roomId: string): boolean {
 
 export function sceneFor(step: Step): { key: SceneKey; data: object } {
   switch (step.kind) {
+    case 'intro':
+      return { key: SCENES.Intro, data: {} };
     case 'card':
       return { key: SCENES.ChapterCard, data: { chapter: step.chapter } };
     case 'room':
