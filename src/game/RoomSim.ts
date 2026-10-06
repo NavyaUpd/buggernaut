@@ -112,6 +112,16 @@ export class RoomSim {
   /** Global across rooms: the "switch it off first!" tip shows only once per game. */
   static tipShown = false;
   static firstBloomSeen = false;
+  /** First-time key hints (W / Space / → ): once the action is done, or after a few seconds on screen, they stay away. */
+  static hintDone = { climb: false, jump: false, grind: false };
+  static hintShown = { climb: 0, jump: 0, grind: 0 };
+  /** Forget everything that is "once per game" (called when a new game starts from the title). */
+  static resetRun(): void {
+    RoomSim.tipShown = false;
+    RoomSim.firstBloomSeen = false;
+    RoomSim.hintDone = { climb: false, jump: false, grind: false };
+    RoomSim.hintShown = { climb: 0, jump: 0, grind: 0 };
+  }
 
   t = 0;
   strikeT = 0;
@@ -337,6 +347,7 @@ export class RoomSim {
     this.updateBijli(dt);
     this.updatePlayer(dt, inp);
     this.updateInteract(dt, inp);
+    this.updateHints(dt);
     this.updateHazards();
     this.updateAmbient(dt);
     this.updateExit();
@@ -403,6 +414,7 @@ export class RoomSim {
       }
       if (p.climb && p.buffer > 0 && !inp.interact) {
         p.climb = null;
+        RoomSim.hintDone.jump = true;
         p.buffer = 0;
         p.vy = -PLAYER.poleJumpOff.vy;
         p.vx = dir * PLAYER.poleJumpOff.vx;
@@ -550,6 +562,7 @@ export class RoomSim {
   private startClimb(pr: PoleRun): void {
     const p = this.p;
     p.climb = pr;
+    RoomSim.hintDone.climb = true;
     p.vx = 0;
     p.vy = 0;
     p.varJ = 0;
@@ -584,6 +597,7 @@ export class RoomSim {
   private startGrind(r: ParsedRail, s: number, dir: 1 | -1): void {
     const p = this.p;
     p.grind = { rail: r, s, dir };
+    RoomSim.hintDone.grind = true;
     p.climb = null;
     p.ground = false;
     p.vy = 0;
@@ -698,6 +712,41 @@ export class RoomSim {
         this.toggleBreaker([bx, by]);
       }
     }
+  }
+
+  /** Small key hints the first time the player can climb, jump off a pole, or grind. Splice/breaker prompts win. */
+  private updateHints(dt: number): void {
+    if (this.prompt || this.dying || this.done) return;
+    const p = this.p;
+    if (p.grind) return;
+    const H = RoomSim.hintDone;
+    let key: 'climb' | 'jump' | 'grind' | null = null;
+    let text = '';
+    if (p.climb) {
+      if (!H.jump) {
+        key = 'jump';
+        text = 'Space to jump off';
+      }
+    } else if (!H.climb && this.climbableUnder()) {
+      key = 'climb';
+      text = 'W to climb';
+    } else if (!H.grind && p.ground) {
+      for (const r of this.room.rails) {
+        for (const end of [0, 1] as const) {
+          const ex = end ? r.bx : r.ax;
+          const ey = end ? r.by : r.ay;
+          const ox = end ? r.ax : r.bx;
+          if (Math.abs(p.x - ex) < 18 && p.y >= ey - 4 && p.y <= ey + 4 && this.railGrindable(r)) {
+            key = 'grind';
+            text = ox > ex ? '\u2192 to grind' : '\u2190 to grind';
+          }
+        }
+      }
+    }
+    if (!key) return;
+    RoomSim.hintShown[key] += dt;
+    if (RoomSim.hintShown[key] > 7) RoomSim.hintDone[key] = true;
+    this.prompt = { text, x: p.x, y: p.y - 86, progress: 0 };
   }
 
   private cancelSplice(): void {

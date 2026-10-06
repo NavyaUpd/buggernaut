@@ -7,9 +7,10 @@ import { coverScale, crayonKey, ensureCrayonText, ensureCrayonTextures, type Cra
 import { CHAPTERS, type ChapterText } from '../story/script';
 import { SCENES, type ChapterCardData } from './keys';
 
-const DURATION = 2.5; // s (§7.3)
+const DURATION = 4; // s (§7.3, lengthened from 2.5 so the radio line can be read)
 const SKIP_GUARD = 0.2; // s, so the key that ended the last scene can't also skip this one
 const TITLE_MAX_W = 540; // the doodle panel starts at x = 640
+const RADIO_W = 860; // radio strip width; the longest line fits at full size
 
 /** Chapter card: Chinni's crayon page, "chapter N" + title in her handwriting, and the radio line (§7.3). */
 export class ChapterCardScene extends Phaser.Scene {
@@ -52,9 +53,57 @@ export class ChapterCardScene extends Phaser.Scene {
 
     // the radio line, typed out like a transcript
     if (info.radio) this.radioLine(info.radio);
+    // the first card also shows the controls, once
+    if (n === 1) this.controlsRow();
     if (n === 4) audio.setRain(0.4, 1); // Ghar: no radio, only the rain getting softer
 
     cam.fadeIn(450, 0, 0, 0);
+  }
+
+  /** Crayon keycaps for the four inputs: A/D · Space · W/S · E. Shown on the first chapter card only. */
+  private controlsRow(): void {
+    const groups: { keys: string[]; label: string }[] = [
+      { keys: ['A', 'D'], label: 'move' },
+      { keys: ['Space'], label: 'jump' },
+      { keys: ['W', 'S'], label: 'climb' },
+      { keys: ['E'], label: 'hold to splice' },
+    ];
+    const KEY = 54;
+    const GAP = 8;
+    const SPACE_W = 118;
+    let x = 64;
+    const y = 384;
+    const g = this.add.graphics().setAlpha(0);
+    const labels: Phaser.GameObjects.Text[] = [];
+    const caps: Phaser.GameObjects.Text[] = [];
+    groups.forEach((grp, gi) => {
+      const x0 = x;
+      grp.keys.forEach((k) => {
+        const w = k === 'Space' ? SPACE_W : KEY;
+        g.fillStyle(0x000000, 0.35);
+        g.fillRoundedRect(x + 3, y + 5, w, KEY, 10);
+        g.fillStyle(0xffffff, 1);
+        g.fillRoundedRect(x, y, w, KEY, 10);
+        g.lineStyle(4, 0x000000, 1);
+        g.strokeRoundedRect(x, y, w, KEY, 10);
+        caps.push(
+          this.add
+            .text(x + w / 2, y + KEY / 2 + 1, k, { fontFamily: FONTS.comic, fontSize: k === 'Space' ? '24px' : '30px', fontStyle: 'bold', color: '#24317e' })
+            .setOrigin(0.5)
+            .setAlpha(0),
+        );
+        x += w + GAP;
+      });
+      const mid = (x0 + x - GAP) / 2;
+      labels.push(
+        this.add
+          .text(mid, y + KEY + 22, grp.label, { fontFamily: FONTS.hand, fontSize: '22px', color: '#ff3b30' })
+          .setOrigin(0.5)
+          .setAlpha(0),
+      );
+      x += gi === groups.length - 1 ? 0 : 26;
+    });
+    this.tweens.add({ targets: [g, ...caps, ...labels], alpha: 1, duration: 400, delay: 700, ease: 'Cubic.easeOut' });
   }
 
   private radioLine(line: string): void {
@@ -62,9 +111,9 @@ export class ChapterCardScene extends Phaser.Scene {
     const y = 652;
     const strip = this.add.graphics().setAlpha(0);
     strip.fillStyle(0x0b0f1c, 0.88);
-    strip.fillRoundedRect(x - 16, y - 26, 600, 52, 10);
+    strip.fillRoundedRect(x - 16, y - 26, RADIO_W, 52, 10);
     strip.lineStyle(2, 0x7fe3ff, 0.6);
-    strip.strokeRoundedRect(x - 16, y - 26, 600, 52, 10);
+    strip.strokeRoundedRect(x - 16, y - 26, RADIO_W, 52, 10);
     // little radio-wave glyph
     strip.fillStyle(0x7fe3ff, 1);
     strip.fillCircle(x + 6, y, 4);
@@ -78,17 +127,17 @@ export class ChapterCardScene extends Phaser.Scene {
       .text(x + 30, y, '', { fontFamily: FONTS.ui, fontSize: '19px', color: '#cfe0fb', fontStyle: 'bold' })
       .setOrigin(0, 0.5);
     const fit = (): void => {
-      if (text.width > 540) text.setScale(540 / text.width);
+      if (text.width > RADIO_W - 60) text.setScale((RADIO_W - 60) / text.width);
     };
     this.tweens.add({ targets: strip, alpha: 1, duration: 250, delay: 500 });
     let i = 0;
     this.time.delayedCall(600, () => {
       audio.sfx.ui();
       this.time.addEvent({
-        delay: 24,
-        repeat: line.length - 1,
+        delay: 14,
+        repeat: Math.ceil(line.length / 2) - 1,
         callback: () => {
-          i++;
+          i = Math.min(line.length, i + 2);
           text.setText(`"${line.slice(0, i)}${i < line.length ? '' : '"'}`);
           fit();
         },

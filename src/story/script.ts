@@ -16,8 +16,8 @@ export interface ChapterText {
 
 export const CHAPTERS: ChapterText[] = [
   { num: 1, title: 'Gali No. 4', radio: 'Crew 7, the whole feeder is down. Start at Gali 4. Over.' },
-  { num: 2, title: 'The Bazaar', radio: 'Crew 7, bazaar lines snapped in the wind. Over.' },
-  { num: 3, title: 'The Storm', radio: 'Crew 7, substation is out. Careful up there. Over.' },
+  { num: 2, title: 'The Bazaar', radio: 'Crew 7, bazaar lines snapped in the wind. Some are still live, watch your step. Over.' },
+  { num: 3, title: 'The Storm', radio: 'Crew 7, substation is out. Kill the breaker before you touch a live line. Over.' },
   { num: 4, title: 'Ghar', radio: null },
 ];
 

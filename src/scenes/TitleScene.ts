@@ -22,6 +22,7 @@ export class TitleScene extends Phaser.Scene {
   }
 
   create(): void {
+    RoomSim.resetRun(); // a new game: the once-per-game tip, caption and key hints come back
     this.leaving = false;
     this.sim = new RoomSim(ROOM_BY_ID['1-1']!);
     this.sim.p.x = -400; // no player on the title

@@ -214,24 +214,42 @@ export function caption(g: G, text: string, t: number, dur: number): void {
 /** Rounded key prompt ("Hold E" / "E"), with an optional hold-progress ring. */
 export function keyPrompt(g: G, text: string, x: number, y: number, progress: number): void {
   g.save();
-  g.font = `700 16px ${FONTS.ui}`;
-  const w = g.measureText(text).width + 20;
+  g.font = `800 20px ${FONTS.ui}`;
+  const w = g.measureText(text).width + 30;
+  const h = 38;
   const px = Math.max(8, Math.min(W - w - 8, x - w / 2));
+  const bob = Math.sin(performance.now() / 260) * 3;
+  // bobbing key bubble with a soft yellow glow and a pointer, so it is hard to miss
+  g.save();
+  g.translate(0, bob);
+  g.shadowColor = 'rgba(255,212,0,.95)';
+  g.shadowBlur = 18;
   g.fillStyle = '#fff';
   g.strokeStyle = CSS.ink;
-  g.lineWidth = 3;
+  g.lineWidth = 3.5;
   g.beginPath();
-  g.roundRect(px, y - 14, w, 28, 8);
+  g.roundRect(px, y - h / 2, w, h, 10);
+  g.fill();
+  g.shadowBlur = 0;
+  g.stroke();
+  g.beginPath();
+  g.moveTo(x - 8, y + h / 2 - 1);
+  g.lineTo(x, y + h / 2 + 10);
+  g.lineTo(x + 8, y + h / 2 - 1);
+  g.closePath();
   g.fill();
   g.stroke();
+  g.fillStyle = '#fff';
+  g.fillRect(x - 7, y + h / 2 - 4, 14, 5);
   g.fillStyle = CSS.ink;
   g.textBaseline = 'middle';
-  g.fillText(text, px + 10, y + 1);
+  g.fillText(text, px + 15, y + 1);
+  g.restore();
   if (progress > 0) {
     g.strokeStyle = CSS.yellow;
-    g.lineWidth = 5;
+    g.lineWidth = 6;
     g.beginPath();
-    g.arc(x, y + 44, 18, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, progress));
+    g.arc(x, y + 48, 19, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, progress));
     g.stroke();
   }
   g.restore();
