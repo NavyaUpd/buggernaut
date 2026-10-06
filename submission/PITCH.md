@@ -36,8 +36,8 @@ Esc or P pause (restart, skip room, mute, reduce flashing) · R restart room
 
 ## Accessibility
 
-Reduce-flashing toggle (title screen F, and the pause menu), skip room and restart room from the start, first-time
-hint cards for every mechanic, and a live objective line. 3 helmets per chapter: a fall undoes the repair in progress, but lit
+Reduce-flashing toggle (title screen F, and the pause menu), skip room and restart room from the start, a one-line
+hint card the first time you meet each mechanic, a live objective line, and How to play in the pause menu. 3 helmets per chapter: a fall undoes the repair in progress, but lit
 lamps are checkpoints.
 
 ## Media

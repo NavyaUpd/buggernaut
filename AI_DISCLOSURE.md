@@ -29,6 +29,8 @@ No image, music or sound generators were used. No third-party art, audio or font
   chapter, the hospital backup timer, two new rooms that combine mechanics (2-2b Night Market, 3-1b Flooded Crossing),
   a validator rule that every cloud sits in a lamp's light, and bot playthroughs of the new rooms. A follow-up eased it slightly: lit lamps became checkpoints, running
   out of helmets restarts the room instead of the chapter, and the hospital timer went from 75 to 100 s.
+- **Onboarding pass**: one queue for captions, story beats and hint cards (one at a time), hint cards triggered by
+  walking near the thing they explain, one-line hint texts, and the How to play page in the pause menu.
 
 ## What the team did
 

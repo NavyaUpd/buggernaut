@@ -88,10 +88,13 @@ Between chapters, Chinni's phone messages keep you company: _"are you scared of 
 - **Later streets combine everything.** The Night Market makes you work a live breaker past a fallen wire you can
   only jump in the dark; the Flooded Crossing puts a splice inside a lightning column, in water that is only safe
   while its breaker is off.
-- First-time hint cards, a live objective line and an arrow over the exit mean you always know what to do next.
+- **You always know what to do next.** The first time you walk up to something new (a breaker, a fallen wire, a
+  flooded street, a lightning column, one of Chinni's drawings) a one-line hint card explains it. A live objective line
+  and an arrow over the exit show where you are headed, and **How to play** in the pause menu lists every hint you have
+  met so far.
 
-A first playthrough takes about **12–15 minutes**. Skip room, restart room, mute and **reduce flashing** are in the
-pause menu (Esc or P), and the title screen has a flashing notice with a toggle (F).
+A first playthrough takes about **12–15 minutes**. Skip room, restart room, mute, **reduce flashing** and How to play are
+in the pause menu (Esc or P), and the title screen has a flashing notice with a toggle (F).
 
 ## Controls
 

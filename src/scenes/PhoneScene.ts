@@ -25,6 +25,8 @@ export class PhoneScene extends Phaser.Scene {
   private index = 0;
   private t = 0;
   private done = false;
+  /** Real-time start (ms), so the continue guard works at any frame rate. */
+  private startedAt = 0;
   private rainG!: Phaser.GameObjects.Graphics;
   private drops: Drop[] = [];
 
@@ -36,6 +38,7 @@ export class PhoneScene extends Phaser.Scene {
     this.index = Phaser.Math.Clamp(Math.round(data?.index ?? 0), 0, PHONE.messages.length - 1);
     this.t = 0;
     this.done = false;
+    this.startedAt = performance.now();
   }
 
   create(): void {
@@ -244,7 +247,8 @@ export class PhoneScene extends Phaser.Scene {
       g.lineStyle(d.near ? 2 : 1, 0x8fa3c7, d.near ? 0.35 : 0.2);
       g.lineBetween(d.x, d.y, d.x + d.len * tan, d.y - d.len);
     }
-    if (!this.done && this.t > CONTINUE_AT && input.anyPressed()) {
+    // guard in real seconds: frame time (capped per frame) would stretch it on slow machines and swallow key presses
+    if (!this.done && (performance.now() - this.startedAt) / 1000 > CONTINUE_AT && input.anyPressed()) {
       this.done = true;
       audio.start();
       audio.sfx.ui();

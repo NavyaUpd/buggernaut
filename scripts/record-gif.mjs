@@ -16,6 +16,7 @@ await page.waitForTimeout(1500);
 await page.evaluate(() => {
   const s = window.__bijli.sim();
   s.messages.length = 0;
+  s.nextBolt = 999; // no lightning peek over the bloom
   s.p.x = 12 * 32 + 16;
   s.p.y = 9 * 32 + 8;
   s.p.face = 1;
@@ -25,7 +26,10 @@ let t = await page.evaluate(() => performance.now());
 const step = async (n) => {
   for (let i = 0; i < n; i++) {
     t += 1000 / 60;
-    await page.evaluate((tt) => window.__bijli.game.step(tt, 1000 / 60), t);
+    await page.evaluate((tt) => {
+      window.__bijli.sim().messages.length = 0; // keep captions and hint cards out of the GIF
+      window.__bijli.game.step(tt, 1000 / 60);
+    }, t);
   }
 };
 await step(20);

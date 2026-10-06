@@ -470,3 +470,5 @@ note every stuck moment over 20 s).
   3-1b Flooded Crossing (13 rooms total), validator rule: every cloud must be inside a lamp's light.
 - Difficulty eased slightly (same evening): lit lamps are checkpoints (powered circuits survive a death; only work in
   progress resets), out of helmets restarts the current room (not the chapter), hospital timer 100 s.
+- Onboarding pass: captions/beats/hint cards share one queue (one at a time, 0.4 s gap), hint cards trigger within 4
+  tiles of the thing they explain, every hint is ≤ 10 words, pause menu has How to play. Submission media re-recorded.
