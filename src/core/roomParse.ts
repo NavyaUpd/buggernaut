@@ -27,7 +27,7 @@ export interface ParsedLamp {
   ty: number;
   r: number;
   circuit: string;
-  kind: 'lamp' | 'house';
+  kind: 'lamp' | 'house' | 'ward';
   /** Lamp head (light source) in px. */
   hx: number;
   hy: number;

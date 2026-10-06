@@ -257,8 +257,8 @@ export class RoomCanvas {
     sim.room.lamps.forEach((l, i) => {
       const sq = seqs[i]!;
       if (!sq.lampOn) return;
-      const hx0 = l.kind === 'house' ? l.hx : l.hx + 24;
-      const hy0 = l.kind === 'house' ? l.hy + 20 : l.hy + 6;
+      const hx0 = l.kind !== 'lamp' ? l.hx : l.hx + 24;
+      const hy0 = l.kind !== 'lamp' ? l.hy + 20 : l.hy + 6;
       const spread = l.r * T * 1.05 * Math.max(0.35, sq.pool);
       const fl = sq.pool < 1 ? 0.6 + 0.4 * Math.sin(t * 50) : 1;
       const cg = ctx.createLinearGradient(0, hy0, 0, l.groundY);
@@ -341,8 +341,8 @@ export class RoomCanvas {
     sim.room.lamps.forEach((l, i) => {
       const sq = seqs[i]!;
       if (sq.lampOn) {
-        const hx0 = l.kind === 'house' ? l.hx : l.hx + 24;
-        const hy0 = l.kind === 'house' ? l.hy + 20 : l.hy + 6;
+        const hx0 = l.kind !== 'lamp' ? l.hx : l.hx + 24;
+        const hy0 = l.kind !== 'lamp' ? l.hy + 20 : l.hy + 6;
         const spread = l.r * T * 1.05 * Math.max(0.35, sq.pool);
         dk.fillStyle = 'rgba(0,0,0,.8)';
         dk.beginPath();

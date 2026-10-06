@@ -23,6 +23,7 @@ export const FLOW: Step[] = [
   { kind: 'card', chapter: 3 },
   { kind: 'room', roomId: '3-1' },
   { kind: 'room', roomId: '3-2' },
+  { kind: 'room', roomId: '3-2b' },
   { kind: 'room', roomId: '3-3' },
   { kind: 'phone', index: 2 },
   { kind: 'card', chapter: 4 },

@@ -1,4 +1,4 @@
-// BIJLI room data: all 10 single-screen rooms (CLAUDE.md §8). Authoritative level data; pure TS, no Phaser.
+// BIJLI room data: all 11 single-screen rooms (CLAUDE.md §8). Authoritative level data; pure TS, no Phaser.
 //
 // Legend (40 × 22 tiles of 32 px; tile (x, y) is drawn at px (x*32, y*32 + 8)):
 //   .  empty                     #  solid block              =  one-way platform (awning / balcony)
@@ -18,8 +18,8 @@ export interface LampDef {
   at: Tile;
   r: number;
   circuit: string;
-  /** 'house' = the window of Chinni's house in 4-1. */
-  kind?: 'lamp' | 'house';
+  /** 'house' = the window of Chinni's house in 4-1; 'ward' = a window of the hospital in 3-2b. */
+  kind?: 'lamp' | 'house' | 'ward';
 }
 
 export interface RailDef {
@@ -53,6 +53,8 @@ export interface HouseDef {
   y: number;
   w: number;
   h: number;
+  /** 'hospital' = flat-roofed ward block with a red cross (3-2b). Default 'home'. */
+  style?: 'home' | 'hospital';
 }
 
 export interface RoomDef {
@@ -387,6 +389,52 @@ export const ROOMS: RoomDef[] = [
       '########################################', // 19
       '########################################', // 20
       '########################################', // 21
+    ],
+  },
+  {
+    id: '3-2b',
+    name: 'City Hospital',
+    chapter: 3,
+    caption: 'the hospital is dark too. the doctors are using torches.',
+    panelCaption: 'and the night shift cheers!',
+    lightning: true,
+    firstFlash: 3,
+    gatedExit: true,
+    house: { x: 30, y: 2, w: 10, h: 9, style: 'hospital' },
+    lamps: [
+      { at: [21, 8], r: 9, circuit: 'c1' },
+      { at: [34, 4], r: 5, circuit: 'c2', kind: 'ward' },
+      { at: [37, 4], r: 5, circuit: 'c2', kind: 'ward' },
+    ],
+    rails: [],
+    circuits: [
+      { id: 'c1', splices: [[16, 14]], breaker: [7, 12], closed: true, water: true },
+      { id: 'c2', splices: [[32, 6]] },
+    ],
+    strikes: [],
+    map: [
+      '........................................', //  0
+      '........................................', //  1
+      '........................................', //  2
+      '........................................', //  3
+      '..................................L..L..', //  4
+      '........................................', //  5
+      '................................X.......', //  6
+      '................................|.......', //  7
+      '.....................L..........|.......', //  8
+      '................................|....E..', //  9
+      '................................|....E..', // 10
+      '.......................cc..cc.##########', // 11
+      '..P....B..........cc..........##########', // 12
+      '##########H..cc...............##########', // 13
+      '##########H.....X.............##########', // 14
+      '##########H.....|.............##########', // 15
+      '##########H.....|.............##########', // 16
+      '##########H.....|.............##########', // 17
+      '##########H~~~~~|~~~~~~~~~~~~~##########', // 18
+      '##########H~~~~~|~~~~~~~~~~~~~##########', // 19
+      '########################################', // 20
+      '########################################' // 21
     ],
   },
   {

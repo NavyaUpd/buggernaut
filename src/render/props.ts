@@ -13,14 +13,45 @@ export function wireEnds(sim: RoomSim, s: readonly [number, number], lampIdx: nu
   const side = l.hx >= px ? 1 : -1;
   const ax = px + 22 * side;
   const ay = s[1] * T + OY + 2;
-  const bx = l.kind === 'house' ? l.hx - 20 : l.hx + 24;
-  const by = l.kind === 'house' ? l.hy - 22 : l.hy - 4;
+  const bx = l.kind !== 'lamp' ? l.hx - 20 : l.hx + 24;
+  const by = l.kind !== 'lamp' ? l.hy - 22 : l.hy - 4;
   return { ax, ay, bx, by };
 }
 
 export function drawLampHeads(g: G, sim: RoomSim, comic: boolean, t: number): void {
   sim.room.lamps.forEach((l, i) => {
     const on = sim.seq(i).lampOn;
+    if (l.kind === 'ward') {
+      // a hospital window: pale fluorescent light and a heart monitor, Chinni's comic version smiles
+      const x = l.hx - 24;
+      const y = l.hy - 20;
+      g.fillStyle = on ? (comic ? '#e8fff4' : '#cfe8ff') : comic ? '#9ed8ff' : '#0c1124';
+      g.fillRect(x, y, 48, 40);
+      if (on) {
+        const pts = [0, 0, 0, -2, 0, 0, -10, 12, -4, 0, 0, 0, 0];
+        const step = 44 / (pts.length - 1);
+        g.strokeStyle = comic ? CSS.red : '#ff5a6a';
+        g.lineWidth = comic ? 3 : 2.5;
+        g.lineJoin = 'round';
+        g.beginPath();
+        pts.forEach((dy, k) => (k ? g.lineTo(x + 2 + k * step, y + 22 + dy) : g.moveTo(x + 2, y + 22 + dy)));
+        g.stroke();
+        const bx = x + 2 + ((t * 0.7) % 1) * 44;
+        g.fillStyle = comic ? CSS.red : '#ffb3bb';
+        g.beginPath();
+        g.arc(bx, y + 22, 3, 0, 7);
+        g.fill();
+        if (comic) {
+          g.fillStyle = CSS.red;
+          g.fillRect(x + 20, y + 5, 8, 3);
+          g.fillRect(x + 22.5, y + 2.5, 3, 8); // tiny red cross
+        }
+      }
+      g.strokeStyle = comic ? CSS.ink : '#05070e';
+      g.lineWidth = comic ? 3 : 4;
+      g.strokeRect(x, y, 48, 40);
+      return;
+    }
     if (l.kind === 'house') {
       const x = l.hx - 24;
       const y = l.hy - 20;

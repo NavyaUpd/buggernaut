@@ -151,6 +151,47 @@ export function drawLampPostStatic(g: G, room: ParsedRoom, comic: boolean): void
   }
 }
 
+/** The hospital block of 3-2b: flat roof, rows of dark ward windows, a red cross over the entrance. */
+function drawHospitalBody(g: G, x: number, y: number, w: number, hh: number, comic: boolean): void {
+  if (!comic) {
+    g.fillStyle = '#1b2238';
+    g.fillRect(x, y, w, hh);
+    g.fillStyle = '#121729';
+    g.fillRect(x - 8, y - 14, w + 16, 14);
+    g.fillStyle = 'rgba(255,255,255,.04)';
+    g.fillRect(x, y, 3, hh);
+    g.fillStyle = '#0e1426';
+    for (let r = 0; r < 2; r++) for (let c = 0; c < 6; c++) g.fillRect(x + 16 + c * 50, y + 112 + r * 52, 26, 30);
+    g.fillStyle = '#4a1a1f';
+    g.fillRect(x + w - 56, y + 18, 14, 40);
+    g.fillRect(x + w - 69, y + 31, 40, 14);
+  } else {
+    crayonFill(g, x, y, w, hh, '#bfe9ff', 'rgba(0,0,0,.2)', 0.4);
+    g.fillStyle = '#ffffff';
+    g.fillRect(x - 8, y - 14, w + 16, 14);
+    inkLine(g, x - 8, y - 14, x + w + 8, y - 14, 3.5);
+    inkLine(g, x - 8, y, x + w + 8, y, 3);
+    inkLine(g, x, y, x, y + hh, 3);
+    inkLine(g, x + w, y, x + w, y + hh, 3);
+    g.fillStyle = '#fff';
+    for (let r = 0; r < 2; r++) {
+      for (let c = 0; c < 6; c++) {
+        g.fillRect(x + 16 + c * 50, y + 112 + r * 52, 26, 30);
+        g.strokeStyle = CSS.ink;
+        g.lineWidth = 2.5;
+        g.strokeRect(x + 16 + c * 50, y + 112 + r * 52, 26, 30);
+      }
+    }
+    g.fillStyle = CSS.red;
+    g.fillRect(x + w - 56, y + 18, 14, 40);
+    g.fillRect(x + w - 69, y + 31, 40, 14);
+    g.strokeStyle = CSS.ink;
+    g.lineWidth = 3;
+    g.strokeRect(x + w - 56, y + 18, 14, 40);
+    g.strokeRect(x + w - 69, y + 31, 40, 14);
+  }
+}
+
 export function drawHouseStatic(g: G, room: ParsedRoom, comic: boolean): void {
   const h = room.def.house;
   if (!h) return;
@@ -158,7 +199,9 @@ export function drawHouseStatic(g: G, room: ParsedRoom, comic: boolean): void {
   const y = h.y * T + OY;
   const w = h.w * T;
   const hh = h.h * T;
-  if (!comic) {
+  if (h.style === 'hospital') {
+    drawHospitalBody(g, x, y, w, hh, comic);
+  } else if (!comic) {
     g.fillStyle = '#1a2036';
     g.fillRect(x, y, w, hh);
     g.fillStyle = '#121729';
