@@ -68,11 +68,26 @@ describe('headless playthroughs', () => {
     b.tapE();
     b.step(200);
     expect(b.sim.lampLit(1)).toBe(true);
-    b.walkTo(790);
-    for (const x of [890, 1010, 1150]) b.hop(x);
-    b.walkTo(1262);
-    b.step(5);
+    b.walkTo(X(24));
+    // the snake at the end of the roof is lit now: walk into it and BOING up to the cloud
+    b.step(1, { right: true });
+    let n = 0;
+    while (!(b.sim.p.ground && b.sim.p.y === FEET(11)) && n++ < 200) b.step(1, { right: true, jumpHeld: true });
+    expect(b.sim.dying).toBeNull();
+    expect(b.sim.p.y).toBe(FEET(11));
+    b.hop(1150);
+    b.step(80, { right: true });
     expect(b.sim.done).toBe(true);
+  });
+
+  it('2-2: the roof snake is deadly until its lamp is lit', () => {
+    const b = bot('2-2');
+    b.sim.p.x = X(24);
+    b.sim.p.y = FEET(15);
+    b.sim.p.vx = 0;
+    b.step(1);
+    b.step(20, { right: true });
+    expect(b.sim.dying?.cause).toBe('snake');
   });
 
   it('2-3 Chinni\'s Drawing: BIJLI grinds two dead wires', () => {
@@ -86,9 +101,34 @@ describe('headless playthroughs', () => {
     b.step(100);
     expect(b.sim.p.climb?.x).toBe(34);
     downPole(b);
-    b.walkTo(1262);
-    b.step(5);
+    // BIJLI still has a few seconds: the snake before the exit is a BOING, not a hazard
+    expect(b.sim.bijli.active).toBe(true);
+    b.step(120, { right: true, jumpHeld: true });
+    expect(b.sim.dying).toBeNull();
     expect(b.sim.done).toBe(true);
+  });
+
+  it('2-3: once BIJLI ends the snake is deadly; it can be jumped', () => {
+    const run = (jump: boolean) => {
+      const b = bot('2-3');
+      b.walkTo(X(4));
+      b.walkTo(X(6));
+      b.climb(110);
+      b.step(1, { right: true });
+      b.step(100);
+      downPole(b);
+      b.sim.bijli.stop();
+      b.walkTo(X(34));
+      if (jump) b.step(1, { right: true, jumpPressed: true, jumpHeld: true });
+      let cause: string | undefined;
+      for (let i = 0; i < 80 && !b.sim.done; i++) {
+        b.step(1, { right: true, jumpHeld: jump && i < 25 });
+        cause ??= b.sim.dying?.cause;
+      }
+      return { cause, done: b.sim.done };
+    };
+    expect(run(false)).toEqual({ cause: 'snake', done: false });
+    expect(run(true)).toEqual({ cause: undefined, done: true });
   });
 
   it('3-1 Underpass: breaker off → wade → splice → ladder → breaker on → clouds over live water', () => {
@@ -129,7 +169,10 @@ describe('headless playthroughs', () => {
     };
     b.walkTo(X(7));
     waitJustStruck(0);
-    b.walkTo(X(13));
+    b.walkTo(X(11));
+    waitJustStruck(1);
+    b.hop(X(15)); // the dark snake sits between columns 0 and 1
+    expect(b.sim.dying).toBeNull();
     waitJustStruck(1);
     b.walkTo(X(20));
     waitJustStruck(2);
@@ -149,6 +192,17 @@ describe('headless playthroughs', () => {
     b.walkTo(1262);
     b.step(5);
     expect(b.sim.done).toBe(true);
+  });
+
+  it('3-2: the dark snake between the strike columns is deadly', () => {
+    const b = bot('3-2');
+    b.walkTo(X(11));
+    let cause: string | undefined;
+    for (let i = 0; i < 60; i++) {
+      b.step(1, { right: true });
+      cause ??= b.sim.dying?.cause;
+    }
+    expect(cause).toBe('snake');
   });
 
   it('3-3 Substation: drawing → grind → drawing → splice in the strike → master breaker → skyline', () => {
