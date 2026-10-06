@@ -34,6 +34,9 @@ export const PHONE = {
 
 export const GAME_TEXT = {
   holdE: 'Hold E',
+  /** Splice prompt on an isolated (dead) line, and on a line that is still live. */
+  holdESafe: 'line is OFF ✓  hold E to fix',
+  liveLine: 'LIVE! switch its breaker OFF first',
   pressE: 'E',
   tip: 'switch it off first!',
   twist: 'TWIST!',

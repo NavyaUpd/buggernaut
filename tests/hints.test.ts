@@ -29,7 +29,7 @@ describe('first-time key hints', () => {
     const b = bot('1-1');
     b.walkTo(X(12));
     b.climb();
-    expect(b.sim.prompt?.text).toBe('Hold E');
+    expect(b.sim.prompt?.text).toContain('hold E');
     RoomSim.resetRun();
     expect(RoomSim.hintDone.climb).toBe(false);
   });

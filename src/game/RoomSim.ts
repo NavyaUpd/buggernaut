@@ -748,7 +748,7 @@ export class RoomSim {
     const b = has('B') ?? has('M');
     if (x && !p.grind) {
       const [cx, cy] = x;
-      this.prompt = { text: GAME_TEXT.holdE, x: cx * T + 16, y: cy * T + OY - 30, progress: this.spliceHold / SPLICE.holdTime };
+      this.prompt = { text: this.circuits.wouldShock([cx, cy]) ? GAME_TEXT.liveLine : GAME_TEXT.holdESafe, x: cx * T + 16, y: cy * T + OY - 30, progress: this.spliceHold / SPLICE.holdTime };
       if (inp.interact && this.spliceArmed) {
         if (this.spliceHold === 0 && this.circuits.wouldShock([cx, cy])) {
           this.shock([cx, cy]);
