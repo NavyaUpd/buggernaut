@@ -438,8 +438,13 @@ note every stuck moment over 20 s).
 ---
 
 ## STATUS
-- Phase: build (v3). Updated Tue 6 Oct ~01:15 IST.
-- Milestone: **M2 gate met** (title → credits playable end to end; every room solvable). Next: M3 (real-browser playtests, feel tuning, juice gaps).
+- Phase: **submission** (Tue 6 Oct ~14:50 IST). `main` = Shaurya's `patches` + the playtest round (`improve`).
+- Milestone: final build. Playtest round done: opening comic, optional power-ups (pillar routes in 2-3/3-3, cape glide,
+  storm-dragon drawing `Z`), strike cycle 4.6 s, 3 helmets per chapter, per-lamp cheers + story beats, hint cards,
+  objective line, exit arrow, "line is OFF" splice prompt.
+- **Overrides of this spec, requested by the team after playtesting** (§4 and §13 are superseded where they conflict):
+  3 lives (helmets) per chapter instead of none; short on-screen hint cards, an objective line and key prompts are
+  allowed; one new optional pickup (storm dragon, `Z`); power-ups must be optional (validator now enforces it).
 - Works:
   - All 10 rooms in `src/levels/rooms.ts`; `npm run validate-levels` checks §8.3 with jump envelopes simulated from `PLAYER`.
   - `src/game/RoomSim.ts` (pure TS): §5 movement, climb, pole-top standing, splice + shock + tip, breakers, power-on SEQ, lit-only clouds, rails (incl. chaining), snake, BIJLI, live water, strikes, lightning peek, respawn, gated exits, skyline bloom.

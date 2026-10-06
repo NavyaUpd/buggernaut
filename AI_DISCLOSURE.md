@@ -23,6 +23,10 @@ No image, music or sound generators were used. No third-party art, audio or font
 - **Late changes on 6 Oct 2026** (each one is a separate commit marked "AI-assisted"): the first-time controls hints
   and the key-cap row on the chapter 1 card, lighter darkness, the 60 fps cap, the P pause key, the BIJLI end-of-timer
   flash, extra snakes in rooms 2-2, 2-3 and 3-2, the new hospital room (3-2b) and this documentation.
+- **Playtest round on 6 Oct 2026, afternoon** (commit "playtest round" and after): the opening story comic, optional
+  routes in 2-3 and 3-3 so power-ups are never required, the cape glide, the storm-dragon drawing, slower strike timing,
+  3 helmets per chapter, per-lamp neighbour reactions and story beats, first-time hint cards, the objective line, the
+  exit arrow, the "line is OFF" splice prompt, and the rewritten README. These were built from the team's playtest notes.
 
 ## What the team did
 
