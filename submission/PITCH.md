@@ -43,7 +43,7 @@ splices kept, no timers.
 
 - Screenshots: `1-dark-room.png`, `2-bloom-midway.png`, `3-snake-bounce.png`, `4-bijli-grind.png`, `5-skyline-bloom.png`
 - GIF: `bloom.gif` (a lamp coming back on)
-- Gameplay video: `bijli-gameplay.webm` (stops before the last chapter, no spoilers)
+- Gameplay video: `bijli-gameplay.webm` (2:00, opening comic through the substation; stops before the last chapter, no spoilers)
 
 ## AI usage
 
